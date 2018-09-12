@@ -68,15 +68,17 @@ def construct_euler_tour_forest(edge_list):
     cnt_trees = 0
 
     for tree_edges,non_tree_edges in SF:
+        print("Tree edges :",tree_edges)
+        print("Non tree edges :",non_tree_edges)
         ETT = construct_euler_tour_tree(list(tree_edges))
-        non_tree_edges_a_l = defaultdict(list)
         for l in tree_edges:    # Every node is present in tree edges
             node_2_tree[l[0]] = cnt_trees
             node_2_tree[l[1]] = cnt_trees
+        non_tree_edges_a_l = defaultdict(set)
         for l in non_tree_edges:
             u,v= l
-            non_tree_edges_a_l[u].append(v)
-            non_tree_edges_a_l[v].append(u)
+            non_tree_edges_a_l[u].add(v)
+            non_tree_edges_a_l[v].add(u)
         ETT.nt_al = non_tree_edges_a_l
         Trees.append(ETT)
         cnt_trees += 1
@@ -122,7 +124,6 @@ class ETF_collections(object):
         if e in self.edge_2_level:
             self.replace(e,self.edge_2_level[e])
 
-
     def replace(self,e,level):
         '''
         REPLACE A TREE EDGE
@@ -136,7 +137,6 @@ class ETF_collections(object):
                 return
             level -= 1
         # return No replacement found, du coup ya du split dans l'air, done with .remove(e) ???
-
 
 
 class EulerTourForest(object):
@@ -186,7 +186,7 @@ class EulerTourForest(object):
 
     def insert_edge(self, e):
         '''
-        Insert an edge
+        Insert an edge in the Euler Tour Forest
         :param e:
         :return:
         '''
@@ -194,12 +194,13 @@ class EulerTourForest(object):
         u_pos = self.node_2_tree[u]
         v_pos = self.node_2_tree[v]
         if u_pos == v_pos:  # They are already in the same tree
-            pass # DO Something
-            #return
-        else:  # They are in different tress
+            print(" Insert in tree number :",u_pos)
+            self.trees[u_pos].insert(e)
+        else:  # They are in different trees
+            print(" Merge Trees ",v_pos," and ",u_pos)
             u_tree = self.trees[u_pos]
             v_tree = self.trees[v_pos]
-            uv_tree = union_treaps(u_tree,v_tree)
+            uv_tree = EulerTourTrees.link_ett(u_tree,v_tree,e)
             # TODO : Actualize position of nodes in v_tree
             self.trees[u_pos] = uv_tree
             self.node_2_tree[v] = u_pos
@@ -210,38 +211,17 @@ class EulerTourForest(object):
 
     def remove_edge(self, e):
         '''
-        Remove an edge
+        Remove an edge from the Euler Tour Forest
         :param e:
         :return:
         '''
-        # TODO : Distinguate NonTree Edges and Tree Edges HERE
         e_pos = self.node_2_tree[e[0]]
-        self.trees[e_pos].remove_edge(e)
-
-
-
-    def replace(self,e):
-        '''
-        Repalce a tree edge
-        :param e:
-        :param i:
-        :return:
-        '''
-        self.remove_edge(e)
-        u,v =e
-        u_tree = self.node_2_tree[u]
-        v_tree = self.node_2_tree[v]
-        # Get all edges in the smallest tree, assume it's v
-        # Move all edges of v_tree to the level i+1
-        # Récuperer les non tree edges de v_tree et tester si il y en a qui reconnecte u_tree et v_tree
-        # Soit f un nontree dedges:
-        #  - Si f ne connecte pas u_tree et v_tree, le move to the level i+1
-        #  - Si f reconnecte u_tree and v_tree insert(f) and in u_tree
-        return
+        print(" Remove in tree number :",e_pos)
+        self.trees[e_pos].cut(e)
 
 
     def reformat(self):
-        # TODO
+        # TODO : Output the connected component
         return
 
 
@@ -251,10 +231,11 @@ def dynamic_connectivity(E,M):
     while M:
         c,u,v = M.pop()
         if c == -1 : # Deletion
+            print("\nDeletion : ",(u,v))
             ETF.remove_edge((u, v))
         if c == 1 : # Insertion
+            print("\nInsertion : ",(u,v))
             ETF.insert_edge((u, v))
-
     G = ETF.reformat()
     return G
 
@@ -270,8 +251,9 @@ if __name__ == '__main__':
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4),(5,6),(2,3),
          (7, 8), (8, 9), (9, 7),
-         (10,11),(11,12),
-         (13,14)] # Initial edge list
+         #(10,11),(11,12),
+         #(13,14)
+         ] # Initial edge list
     M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
 
     dynamic_connectivity(E,M)

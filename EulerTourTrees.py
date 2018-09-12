@@ -57,7 +57,7 @@ class EulerTourTrees(object):
 
         :param tree: A Treap
         :param tree_edge_2_pos: A dictionary associating a tree edge to his key
-        :param nt_al: An adjacency list for non tree edges
+        :param nt_al: An adjacency set for non tree edges
         '''
         self.tree = tree
         self.tree_edge_2_pos = tree_edge_2_pos # Edge to key in Tree
@@ -66,20 +66,64 @@ class EulerTourTrees(object):
     def __repr__(self):
         return str(self.tree)
 
+    def is_tree_edge(self,e):
+        if e in self.tree_edge_2_pos:
+            return True
+        if (e[1],e[0]) in self.tree_edge_2_pos:
+            return True
+        return False
+
+    def insert(self,e):
+        if self.is_tree_edge(e):
+            return  # Nothing to do be do be do
+        # Else insert in non tree edges
+        self.nt_al[e[0]].add(e[1])
+        self.nt_al[e[1]].add(e[0])
+
     def cut(self,e):
-        positions = self.tree_edge_2_pos[e]
-        J,K = self.tree.split_on_key(positions[0])
-        if J.search(positions[0]):
-            print(e," pos : ",positions[0]," pos in J ")
-            J.remove_edge(positions[0])
-        if K.search(positions[1]):
-            print(e," pos 2: ",positions[1]," pos 2 in K ")
-            K,L = K.split_on_key(positions[1])
-            K.remove_edge(positions[1])
-        E1 = K
-        E2 = union_treaps(J,L)
-        del self.tree_edge_2_pos[e]
-        return EulerTourTrees(E1, self.tree_edge_2_pos), EulerTourTrees(E2, self.tree_edge_2_pos)
+        '''
+        Remove and edge from the Euler Tour Tree
+        :param e:
+        :return:
+        '''
+        if self.is_tree_edge(e):
+            print("  Tree Edge Deletion")
+            # TODO: Add replacement here
+            positions = self.tree_edge_2_pos[e]
+            print("Positions :",positions)
+            J,K = self.tree.split_on_key(positions[0])
+            if J.search(positions[0]):
+                J.remove_edge(positions[0])
+            if K.search(positions[1]):
+                K,L = K.split_on_key(positions[1])
+                K.remove_edge(positions[1])
+            E1 = K
+            E2 = union_treaps(J,L)
+            del self.tree_edge_2_pos[e]
+            return EulerTourTrees(E1, self.tree_edge_2_pos), EulerTourTrees(E2, self.tree_edge_2_pos)
+        else:
+            print("  Non Tree Edge Deletion :")
+            self.nt_al[e[0]].remove(e[1])
+            self.nt_al[e[1]].remove(e[0])
+
+    def replace(self,e):
+        '''
+        Replace a tree edge
+        :param e:
+        :param i:
+        :return:
+        '''
+        self.cut(e)
+        u,v =e
+        u_tree = self.node_2_tree[u]
+        v_tree = self.node_2_tree[v]
+        # Get all edges in the smallest tree, assume it's v
+        # Move all edges of v_tree to the level i+1
+        # Récuperer les non tree edges de v_tree et tester si il y en a qui reconnecte u_tree et v_tree
+        # Soit f un nontree dedges:
+        #  - Si f ne connecte pas u_tree et v_tree, le move to the level i+1
+        #  - Si f reconnecte u_tree and v_tree insert(f) and in u_tree
+        return
 
 def link_ett(T1,T2,e):
     u,v = e
@@ -122,7 +166,8 @@ def construct_euler_tour_tree(edge_list):
         else:
             edge_2_occurences[n].append(i)
         T.insert(key=i,data=n)
-    return EulerTourTrees(T,edge_2_occurences)
+    print("Edge occurences :",edge_2_occurences)
+    return EulerTourTrees(tree=T,tree_edge_2_pos=edge_2_occurences)
 
 
 #
