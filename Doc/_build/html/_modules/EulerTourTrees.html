@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>EulerTourTrees &mdash; EulerSpanningForest 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> EulerSpanningForest
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EulerSpanningForest</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>EulerTourTrees</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for EulerTourTrees</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">Treaps</span> <span class="k">import</span> <span class="n">union_treaps</span><span class="p">,</span><span class="n">Treap</span>
+
+
+<div class="viewcode-block" id="euler_tour_from_edge_list"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.euler_tour_from_edge_list">[docs]</a><span class="k">def</span> <span class="nf">euler_tour_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">):</span>
+    <span class="n">a_l</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>  <span class="c1"># Create edge list (2*m links)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">l</span>
+        <span class="n">a_l</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">a_l</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">tour</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_node</span> <span class="o">=</span> <span class="n">edge_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_node</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a_l</span><span class="p">[</span><span class="n">current_node</span><span class="p">]:</span>
+            <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_node</span><span class="p">)</span>
+            <span class="n">current_node</span> <span class="o">=</span> <span class="n">a_l</span><span class="p">[</span><span class="n">current_node</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_node</span><span class="p">)</span>
+            <span class="n">current_node</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="n">edge_tour</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">edge_tour</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span><span class="n">u</span><span class="p">))</span>
+        <span class="n">edge_tour</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span><span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">edge_tour</span></div>
+
+<div class="viewcode-block" id="plot_euler_tour_tree"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.plot_euler_tour_tree">[docs]</a><span class="k">def</span> <span class="nf">plot_euler_tour_tree</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">pos</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pos</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]],[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span><span class="s1">&#39;ok&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">key</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;|&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">priority</span><span class="p">)),</span>
+                     <span class="n">xy</span> <span class="o">=</span> <span class="n">pos</span><span class="p">,</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">plot_euler_tour_tree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">right</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">plot_euler_tour_tree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EulerTourTrees"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.EulerTourTrees">[docs]</a><span class="k">class</span> <span class="nc">EulerTourTrees</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tree_edge_2_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">nt_al</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        :param tree: A Treap</span>
+<span class="sd">        :param tree_edge_2_pos: A dictionary associating a tree edge to his key</span>
+<span class="sd">        :param nt_al: An adjacency list for non tree edges</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span> <span class="o">=</span> <span class="n">tree_edge_2_pos</span> <span class="c1"># Edge to key in Tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span> <span class="o">=</span><span class="n">nt_al</span> <span class="c1">#Adjacency list for non tree edges</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EulerTourTrees.cut"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.EulerTourTrees.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="n">J</span><span class="p">,</span><span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">split_on_key</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">J</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; pos : &quot;</span><span class="p">,</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot; pos in J &quot;</span><span class="p">)</span>
+            <span class="n">J</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">K</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; pos 2: &quot;</span><span class="p">,</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot; pos 2 in K &quot;</span><span class="p">)</span>
+            <span class="n">K</span><span class="p">,</span><span class="n">L</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">split_on_key</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">K</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">E1</span> <span class="o">=</span> <span class="n">K</span>
+        <span class="n">E2</span> <span class="o">=</span> <span class="n">union_treaps</span><span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">),</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="link_ett"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.link_ett">[docs]</a><span class="k">def</span> <span class="nf">link_ett</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span><span class="n">T2</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+    <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">e</span>
+    <span class="n">u_pos</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v_pos</span> <span class="o">=</span> <span class="n">T2</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">u_pos</span><span class="p">):</span>
+        <span class="n">T1</span><span class="p">,</span><span class="n">T2</span> <span class="o">=</span><span class="n">T2</span><span class="p">,</span><span class="n">T1</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">reroot</span><span class="p">(</span><span class="n">u_pos</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After rerooting :&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_key_order</span><span class="p">())</span>
+    <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">releaf</span><span class="p">(</span><span class="n">v_pos</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Adter releafing :&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_key_order</span><span class="p">())</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_max_value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert_edge</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">e</span><span class="p">)</span> <span class="c1"># Puisque l&#39;on a rerooter T1 en u</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="n">E</span> <span class="o">=</span> <span class="n">union_treaps</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="p">,</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">get_max_value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">E</span><span class="o">.</span><span class="n">insert_edge</span><span class="p">(</span><span class="n">key</span><span class="o">=</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="construct_euler_tour_tree"><a class="viewcode-back" href="../EulerTourTrees.html#EulerTourTrees.construct_euler_tour_tree">[docs]</a><span class="k">def</span> <span class="nf">construct_euler_tour_tree</span><span class="p">(</span><span class="n">edge_list</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Construct an Euler Tour Tree from an edge list</span>
+<span class="sd">    :param edge_list:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">euler_tour</span> <span class="o">=</span> <span class="n">euler_tour_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Treap</span><span class="p">()</span>
+    <span class="n">edge_2_occurences</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">euler_tour</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">edge_2_occurences</span><span class="p">:</span>
+            <span class="n">edge_2_occurences</span><span class="p">[(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">edge_2_occurences</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">i</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">edge_2_occurences</span><span class="p">)</span></div>
+
+
+<span class="c1">#</span>
+<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
+<span class="c1">#     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4)]</span>
+<span class="c1">#     Data = {0:[0,1,2,3],</span>
+<span class="c1">#             1:[0,4,5,8],</span>
+<span class="c1">#             2:[],</span>
+<span class="c1">#             3:[8,9,10,11],</span>
+<span class="c1">#             4 :[],5:[],6:[]}</span>
+<span class="c1">#</span>
+<span class="c1">#     euler_tour = euler_tour_from_edge_list(E)</span>
+<span class="c1">#     print(&quot;Euler tour :\n&quot;, euler_tour)</span>
+<span class="c1">#     ETT = Treap()</span>
+<span class="c1">#     edge_2_occurences = defaultdict(list)</span>
+<span class="c1">#     for i,n in enumerate(euler_tour):</span>
+<span class="c1">#         if (n[1],n[0]) in edge_2_occurences:</span>
+<span class="c1">#             edge_2_occurences[(n[1],n[0])].append(i)</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             edge_2_occurences[n].append(i)</span>
+<span class="c1">#         ETT.insert(key=i,data=n)</span>
+<span class="c1">#     print(&quot;Edge 2 occurences :&quot;,edge_2_occurences)</span>
+<span class="c1">#     ETT = EulerTourTrees(ETT,edge_2_occurences)</span>
+<span class="c1">#     print(&quot;ETT :\n&quot;,ETT)</span>
+<span class="c1">#     print(ETT.tree.get_data_in_key_order())</span>
+<span class="c1">#     e = (1,2)</span>
+<span class="c1">#     E1,E2 = ETT.cut(e)</span>
+<span class="c1">#     print(&quot;E1 :&quot;, E1)</span>
+<span class="c1">#     print(E1.tree.get_data_in_key_order())</span>
+<span class="c1">#     print()</span>
+<span class="c1">#     print(&quot;E2 :&quot;, E2)</span>
+<span class="c1">#     print(E2.tree.get_data_in_key_order())</span>
+<span class="c1">#     ETT = link_ett(E1,E2,e)</span>
+<span class="c1">#     ETT.tree.balance()</span>
+<span class="c1">#     print(&quot; after link ETT :\n&quot;, ETT)</span>
+<span class="c1">#     print(&quot;KEY :&quot;)</span>
+<span class="c1">#     print(ETT.tree.get_data_in_key_order())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Eol Ournan.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
