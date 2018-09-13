@@ -49,7 +49,7 @@ def plot_euler_tour_tree(root,pos = None):
 
 
 class EulerTourTrees(object):
-    # Rajouter un attribut size ainsi qu'un attribut weight (number of non tree edges)*2
+    # TODO : Rajouter un attribut size ainsi qu'un attribut weight (number of non tree edges)*2
     #  A rajouter en list, ou dict, à part
     def __init__(self, tree=None, tree_edge_2_pos=None,
                  nt_al = None):
@@ -61,10 +61,15 @@ class EulerTourTrees(object):
         '''
         self.tree = tree
         self.tree_edge_2_pos = tree_edge_2_pos # Edge to key in Tree
-        self.nt_al =nt_al #Adjacency list for non tree edges
+        self.nt_al = nt_al #Adjacency list for non tree edges
 
     def __repr__(self):
-        return str(self.tree)
+        rep = "Tree edge : "+str(self.tree_edge_2_pos)+"\n"
+        rep += "Non Tree edge : "+str(self.nt_al)+ "\n"
+        rep += str(self.tree)
+        rep += " Euler Tour :"+str(self.tree.get_data_in_key_order())+"\n"
+
+        return rep
 
     def is_tree_edge(self,e):
         if e in self.tree_edge_2_pos:
@@ -88,67 +93,82 @@ class EulerTourTrees(object):
         '''
         if self.is_tree_edge(e):
             print("  Tree Edge Deletion")
-            # TODO: Add replacement here
+            if e not in self.tree_edge_2_pos:
+                e = (e[1],e[0])
             positions = self.tree_edge_2_pos[e]
-            print("Positions :",positions)
+            print("  Positions :",positions)
             J,K = self.tree.split_on_key(positions[0])
             if J.search(positions[0]):
-                J.remove_edge(positions[0])
+                J.remove(positions[0])
             if K.search(positions[1]):
                 K,L = K.split_on_key(positions[1])
-                K.remove_edge(positions[1])
-            E1 = K
-            E2 = union_treaps(J,L)
+                K.remove(positions[1])
+            E1 = EulerTourTrees(K,self.tree_edge_2_pos,self.nt_al)
+            E2 = EulerTourTrees(union_treaps(J,L),self.tree_edge_2_pos,self.nt_al)
+            print("  E1 : \n",E1)
+            print("  E2 : \n",E2)
             del self.tree_edge_2_pos[e]
-            return EulerTourTrees(E1, self.tree_edge_2_pos), EulerTourTrees(E2, self.tree_edge_2_pos)
+            e = self.replace(E1,E2)
+            if e:
+                E = link_ett(E1, E2, e)
+                print("  Replacement edge :", e)
+                print("  Found Replacement Edge :) hamdoulilah")
+                E.nt_al[e[0]].remove(e[1])
+                E.nt_al[e[1]].remove(e[0])
+                return [E]
+            else:
+                print("  Did not Find Replacement Edge :( starfullah")
+                return EulerTourTrees(E1, self.tree_edge_2_pos,self.nt_al),\
+                       EulerTourTrees(E2, self.tree_edge_2_pos,self.nt_al)
         else:
             print("  Non Tree Edge Deletion :")
             self.nt_al[e[0]].remove(e[1])
             self.nt_al[e[1]].remove(e[0])
+            return False
 
-    def replace(self,e):
+    def replace(self,E1,E2):
         '''
-        Replace a tree edge
-        :param e:
-        :param i:
+        Find is there is a non tree edge linking E1 and E2
+        :param E1:
+        :param E2:
         :return:
         '''
-        self.cut(e)
-        u,v =e
-        u_tree = self.node_2_tree[u]
-        v_tree = self.node_2_tree[v]
-        # Get all edges in the smallest tree, assume it's v
-        # Move all edges of v_tree to the level i+1
-        # Récuperer les non tree edges de v_tree et tester si il y en a qui reconnecte u_tree et v_tree
-        # Soit f un nontree dedges:
-        #  - Si f ne connecte pas u_tree et v_tree, le move to the level i+1
-        #  - Si f reconnecte u_tree and v_tree insert(f) and in u_tree
-        return
+        # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
+        for u in self.nt_al:
+            if E1.tree.search(self.tree_edge_2_pos[(u,u)][0]):
+                for v in self.nt_al[u]:
+                    if E2.tree.search(self.tree_edge_2_pos[(v,v)][0]):
+                        return (u,v)
+        return False
 
 def link_ett(T1,T2,e):
     u,v = e
-    u_pos = T1.edge_2_pos[(u, u)][0]
-    v_pos = T2.edge_2_pos[(v,v)][0]
+    u_pos = T1.tree_edge_2_pos[(u, u)][0]
+    v_pos = T2.tree_edge_2_pos[(v,v)][0]
+    print("   u pos :",u_pos,"  v pos :",v_pos)
     if T2.tree.search(u_pos):
         T1,T2 =T2,T1
-    T1.tree.reroot(u_pos)
-    print("After rerooting :")
-    print(T1.tree)
-    print(T1.tree.get_data_in_key_order())
-    T2.tree.releaf(v_pos)
-    print("Adter releafing :")
-    print(T2.tree)
-    print(T2.tree.get_data_in_key_order())
+    T1.tree.releaf(u_pos)
+    print("After releafing :")
+    print(T1)
+    T2.tree.reroot(v_pos)
+    print("Adter rerooting :")
+    print(T2)
     key = T1.tree.get_max_value()+1
-    T1.tree.insert_edge(key=key, data=e) # Puisque l'on a rerooter T1 en u
-    T1.edge_2_pos[e].append(key)
+    T1.tree.insert(key=key, data=e) # Puisque l'on a rerooter T1 en u
+    T1.tree_edge_2_pos[e].append(key)
+    print("After insertion of :",e," with key :",key)
+    print(T1)
 
     E = union_treaps(T1.tree,T2.tree)
-
+    print(" After Union :")
+    print(EulerTourTrees(E,T1.tree_edge_2_pos,T1.nt_al))
     key = E.get_max_value()+1
-    E.insert_edge(key= key, data=(v, u))
-    T1.edge_2_pos[e].append(key)
-    return EulerTourTrees(E,T1.edge_2_pos)
+    E.insert(key= key, data=(v, u))
+    T1.tree_edge_2_pos[e].append(key)
+    print(" After final insertion of :",(v,u)," with key :",key)
+    print(EulerTourTrees(E,T1.tree_edge_2_pos,T1.nt_al))
+    return EulerTourTrees(E,T1.tree_edge_2_pos,T1.nt_al)
 
 
 def construct_euler_tour_tree(edge_list):

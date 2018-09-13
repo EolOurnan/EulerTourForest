@@ -8,6 +8,12 @@ from EulerTourTrees import EulerTourTrees
 #      - Utiliser un dictionnaire noeud_to_pos : qui donne l'occurence du noeud dans son arbre
 
 # TODO :? Utiliser les temps de départ des noeuds en lieu et place des priority des TreapNode ?
+# MIEUX : - Lors des stream graphs : prendre le liens qui partent le plus tard comme tree edges
+#        - Lorsqu'on remplace un tree edge, prendre un non tree edge qui part le plus tard possible,
+#          du coup les choisir dans l'ordre de départ inverse (héhé)
+
+# TODO: -Fonction balance des keys (utile pour edgeremoval or edgeinsertion in a ETT)
+# TODO: - Fonction balance des priority (utile pour removal or insertion in a TREAP)
 
 
 from EulerTourTrees import construct_euler_tour_tree
@@ -137,7 +143,11 @@ class ETF_collections(object):
                 return
             level -= 1
         # return No replacement found, du coup ya du split dans l'air, done with .remove(e) ???
-
+            # Move all edges of v_tree to the level i+1
+            # Récuperer les non tree edges de v_tree et tester si il y en a qui reconnecte u_tree et v_tree
+            # Soit f un nontree dedges:
+            #  - Si f ne connecte pas u_tree et v_tree, le move to the level i+1
+            #  - Si f reconnecte u_tree and v_tree insert(f) and in u_tree
 
 class EulerTourForest(object):
     '''
@@ -146,6 +156,7 @@ class EulerTourForest(object):
     '''
     def __init__(self, trees=[], node_2_tree={}):
         '''
+        # TODO: MUST FOllow node 2 tree, number 1 Piority
         :param trees:  List of trees constituting the spanning forest (each Tree an EulerTourTree)
         :param node_2_tree : List of node position in the forest : the index of the tree in :param trees:
         '''
@@ -217,8 +228,20 @@ class EulerTourForest(object):
         '''
         e_pos = self.node_2_tree[e[0]]
         print(" Remove in tree number :",e_pos)
-        self.trees[e_pos].cut(e)
-
+        R = self.trees[e_pos].cut(e)
+        # TODO : edge_2_pos to fix
+        if R:
+            for ETT in R:
+                self.trees.append(ETT)
+                l = len(self.trees)-1
+                for v in self.node_2_tree:
+                    if (v,v) not in ETT.tree_edge_2_pos:
+                        self.node_2_tree[v] = None
+                    else:
+                        node_key = ETT.tree_edge_2_pos[(v,v)][0]
+                        if ETT.tree.search(node_key):
+                            self.node_2_tree[v] = l
+            self.trees[e_pos] = None
 
     def reformat(self):
         # TODO : Output the connected component
@@ -236,6 +259,10 @@ def dynamic_connectivity(E,M):
         if c == 1 : # Insertion
             print("\nInsertion : ",(u,v))
             ETF.insert_edge((u, v))
+        print("ETF :\n",ETF)
+        print()
+
+    print("ETF after sequence :\n",ETF)
     G = ETF.reformat()
     return G
 
@@ -250,10 +277,11 @@ if __name__ == '__main__':
 
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4),(5,6),(2,3),
-         (7, 8), (8, 9), (9, 7),
+         (7, 8), (9, 7),
          #(10,11),(11,12),
          #(13,14)
          ] # Initial edge list
-    M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
-
+    # M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
+    M = [(-1, 4, 5), (-1, 4, 6)]
+    # M = [(-1,1,3),(-1,1,2),(-1,4,5),(-1,4,6)]
     dynamic_connectivity(E,M)
