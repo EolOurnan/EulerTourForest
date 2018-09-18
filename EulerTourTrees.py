@@ -63,6 +63,7 @@ class EulerTourTrees(object):
         self.tree_edge_2_pos = tree_edge_2_pos # Edge to key in Tree
         self.nt_al = nt_al #Adjacency list for non tree edges
 
+
     def __repr__(self):
         rep = "Tree edge : "+str(self.tree_edge_2_pos)+"\n"
         rep += "Non Tree edge : "+str(self.nt_al)+ "\n"
@@ -70,6 +71,9 @@ class EulerTourTrees(object):
         rep += " Euler Tour :"+str(self.tree.get_data_in_key_order())+"\n"
 
         return rep
+
+    def plot(self):
+        self.tree.plot()
 
     def is_tree_edge(self,e):
         if e in self.tree_edge_2_pos:

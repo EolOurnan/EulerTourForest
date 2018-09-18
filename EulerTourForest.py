@@ -1,5 +1,7 @@
+import random
 from collections import defaultdict
 from EulerTourTrees import EulerTourTrees
+import matplotlib.pyplot as plt
 # Source  : https://dl.acm.org/citation.cfm?id=320215
 
 # TODO :Fonction de refactor à la fin (pour les composantes temporelles à stocker)
@@ -169,6 +171,10 @@ class EulerTourForest(object):
             rp+=str(self.trees[i])+"\n"
         return rp
 
+    def plot(self):
+        self.trees[0].plot()
+
+
     def check_edge_presence(self,e):
         '''
         Check if the edge is in the current spanning forest
@@ -180,6 +186,8 @@ class EulerTourForest(object):
         if e[1] not in self.node_2_tree:
             return False
         return True
+
+
 
     def check_edge_endpoints(self,e):
         '''
@@ -251,6 +259,9 @@ class EulerTourForest(object):
 def dynamic_connectivity(E,M):
     ETF = construct_euler_tour_forest(E)
     print("Initial Euler Tour Forest :\n",ETF)
+    ETF.plot()
+    plt.show()
+    exit()
     while M:
         c,u,v = M.pop()
         if c == -1 : # Deletion
@@ -276,6 +287,7 @@ if __name__ == '__main__':
     # Step 3 : Compute the Euler Tour of each spanning tree and store it in an EulerTourTree
 
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
+    random.seed(102)
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4),(5,6),(2,3),
          (7, 8), (9, 7),
          #(10,11),(11,12),

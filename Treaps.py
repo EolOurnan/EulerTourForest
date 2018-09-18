@@ -1,5 +1,7 @@
 import random
 
+import matplotlib.patches as mpatch
+import matplotlib.collections as mcol
 import matplotlib.pyplot as plt
 
 from collections import defaultdict
@@ -64,6 +66,7 @@ class TreapNode(object):
 
     def __repr__(self, depth=0, left_offset=0, right_offset=0):
         ret = "\t"*depth+"node : "+repr(self.data)+" key : "+repr(self.key)+" priority : "+repr(self.priority)+"\n"
+        # print(" depth : ",depth," right offset : ",right_offset," left offset : ",left_offset)
         if self.right:
             ret += "Right "+self.right.__repr__(depth=depth+1,right_offset=right_offset+1,left_offset=left_offset)
         if self.left:
@@ -90,6 +93,46 @@ class Treap(object):
             else:
                 return False
         return True
+
+    def get_internal_structure(self):
+        return self._get_internal_structure(self.root)
+
+    def _get_internal_structure(self, node, N=[],E=[], x_parent=0, y_parent=0):
+        '''
+        Return (x_pos,y_pos==depth)
+        :param node:
+        :param depth:
+        :return:
+        '''
+        N.append(((x_parent, y_parent), (node.key, node.data)))
+        if node.left:
+            if y_parent:
+                y_pos = y_parent - 1
+                offset = x_parent/y_pos
+                if offset >0:
+                    x_pos = x_parent- offset
+                else:
+                    x_pos = x_parent + offset
+            else:
+                x_pos = -10
+                y_pos = -1
+
+            E.append(((x_parent, y_parent), (x_pos, y_pos)))
+            self._get_internal_structure(node.left, N=N,E=E, x_parent=x_pos, y_parent=y_pos)
+        if node.right:
+            if y_parent:
+                y_pos = y_parent - 1
+                offset = x_parent/y_pos
+                if offset > 0:
+                    x_pos = x_parent + offset
+                else:
+                    x_pos = x_parent - offset
+            else:
+                x_pos = 10
+                y_pos = -1
+            E.append(((x_parent,y_parent),(x_pos,y_pos)))
+            self._get_internal_structure(node.right, N=N,E=E, x_parent=x_pos, y_parent=y_pos)
+        return N,E
 
     def insert(self, key, data=None, priority = False):
         self.root = self._insert(self.root,key,data,priority)
@@ -152,6 +195,64 @@ class Treap(object):
 
     def __repr__(self):
         return str(self.root)
+
+
+    def _get_nodes_collection(self,depth,left,right):
+        mpatch.Circle()
+
+
+        return
+
+
+    def _get_edges_collection(self):
+
+
+        return
+
+
+    def plot(self):
+        N,E = self.get_internal_structure()
+        # depth_max = max([i[0] for i in L[::2]])
+        # left_offset_max = max([i[1] for i in L[::2]])
+        # right_offset_max = max([i[2] for i in L[::2]])
+        print("Internal Structure \n: ",N)
+        ax  = plt.gca()
+        y_min = 0
+        x_min = 0
+        x_max = 0
+        # Nodes are ordered as in a DFS traversal of the tree
+        for pos,data in N:
+            print("POS : ",pos)
+            label = str(data[0])+"\n"+str(data[1]) #+"\n"+str(data[2]) / priority
+            print("Data :",data)
+            x_max = max(x_max,pos[0])
+            x_min = min(x_min,pos[0])
+            y_min = min(y_min,pos[1])
+            ax.text(pos[0],pos[1],label,color = '#2d5986',
+                    bbox = dict(facecolor='none',edgecolor='#2d5986', boxstyle='round,pad=1'))
+
+        # Set limit
+
+        edge_collections = mcol.LineCollection(E,colors=['#2d5986'])
+
+        ax.add_collection(edge_collections)
+        ax.set_ylim(y_min-1,1)
+        ax.set_xlim(x_min-1,x_max+1)
+
+
+        # nodes_collection = mcol.PatchCollection(nodes_patches)
+
+        # Get edges collections :
+
+
+        # edges_collection = self.root._get_edges_collections()
+
+
+        # ax.add_collection(nodes_collection)
+        # ax.add_collection(edges_collection)
+
+
+
 
     def _split_on_key(self,node,key):
         N = self._insert(node,key,data=None,priority=1*(10**-9))
