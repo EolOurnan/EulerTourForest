@@ -1,7 +1,6 @@
 import random
 from collections import defaultdict
 from EulerTourTrees import EulerTourTrees
-import matplotlib.pyplot as plt
 # Source  : https://dl.acm.org/citation.cfm?id=320215
 
 # TODO :Fonction de refactor à la fin (pour les composantes temporelles à stocker)
@@ -171,8 +170,8 @@ class EulerTourForest(object):
             rp+=str(self.trees[i])+"\n"
         return rp
 
-    def plot(self):
-        self.trees[0].plot()
+    def plot(self,title=None):
+        self.trees[0].plot(title)
 
 
     def check_edge_presence(self,e):
@@ -255,24 +254,22 @@ class EulerTourForest(object):
         # TODO : Output the connected component
         return
 
-
+import matplotlib.pyplot as plt
 def dynamic_connectivity(E,M):
     ETF = construct_euler_tour_forest(E)
     print("Initial Euler Tour Forest :\n",ETF)
-    ETF.plot()
-    plt.show()
-    exit()
+    ETF.plot("Initial ETT")
     while M:
         c,u,v = M.pop()
         if c == -1 : # Deletion
             print("\nDeletion : ",(u,v))
             ETF.remove_edge((u, v))
+            plt.show()
         if c == 1 : # Insertion
             print("\nInsertion : ",(u,v))
             ETF.insert_edge((u, v))
+            plt.show()
         print("ETF :\n",ETF)
-        print()
-
     print("ETF after sequence :\n",ETF)
     G = ETF.reformat()
     return G

@@ -1,8 +1,7 @@
 import random
 
-import matplotlib.patches as mpatch
-import matplotlib.collections as mcol
 import matplotlib.pyplot as plt
+import matplotlib.collections as mcol
 
 from collections import defaultdict
 
@@ -29,6 +28,14 @@ class TreapNode(object):
         '''
         root = self
         pivot = root.right
+
+        # Change filiation
+        pivot.parent = root.parent
+        root.parent = pivot
+        if pivot.left:
+            pivot.left.parent = root
+
+        # Rotate
         root.right = pivot.left
         pivot.left = root
         root = pivot
@@ -42,6 +49,14 @@ class TreapNode(object):
         '''
         root = self
         pivot = root.left
+
+        # Change filiation
+        pivot.parent = root.parent
+        root.parent = pivot
+        if pivot.right:
+            pivot.right.parent = root
+
+        # Rotate
         root.left = pivot.right
         pivot.right = root
         root = pivot
@@ -65,8 +80,15 @@ class TreapNode(object):
 
 
     def __repr__(self, depth=0, left_offset=0, right_offset=0):
-        ret = "\t"*depth+"node : "+repr(self.data)+" key : "+repr(self.key)+" priority : "+repr(self.priority)+"\n"
+
         # print(" depth : ",depth," right offset : ",right_offset," left offset : ",left_offset)
+        if self.parent:
+            ret = "\t" * depth +" parent key : "+repr(self.parent.key)+ " node : " + repr(self.data) + " key : " + repr(self.key) + " priority : " + repr(
+                self.priority) + "\n"
+        else:
+            ret = "\t" * depth + "node : " + repr(
+                self.data) + " key : " + repr(self.key) + " priority : " + repr(
+                self.priority) + "\n"
         if self.right:
             ret += "Right "+self.right.__repr__(depth=depth+1,right_offset=right_offset+1,left_offset=left_offset)
         if self.left:
@@ -97,13 +119,17 @@ class Treap(object):
     def get_internal_structure(self):
         return self._get_internal_structure(self.root)
 
-    def _get_internal_structure(self, node, N=[],E=[], x_parent=0, y_parent=0):
+    def _get_internal_structure(self, node, N=None,E=None, x_parent=0, y_parent=0):
         '''
         Return (x_pos,y_pos==depth)
         :param node:
         :param depth:
         :return:
         '''
+        if not N:
+            N= []
+        if not E:
+            E = []
         N.append(((x_parent, y_parent), (node.key, node.data)))
         if node.left:
             if y_parent:
@@ -137,22 +163,25 @@ class Treap(object):
     def insert(self, key, data=None, priority = False):
         self.root = self._insert(self.root,key,data,priority)
 
-    def _insert(self,node,key,data,priority):
+    def _insert(self,node,key,data,priority,parent=None):
         if node is None:
             node = TreapNode(key, data)
             if priority:
                 node.priority = priority
+            if parent:
+                node.parent = parent
             return node
 
         if key < node.key:
-            node.left = self._insert(node.left, key, data,priority)
+            node.left = self._insert(node.left, key, data,priority,node)
             if node.left.priority < node.priority:
                 node = node.right_rotation()
 
         elif key >= node.key:
-            node.right = self._insert(node.right, key, data,priority)
+            node.right = self._insert(node.right, key, data,priority,node)
             if node.right.priority < node.priority:
                 node = node.left_rotation()
+
         return node
 
     def _balance(self,node):
@@ -168,6 +197,26 @@ class Treap(object):
 
     def balance(self):
         self.root = self._balance(self.root)
+
+
+    def predecessor(self,node):
+        '''
+        Find the predecessor of 'node' in the key ordering (biggest key samller than node.key)
+        :param node:
+        :return:
+        '''
+        
+        return
+
+    def successor(self,node):
+        '''
+        Find the successor of 'node' in the key ordering (smallest key bigger than node.key)
+        :param node:
+        :return:
+        '''
+
+        return
+
 
     def remove(self, key):
         self.root =self._remove(self.root,key)
@@ -197,21 +246,15 @@ class Treap(object):
         return str(self.root)
 
 
-    def plot(self):
+    def plot(self,title=None):
         N,E = self.get_internal_structure()
-        # depth_max = max([i[0] for i in L[::2]])
-        # left_offset_max = max([i[1] for i in L[::2]])
-        # right_offset_max = max([i[2] for i in L[::2]])
-        print("Internal Structure \n: ",N)
-        ax  = plt.gca()
+        fig,ax = plt.subplots()
         y_min = 0
         x_min = 0
         x_max = 0
         # Nodes are ordered as in a DFS traversal of the tree
         for pos,data in N:
-            print("POS : ",pos)
             label = str(data[0])+"\n"+str(data[1]) #+"\n"+str(data[2]) / priority
-            print("Data :",data)
             x_max = max(x_max,pos[0])
             x_min = min(x_min,pos[0])
             y_min = min(y_min,pos[1])
@@ -225,7 +268,8 @@ class Treap(object):
         ax.add_collection(edge_collections)
         ax.set_ylim(y_min-1,1)
         ax.set_xlim(x_min-1,x_max+1)
-
+        if title:
+            ax.set_title(title)
         # nodes_collection = mcol.PatchCollection(nodes_patches)
         # Get edges collections :
         # edges_collection = self.root._get_edges_collections()
@@ -243,14 +287,14 @@ class Treap(object):
         L,R = self._split_on_key(self.root,key)
         return Treap(L),Treap(R)
 
-    def get_max_value(self):
+    def last(self):
         current_node = self.root
         while current_node:
             max_value = current_node.key
             current_node = current_node.right
         return max_value
 
-    def get_min_value(self):
+    def first(self):
         current_node = self.root
         while current_node:
             min_value = current_node.key
@@ -291,17 +335,23 @@ class Treap(object):
         return [i[1] for i in L]
 
 def merge_treap(T1,T2):
-    min_t1,min_t2 = T1.get_min_value(),T2.get_min_value()
+    '''
+    Merge Treap from a former Split
+    :param T1:
+    :param T2:
+    :return:
+    '''
+    min_t1,min_t2 = T1.first(), T2.first()
     if min_t1 < min_t2:
         Tmin = T1
-        max_Tmin = Tmin.get_max_value()
+        max_Tmin = Tmin.last()
         Tmax = T2
         min_Tmax = min_t2
     else:
         Tmax = T1
         min_Tmax = min_t1
         Tmin = T2
-        max_Tmin = Tmin.get_max_value()
+        max_Tmin = Tmin.last()
     N = TreapNode(key =(min_Tmax+max_Tmin)/2)
     N.priority = 1
     N.left = Tmin.root
