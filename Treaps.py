@@ -197,19 +197,6 @@ class Treap(object):
         return str(self.root)
 
 
-    def _get_nodes_collection(self,depth,left,right):
-        mpatch.Circle()
-
-
-        return
-
-
-    def _get_edges_collection(self):
-
-
-        return
-
-
     def plot(self):
         N,E = self.get_internal_structure()
         # depth_max = max([i[0] for i in L[::2]])
@@ -239,18 +226,12 @@ class Treap(object):
         ax.set_ylim(y_min-1,1)
         ax.set_xlim(x_min-1,x_max+1)
 
-
         # nodes_collection = mcol.PatchCollection(nodes_patches)
-
         # Get edges collections :
-
-
         # edges_collection = self.root._get_edges_collections()
-
 
         # ax.add_collection(nodes_collection)
         # ax.add_collection(edges_collection)
-
 
 
 
@@ -301,6 +282,12 @@ class Treap(object):
         L = []
         self._get_data_in_key_order(self.root, L)
         L.sort()
+        return [i[1] for i in L]
+
+
+    def get_data_in_priority_order(self):
+        L = []
+        self._get_data_in_key_order(self.root, L)
         return [i[1] for i in L]
 
 def merge_treap(T1,T2):

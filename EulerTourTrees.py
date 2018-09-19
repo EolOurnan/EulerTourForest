@@ -69,6 +69,7 @@ class EulerTourTrees(object):
         rep += "Non Tree edge : "+str(self.nt_al)+ "\n"
         rep += str(self.tree)
         rep += " Euler Tour :"+str(self.tree.get_data_in_key_order())+"\n"
+        rep += " Priority Order :"+str(self.tree.get_data_in_priority_order())+"\n"
 
         return rep
 

@@ -287,7 +287,7 @@ if __name__ == '__main__':
     # Step 3 : Compute the Euler Tour of each spanning tree and store it in an EulerTourTree
 
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
-    random.seed(102)
+    random.seed(1)
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4),(5,6),(2,3),
          (7, 8), (9, 7),
          #(10,11),(11,12),
