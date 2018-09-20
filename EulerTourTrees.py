@@ -5,6 +5,12 @@ from Treaps import union_treaps,Treap
 
 
 def euler_tour_from_edge_list(edge_list):
+    '''
+    Compute the euler tour of a graph ( with edges, including self loops,
+     instead of nodes)
+    :param edge_list: An edge list
+    :return: A lsit containing the euler tour
+    '''
     a_l = defaultdict(list)
     for l in edge_list:  # Create edge list (2*m links)
         u, v = l
@@ -49,10 +55,9 @@ def plot_euler_tour_tree(root,pos = None):
 
 
 class EulerTourTrees(object):
-    # TODO : Rajouter un attribut size ainsi qu'un attribut weight (number of non tree edges)*2
     #  A rajouter en list, ou dict, à part
     def __init__(self, tree=None, tree_edge_2_pos=None,
-                 nt_al = None):
+                 nt_al = None, last = None,first = None,size=None):
         '''
 
         :param tree: A Treap
@@ -60,23 +65,46 @@ class EulerTourTrees(object):
         :param nt_al: An adjacency set for non tree edges
         '''
         self.tree = tree
-        self.tree_edge_2_pos = tree_edge_2_pos # Edge to key in Tree
-        self.nt_al = nt_al #Adjacency list for non tree edges
+        self.tree_edge_2_pos = tree_edge_2_pos  # Edge to key in Tree
+        self.first = first                      # First node in the euler tour representation # TODO:
+        self.last = last                        # Last node in the euler tour representation # TODO:
+        self.nt_al = nt_al                      # Adjacency list for non tree edges (x2 already included : adj list)
+        self.size = size                        # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
 
 
     def __repr__(self):
         rep = "Tree edge : "+str(self.tree_edge_2_pos)+"\n"
-        rep += "Non Tree edge : "+str(self.nt_al)+ "\n"
+        rep += " Non Tree edge : "+str(self.nt_al)+ "\n"
         rep += str(self.tree)
         rep += " Euler Tour :"+str(self.tree.get_data_in_key_order())+"\n"
         rep += " Priority Order :"+str(self.tree.get_data_in_priority_order())+"\n"
 
         return rep
 
+    def get_euler_tour(self):
+        '''
+        Return the induced euler tour representation of the Tree
+        :return:
+        '''
+        in_order = self.tree.get_data_in_key_order()
+        euler_tour = in_order[self.first:]+in_order[:self.last]
+        return euler_tour
+
+
     def plot(self,title=None):
+        '''
+        Plot the euler Tour tree
+        :param title:
+        :return:
+        '''
         self.tree.plot(title)
 
     def is_tree_edge(self,e):
+        '''
+        Return true if :param e: is tree edge, false otherwise
+        :param e: an edge
+        :return:
+        '''
         if e in self.tree_edge_2_pos:
             return True
         if (e[1],e[0]) in self.tree_edge_2_pos:
@@ -84,16 +112,21 @@ class EulerTourTrees(object):
         return False
 
     def insert(self,e):
+        '''
+        Insert an edge into the euler tour tree
+        :param e: an edge
+        :return:
+        '''
         if self.is_tree_edge(e):
             return  # Nothing to do be do be do
-        # Else insert in non tree edges
+        # Else insert in non tree edges, same cost as checking if its already a non tree edge
         self.nt_al[e[0]].add(e[1])
         self.nt_al[e[1]].add(e[0])
 
     def cut(self,e):
         '''
         Remove and edge from the Euler Tour Tree
-        :param e:
+        :param e: an edge
         :return:
         '''
         if self.is_tree_edge(e):
@@ -136,9 +169,9 @@ class EulerTourTrees(object):
     def replace(self,E1,E2):
         '''
         Find is there is a non tree edge linking E1 and E2
-        :param E1:
-        :param E2:
-        :return:
+        :param E1: An euler tour tree
+        :param E2: An euler tour tree
+        :return: a replacement edge if found, false otherwise
         '''
         # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
         for u in self.nt_al:
@@ -149,6 +182,13 @@ class EulerTourTrees(object):
         return False
 
 def link_ett(T1,T2,e):
+    '''
+    Merge two euler tour tree
+    :param T1: An euler tour tree
+    :param T2: An euler tour tree
+    :param e: An edge
+    :return:
+    '''
     u,v = e
     u_pos = T1.tree_edge_2_pos[(u, u)][0]
     v_pos = T2.tree_edge_2_pos[(v,v)][0]
@@ -186,8 +226,8 @@ def link_ett(T1,T2,e):
 def construct_euler_tour_tree(edge_list):
     '''
     Construct an Euler Tour Tree from an edge list
-    :param edge_list:
-    :return:
+    :param edge_list: An edge list
+    :return: An euler tour tree
     '''
     euler_tour = euler_tour_from_edge_list(edge_list)
     T = Treap()

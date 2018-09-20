@@ -17,8 +17,8 @@ class TreapNode(object):
         self.priority = random.random()
         self.data = data
         self.parent = None
-        self.left = None
-        self.right = None
+        self.pred = None # Predecessor (used in euler tour tree, flemme d'hériter)
+        self.suc = None  # successor (used in euler tour tree, flemme d'hériter)
 
     def left_rotation(self):
         '''
@@ -30,10 +30,11 @@ class TreapNode(object):
         pivot = root.right
 
         # Change filiation
-        pivot.parent = root.parent
-        root.parent = pivot
-        if pivot.left:
-            pivot.left.parent = root
+        if self.parent:
+            pivot.parent = root.parent
+            root.parent = pivot
+            if pivot.left:
+                pivot.left.parent = root
 
         # Rotate
         root.right = pivot.left
@@ -51,10 +52,11 @@ class TreapNode(object):
         pivot = root.left
 
         # Change filiation
-        pivot.parent = root.parent
-        root.parent = pivot
-        if pivot.right:
-            pivot.right.parent = root
+        if self.parent:
+            pivot.parent = root.parent
+            root.parent = pivot
+            if pivot.right:
+                pivot.right.parent = root
 
         # Rotate
         root.left = pivot.right
