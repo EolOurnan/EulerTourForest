@@ -21,6 +21,18 @@ if __name__ == '__main__':
     ET = ETF.trees[0]
     T1 = ET.tree
     T1.plot()
+
+    print("T1 :")
+    print(ET)
+    T1.reroot(4)
+
+    T1.plot()
+    print("T1 :")
+    print(ET)
+    plt.show()
+    exit()
+
+
     print("Min value :",T1.find_min_value())
     print("Max value :", T1.find_max_value())
     key = 15

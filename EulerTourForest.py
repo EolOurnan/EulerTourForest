@@ -242,10 +242,10 @@ class EulerTourForest(object):
                 self.trees.append(ETT)
                 l = len(self.trees)-1
                 for v in self.node_2_tree:
-                    if (v,v) not in ETT.tree_edge_2_pos:
+                    if (v,v) not in ETT.tree_edge_2_keys:
                         self.node_2_tree[v] = None
                     else:
-                        node_key = ETT.tree_edge_2_pos[(v,v)][0]
+                        node_key = ETT.tree_edge_2_keys[(v,v)][0]
                         if ETT.tree.search(node_key):
                             self.node_2_tree[v] = l
             self.trees[e_pos] = None

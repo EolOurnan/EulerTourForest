@@ -12,19 +12,25 @@ class TreapNode(object):
     '''
 
     def __init__(self, key, data=None):
+        '''
+
+        :param key:
+        :param data:
+        '''
         self.key = key
         self.priority = random.random()
         self.data = data
         self.parent = None
-        self.left = None  # Left child
+        self.left = None   # Left child
         self.right = None  # Right child
-        self.pred = None  # Predecessor (used in euler tour tree, flemme d'hériter)
-        self.suc = None  # successor (used in euler tour tree, flemme d'hériter)
+        self.pred = None   # Predecessor (used in euler tour tree, flemme d'hériter)
+        self.suc = None    # successor (used in euler tour tree, flemme d'hériter)
 
     def left_rotation(self):
         '''
         Perform a left rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
+        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
         :return:
         '''
         root = self
@@ -47,6 +53,7 @@ class TreapNode(object):
         '''
         Perform a right rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
+        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
         :return:
         '''
         root = self
@@ -84,19 +91,24 @@ class TreapNode(object):
     def __repr__(self, depth=0, left_offset=0, right_offset=0):
 
         # print(" depth : ",depth," right offset : ",right_offset," left offset : ",left_offset)
+        ret = "\t" * depth
         if self.parent:
-            ret = "\t" * depth + " parent key : " + repr(self.parent.key) + " node : " + repr(
-                self.data) + " key : " + repr(self.key) + " priority : " + repr(
-                self.priority) + "\n"
-        else:
-            ret = "\t" * depth + "node : " + repr(
-                self.data) + " key : " + repr(self.key) + " priority : " + repr(
-                self.priority) + "\n"
+            ret += " parent key : " + repr(self.parent.key)
+        if self.suc:
+            ret += " | suc key : " + repr(self.suc.key)
+        if self.pred:
+            ret += " | pred key : " + repr(self.pred.key)
+
+        ret += " | node : " + repr(
+            self.data) + " key : " + repr(self.key) + " priority : " + repr(
+            self.priority) + "\n"
+
         if self.right:
             ret += "Right " + self.right.__repr__(depth=depth + 1, right_offset=right_offset + 1,
                                                   left_offset=left_offset)
         if self.left:
-            ret += "Left " + self.left.__repr__(depth=depth + 1, left_offset=left_offset + 1, right_offset=right_offset)
+            ret += "Left " + self.left.__repr__(depth=depth + 1, left_offset=left_offset + 1,
+                                                right_offset=right_offset)
         return ret
 
 
@@ -107,10 +119,54 @@ class Treap(object):
     see also : https://pypi.org/project/treap/1.39/
     '''
 
-    def __init__(self, root=None):
+    def __init__(self, root=None, first = None, last = None):
+        '''
+        :param root: Root of the Treap (a TreapNode)
+        :param first: First node of Euler Tree
+        :param last:  Last node of Euler Tree
+        '''
         self.root = root
+        self.first = first
+        self.last = last
+
+    def __repr__(self):
+        return str(self.root)
+
+    def first(self):
+        return self.first
+
+    def last(self):
+        return self.last
+
+    def plot(self, title=None):
+        N, E = self.get_internal_structure()
+        fig, ax = plt.subplots()
+        y_min = 0
+        x_min = 0
+        x_max = 0
+        # Nodes are ordered as in a DFS traversal of the tree
+        for pos, data in N:
+            label = str(data[0]) + "\n"+ str(data[1]) #+"\n"+str(data[2])  #priority
+            x_max = max(x_max, pos[0])
+            x_min = min(x_min, pos[0])
+            y_min = min(y_min, pos[1])
+            ax.text(pos[0], pos[1], label, color='#2d5986',
+                    bbox=dict(facecolor='none', edgecolor='#2d5986', boxstyle='round,pad=1'))
+
+        # Set limit
+        edge_collections = mcol.LineCollection(E, colors=['#2d5986'])
+
+        ax.add_collection(edge_collections)
+        ax.set_ylim(y_min - 1, 1)
+        ax.set_xlim(x_min - 1, x_max + 1)
+        if title:
+            ax.set_title(title)
 
     def check_tree_invariant(self):
+        '''
+        Check the tree invariant of the Treap
+        :return: True if invariant respected, false otherwise
+        '''
         return self._check_tree_invariant(self.root)
 
     def _check_tree_invariant(self, node):
@@ -123,6 +179,10 @@ class Treap(object):
         return True
 
     def check_heap_invariant(self):
+        '''
+        Check the heap invariant of the Treap
+        :return: True if invariant respected, false otherwise
+        '''
         return self._check_heap_invariant(self.root)
 
 
@@ -136,10 +196,21 @@ class Treap(object):
         return True
 
     def check_invariants(self):
+        '''
+        Check the two invariants of the Treap :
+        - Heap invariant
+        - (Binary) Tree invariant
+        :return: True if invariants respected, false otherwise
+        '''
         assert self.check_tree_invariant()
         assert self.check_heap_invariant()
 
     def search(self, key):
+        '''
+        Search a key in the Treap $O(log(n))$
+        :param key: The key to query
+        :return: The Node with the corresponding key
+        '''
         return self.root._search(key)
 
     def search_set(self, A):
@@ -245,25 +316,58 @@ class Treap(object):
             self._get_internal_structure(node.right, N=N, E=E, x_parent=x_pos, y_parent=y_pos)
         return N, E
 
-    def insert(self, key, data=None, priority=False):
-        self.root = self._insert(self.root, key, data, priority)
+    def insert(self, key, data=None, priority=False,
+               suc =None,pred = None):
+        '''
+        Insert a node in the Treap
+        :param key:
+        :param data:
+        :param priority:
+        :param suc:
+        :param pred:
+        :return:
+        '''
+        self.root = self._insert(self.root, key=key,
+                                 data= data,priority= priority,
+                                 suc = suc, pred = pred)
 
-    def _insert(self, node, key, data, priority, parent=None):
+        # Fixed PRED AND SUC
+        node = self.search(key)
+        node.pred = self.predecessor(node)
+        if node.pred:
+            node.pred.suc = node
+        else:
+            self.first = node
+            node.pred = self.last
+        node.suc = self.successor(node)
+        if node.suc:
+            node.suc.pred = node
+        else:
+            node.suc = self.first
+            self.last = node
+            self.first.pred = node
+
+
+    def _insert(self, node, key, data, priority, suc=None, pred=None, parent=None):
         if node is None:
             node = TreapNode(key, data)
             if priority:
                 node.priority = priority
             if parent:
                 node.parent = parent
+            if suc:
+                node.suc = suc
+            if pred:
+                node.pred = pred
             return node
 
         if key < node.key:
-            node.left = self._insert(node.left, key, data, priority, node)
+            node.left = self._insert(node.left, key, data, priority, suc, pred, node)
             if node.left.priority < node.priority:
                 node = node.right_rotation()
 
         elif key >= node.key:
-            node.right = self._insert(node.right, key, data, priority, node)
+            node.right = self._insert(node.right, key, data, priority, suc, pred, node)
             if node.right.priority < node.priority:
                 node = node.left_rotation()
 
@@ -281,6 +385,10 @@ class Treap(object):
         return node
 
     def balance(self):
+        '''
+        Balance the Treap to respect the Heap invariant
+        :return:
+        '''
         self.root = self._balance(self.root)
 
     def predecessor(self, node):
@@ -289,11 +397,12 @@ class Treap(object):
         :param node:
         :return:
         '''
+        pred = None
         current = self.root
         if current is None:
             raise KeyError
         if node.left:
-            node = self._find_max_value(node.left)
+            node = self._find_max_node(node.left)
             return node
         while current:
             if node.key > current.key:
@@ -311,11 +420,12 @@ class Treap(object):
         :param node:
         :return:
         '''
+        succ = None
         current = self.root
         if current is None:
             raise KeyError
         if node.right:
-            node = self._find_min_value(node.right)
+            node = self._find_min_node(node.right)
             return node
         while current:
             if node.key < current.key:
@@ -328,15 +438,38 @@ class Treap(object):
         return succ
 
     def remove(self, key):
+        '''
+        Remove the node corresponding to the key
+        :param key: The key to remove
+        :return:
+        '''
         self.root = self._remove(self.root, key)
 
     def _remove(self, node, key):
+
         if node.key == key:
             if not node.left and not node.right:
+                if node.pred and node.suc:
+                    node.pred.suc = node.suc
+                    node.suc.pred = node.pred
                 return None
+
             elif not node.left:
+                if node.pred and node.suc:
+                    node.pred.suc = node.suc
+                    node.suc.pred = node.pred
+                #Change filiation
+                if node.parent:
+                    node.right.parent = node.parent
                 return node.right
+
             elif not node.right:
+                if node.pred and node.suc:
+                    node.pred.suc = node.suc
+                    node.suc.pred = node.pred
+                #Change filiation
+                if node.parent:
+                    node.left.parent = node.parent
                 return node.left
             else:
                 if node.left.priority < node.right.priority:
@@ -351,39 +484,6 @@ class Treap(object):
             node.right = self._remove(node.right, key)
         return node
 
-    def __repr__(self):
-        return str(self.root)
-
-    def plot(self, title=None):
-        N, E = self.get_internal_structure()
-        fig, ax = plt.subplots()
-        y_min = 0
-        x_min = 0
-        x_max = 0
-        # Nodes are ordered as in a DFS traversal of the tree
-        for pos, data in N:
-            label = str(data[0]) + "\n"+ str(data[1]) #+"\n"+str(data[2])  #priority
-            x_max = max(x_max, pos[0])
-            x_min = min(x_min, pos[0])
-            y_min = min(y_min, pos[1])
-            ax.text(pos[0], pos[1], label, color='#2d5986',
-                    bbox=dict(facecolor='none', edgecolor='#2d5986', boxstyle='round,pad=1'))
-
-        # Set limit
-
-        edge_collections = mcol.LineCollection(E, colors=['#2d5986'])
-
-        ax.add_collection(edge_collections)
-        ax.set_ylim(y_min - 1, 1)
-        ax.set_xlim(x_min - 1, x_max + 1)
-        if title:
-            ax.set_title(title)
-        # nodes_collection = mcol.PatchCollection(nodes_patches)
-        # Get edges collections :
-        # edges_collection = self.root._get_edges_collections()
-
-        # ax.add_collection(nodes_collection)
-        # ax.add_collection(edges_collection)
 
     def _split_on_key(self, node, key):
         N = self._insert(node, key, data=None, priority=1 * (10 ** -9))
@@ -391,7 +491,28 @@ class Treap(object):
 
     def split_on_key(self, key):
         L, R = self._split_on_key(self.root, key)
-        return Treap(L), Treap(R)
+        # Fixed pred and suc
+        print("L key :", L.key)
+        if L.pred and L.suc:
+            if L.pred:
+                print("L pred :",L.pred.key)
+            if L.suc:
+                print("L suc :",L.suc.key)
+            L_first_node = self.first
+            L_last_node = self._find_max_node(L)
+            L_first_node.pred = L_last_node
+            L_last_node.suc = L_first_node
+        print("R key :", R.key)
+        if R.pred and R.suc:
+            if R.pred:
+                print("R pred :",R.pred.key)
+            if R.suc:
+                print("R suc :",R.suc.key)
+            R_first_node = self._find_min_node(R)
+            R_last_node = self.last
+            R_first_node.pred = R_last_node
+            R_last_node.suc = R_first_node
+        return Treap(L,first=L_first_node,last=L_last_node), Treap(R,first=R_first_node,last=R_last_node)
 
     def find_max_value(self):
         '''
@@ -466,12 +587,16 @@ class Treap(object):
         N.priority = 1 * (10 ** -9)
         self.balance()
         N.priority = random.random()
+        # Also put in first position in euler tour
+        self.first = N
 
     def releaf(self, key):
         N = self.search(key)
         N.priority = 1
         self.balance()
         N.priority = random.random()
+        # Also put in last position in euler tour
+        self.last = N
 
     def _get_data_in_key_order(self, node, L):
         if node:
@@ -526,12 +651,18 @@ def merge_treap(T1, T2):
 
 def union_treaps(T1, T2):
     '''
-    Merge Tree T1 and T2
+    Merge Tree T1 and T2, they must have at least one node in common
     :param T1: A Tree
     :param T2: A Tree
     :return:
     '''
-    return Treap(_union_treaps(T1.root, T2.root))
+    if T1.first.key < T2.first.key:
+        first = T1.first
+        last = T2.last
+    else:
+        first = T2.first
+        last = T1.last
+    return Treap(_union_treaps(T1.root, T2.root),first=first,last=last)
 
 
 def _union_treaps(N1, N2):
@@ -543,7 +674,7 @@ def _union_treaps(N1, N2):
         N1, N2 = N2, N1
     TN2 = Treap(N2)
     t_left, t_right = TN2._split_on_key(TN2.root, N1.key)
-    N = TreapNode(key=N1.key, data=N1.data)
+    N = TreapNode(key=N1.key, data=N1.data,suc=N1.suc,pred=N1.pred,parent = N1.parent)
     N.priority = N1.priority
     N.left = _union_treaps(N1.left, t_left)
     N.right = _union_treaps(N1.right, t_right)
