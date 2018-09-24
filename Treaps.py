@@ -317,7 +317,7 @@ class Treap(object):
         return N, E
 
     def insert(self, key, data=None, priority=False,
-               suc =None,pred = None):
+               suc =None,pred = None,inlast=False,infirst=False):
         '''
         Insert a node in the Treap
         :param key:
@@ -328,24 +328,35 @@ class Treap(object):
         :return:
         '''
         self.root = self._insert(self.root, key=key,
-                                 data= data,priority= priority,
+                                 data= data, priority= priority,
                                  suc = suc, pred = pred)
-
-        # Fixed PRED AND SUC
         node = self.search(key)
-        node.pred = self.predecessor(node)
-        if node.pred:
-            node.pred.suc = node
-        else:
-            self.first = node
+        if inlast:       # It means that this node is the new last
+            self.last.suc = node
             node.pred = self.last
-        node.suc = self.successor(node)
-        if node.suc:
-            node.suc.pred = node
-        else:
-            node.suc = self.first
             self.last = node
+            self.last.suc = self.first
             self.first.pred = node
+        elif infirst:
+            self.first.pred = node
+            node.suc = self.first
+            self.first = node
+            self.first.pred = self.last
+            self.last.suc = node
+        elif not pred and not suc:
+            node.pred = self.predecessor(node)
+            if node.pred:
+                node.pred.suc = node
+            else:
+                self.first = node
+                node.pred = self.last
+            node.suc = self.successor(node)
+            if node.suc:
+                node.suc.pred = node
+            else:
+                node.suc = self.first
+                self.last = node
+                self.first.pred = node
 
 
     def _insert(self, node, key, data, priority, suc=None, pred=None, parent=None):
@@ -447,26 +458,29 @@ class Treap(object):
 
     def _remove(self, node, key):
 
+        def update(node):
+            if node == self.first:
+                self.first = node.suc
+            if node == self.last:
+                self.last = node.pred
+            if node.pred:
+                node.pred.suc = node.suc
+            if node.suc:
+                node.suc.pred = node.pred
+
         if node.key == key:
             if not node.left and not node.right:
-                if node.pred and node.suc:
-                    node.pred.suc = node.suc
-                    node.suc.pred = node.pred
+                update(node)
                 return None
 
             elif not node.left:
-                if node.pred and node.suc:
-                    node.pred.suc = node.suc
-                    node.suc.pred = node.pred
-                #Change filiation
+                update(node)
                 if node.parent:
                     node.right.parent = node.parent
                 return node.right
 
             elif not node.right:
-                if node.pred and node.suc:
-                    node.pred.suc = node.suc
-                    node.suc.pred = node.pred
+                update(node)
                 #Change filiation
                 if node.parent:
                     node.left.parent = node.parent
@@ -589,6 +603,7 @@ class Treap(object):
         N.priority = random.random()
         # Also put in first position in euler tour
         self.first = N
+        self.last = N.pred
 
     def releaf(self, key):
         N = self.search(key)
@@ -597,6 +612,7 @@ class Treap(object):
         N.priority = random.random()
         # Also put in last position in euler tour
         self.last = N
+        self.first = N.suc
 
     def _get_data_in_key_order(self, node, L):
         if node:
@@ -651,18 +667,30 @@ def merge_treap(T1, T2):
 
 def union_treaps(T1, T2):
     '''
-    Merge Tree T1 and T2, they must have at least one node in common
+    Merge Tree T1 and T2
     :param T1: A Tree
     :param T2: A Tree
     :return:
     '''
-    if T1.first.key < T2.first.key:
-        first = T1.first
-        last = T2.last
-    else:
-        first = T2.first
-        last = T1.last
-    return Treap(_union_treaps(T1.root, T2.root),first=first,last=last)
+    # print("T1 first key :",T1.first.key)
+    # print("T1 last key :",T1.last.key)
+    # print("T2 first key :",T2.first.key)
+    # print("T2 last key :",T2.last.key)
+    # print("Union Treap:")
+    # MIDDLE
+    T1.last.suc = T2.first
+    T2.first.pred = T1.last
+
+    #BEGINNING
+    T1.first.pred = T2.last
+
+    #ENDING
+    T2.last.suc = T1.first
+
+    T = Treap(_union_treaps(T1.root, T2.root), first=T1.first, last=T2.last)
+    # print("T first key :",T.first.key)
+    # print("T last key :",T.last.key)
+    return T
 
 
 def _union_treaps(N1, N2):
@@ -674,8 +702,11 @@ def _union_treaps(N1, N2):
         N1, N2 = N2, N1
     TN2 = Treap(N2)
     t_left, t_right = TN2._split_on_key(TN2.root, N1.key)
-    N = TreapNode(key=N1.key, data=N1.data,suc=N1.suc,pred=N1.pred,parent = N1.parent)
+    N = TreapNode(key=N1.key, data=N1.data)
     N.priority = N1.priority
+    N.parent = N1.parent
+    N.suc = N1.suc
+    N.pred = N1.pred
     N.left = _union_treaps(N1.left, t_left)
     N.right = _union_treaps(N1.right, t_right)
     return N

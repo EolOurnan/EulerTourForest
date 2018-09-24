@@ -107,9 +107,17 @@ class EulerTourTrees(object):
         '''
         euler_tour = [self.tree.first.data]
         current = self.tree.first.suc
-        while current != self.tree.first:
+        # print("############################")
+        # print("First :",self.tree.first.key)
+        # print("Last :",self.tree.last.key)
+        cnt =0
+        while current.key != self.tree.first.key:
+            # if cnt >= 25:
+            #     exit()
+            # print("Current key :",current.key)
             euler_tour.append(current.data)
             current = current.suc
+            cnt += 1
         return euler_tour
 
 
@@ -166,16 +174,15 @@ class EulerTourTrees(object):
             E1 = EulerTourTrees(K, self.tree_edge_2_keys, self.nt_al)
             print("  E1 : \n",E1)
             E1.plot("E1 after cut "+repr(e))
-
             E2 = EulerTourTrees(union_treaps(J,L), self.tree_edge_2_keys, self.nt_al)
             print("  E2 : \n",E2)
             E2.plot("E2 after cut "+repr(e))
             del self.tree_edge_2_keys[e]
             e = self.replace(E1,E2)
             if e:
-                E = link_ett(E1, E2, e)
                 print("  Replacement edge :", e)
                 print("  Found Replacement Edge :) hamdoulilah")
+                E = link_ett(E1, E2, e)
                 E.nt_al[e[0]].remove(e[1])
                 E.nt_al[e[1]].remove(e[0])
                 return [E]
@@ -218,16 +225,22 @@ def link_ett(T1,T2,e):
     print("   u pos :",u_pos,"  v pos :",v_pos)
     if T2.tree.search(u_pos):
         T1,T2 =T2,T1
+
     T1.tree.releaf(u_pos)
     print("After releafing :")
     T1.plot("T1 after releafing in :"+repr(u_pos))
     print(T1)
+
     T2.tree.reroot(v_pos)
-    print("Adter rerooting :")
+    print("After rerooting :")
     T2.plot("T2 after rerooting in :"+repr(v_pos))
     print(T2)
+
     key = T1.tree.find_max_value() + 1
-    T1.tree.insert(key=key, data=e) # Puisque l'on a rerooter T1 en u
+    print("###########################################################")
+    print("T1 first :",T1.tree.first.key)
+    print("T1 last :",T1.tree.last.key)
+    T1.tree.insert(key=key, data=e,inlast=True) # Puisque l'on a rerooter T1 en u
     T1.tree_edge_2_keys[e].append(key)
     print("After insertion of :",e," with key :",key)
     T1.plot("T1 after insertion of :"+repr(e)+" with key :"+repr(key))
@@ -237,7 +250,7 @@ def link_ett(T1,T2,e):
     E.plot("Union of T1 and T2 ")
     print(EulerTourTrees(E,T1.tree_edge_2_keys,T1.nt_al))
     key = E.find_max_value() + 1
-    E.insert(key= key, data=(v, u))
+    E.insert(key= key, data=(v, u),infirst=True)
     T1.tree_edge_2_keys[e].append(key)
     print(" After final insertion of :",(v,u)," with key :",key)
     E = EulerTourTrees(E,T1.tree_edge_2_keys,T1.nt_al)
