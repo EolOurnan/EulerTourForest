@@ -1,9 +1,8 @@
+
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from Chained_Treap import union_treaps,CTreap
+from Treaps import union_treaps,Treap
 
-
-# 'TODO' ALLLL
 
 def euler_tour_from_edge_list(edge_list):
     '''
@@ -291,7 +290,7 @@ def construct_euler_tour_tree(edge_list):
     :return: An euler tour tree
     '''
     euler_tour = euler_tour_from_edge_list(edge_list)
-    T = CTreap()
+    T = Treap()
     edge_2_occurences = defaultdict(list)
     for i,n in enumerate(euler_tour):
         if (n[1],n[0]) in edge_2_occurences:
@@ -302,3 +301,39 @@ def construct_euler_tour_tree(edge_list):
     print("Edge occurences :",edge_2_occurences)
     return EulerTourTrees(tree=T, tree_edge_2_keys=edge_2_occurences)
 
+
+#
+# if __name__ == '__main__':
+#     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4)]
+#     Data = {0:[0,1,2,3],
+#             1:[0,4,5,8],
+#             2:[],
+#             3:[8,9,10,11],
+#             4 :[],5:[],6:[]}
+#
+#     euler_tour = euler_tour_from_edge_list(E)
+#     print("Euler tour :\n", euler_tour)
+#     ETT = Treap()
+#     edge_2_occurences = defaultdict(list)
+#     for i,n in enumerate(euler_tour):
+#         if (n[1],n[0]) in edge_2_occurences:
+#             edge_2_occurences[(n[1],n[0])].append(i)
+#         else:
+#             edge_2_occurences[n].append(i)
+#         ETT.insert(key=i,data=n)
+#     print("Edge 2 occurences :",edge_2_occurences)
+#     ETT = EulerTourTrees(ETT,edge_2_occurences)
+#     print("ETT :\n",ETT)
+#     print(ETT.tree.get_data_in_key_order())
+#     e = (1,2)
+#     E1,E2 = ETT.cut(e)
+#     print("E1 :", E1)
+#     print(E1.tree.get_data_in_key_order())
+#     print()
+#     print("E2 :", E2)
+#     print(E2.tree.get_data_in_key_order())
+#     ETT = link_ett(E1,E2,e)
+#     ETT.tree.balance()
+#     print(" after link ETT :\n", ETT)
+#     print("KEY :")
+#     print(ETT.tree.get_data_in_key_order())

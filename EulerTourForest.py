@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-from EulerTourTrees import EulerTourTrees
+from EulerTourTrees_old import EulerTourTrees
 # Source  : https://dl.acm.org/citation.cfm?id=320215
 
 # TODO :Fonction de refactor à la fin (pour les composantes temporelles à stocker)
@@ -17,8 +17,11 @@ from EulerTourTrees import EulerTourTrees
 # TODO: - Fonction balance des priority (utile pour removal or insertion in a TREAP)
 
 
-from EulerTourTrees import construct_euler_tour_tree
+from EulerTourTrees_old import construct_euler_tour_tree
 
+
+
+# MUST ADAPT FROM EULERTOURTREES AVEC CTREAP
 
 def spanning_forest_from_edge_list(edge_list):
     '''

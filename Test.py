@@ -1,7 +1,7 @@
 
 
 from collections import defaultdict
-from EulerTourTrees import construct_euler_tour_tree
+from EulerTourTrees_old import construct_euler_tour_tree
 from EulerTourForest import construct_euler_tour_forest
 from Treaps import Treap,TreapNode
 import matplotlib.pyplot as plt
@@ -24,7 +24,35 @@ if __name__ == '__main__':
 
     print("T1 :")
     print(ET)
+    key= 4
+    n = T1.search(key)
+    print("T1 sub pred of :",key)
+    pred = T1.sub_pred(n)
+    if pred:
+        print(pred.key)
+    else:
+        print("No pred")
+    print("T1 sub suc of :",key)
+    suc = T1.sub_suc(n)
+    if suc:
+        print(suc.key)
+    else:
+        print("No suc")
     T1.reroot(4)
+
+    n = T1.search(key)
+    print("T1 sub pred of :",key)
+    pred = T1.sub_pred(n)
+    if pred:
+        print(pred.key)
+    else:
+        print("No pred")
+    print("T1 sub suc of :",key)
+    suc = T1.sub_suc(n)
+    if suc:
+        print(suc.key)
+    else:
+        print("No suc")
 
     T1.plot()
     print("T1 :")
