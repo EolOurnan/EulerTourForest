@@ -36,11 +36,10 @@ class CTreapNode(object):
         pivot = root.right
 
         # Change filiation
-        if self.parent:
-            pivot.parent = root.parent
-            root.parent = pivot
-            if pivot.left:
-                pivot.left.parent = root
+        pivot.parent = root.parent
+        root.parent = pivot
+        if pivot.left:
+            pivot.left.parent = root
 
         # Rotate
         root.right = pivot.left
@@ -60,11 +59,10 @@ class CTreapNode(object):
         pivot = root.left
 
         # Change filiation
-        if self.parent:
-            pivot.parent = root.parent
-            root.parent = pivot
-            if pivot.right:
-                pivot.right.parent = root
+        pivot.parent = root.parent
+        root.parent = pivot
+        if pivot.right:
+            pivot.right.parent = root
 
         # Rotate
         root.left = pivot.right
@@ -389,35 +387,75 @@ class CTreap(object):
             self.first = node.suc
         if node == self.last:
             self.last = node.pred
-
-        if node.left and node.right:
-            # The next node has no right or no left child
-            next = node.suc
-            self.swap_nodes(next, node)
         if node.suc:
             node.suc.pred = node.pred
         if node.pred:
             node.pred.suc = node.suc
+        removed = False
+        while not removed:
+            if node.left and node.right:
+                if node.left.priority < node.right.priority:
+                    node.right_rotation()
+                    self.plot("right rotation in "+repr(node.data))
+                    plt.show()
+                else:
+                    node.left_rotation()
+                    self.plot("left rotation in "+repr(node.data))
+                    plt.show()
 
-        rep = None
-        if node.left:
-            rep = node.left
-        else:
-            rep = node.right
-        if rep:
-            rep.parent = node.parent
-        if node.parent:
-            if node.parent.left == node:  # If left child
-                node.parent.left = rep
-            else:                         # Right child
-                node.parent.right = rep
+
+            elif not node.left and not node.right:
+                if node.parent.left ==node:
+                    node.parent.left = None
+                else:
+                    node.parent.right = None
+                removed = True
+            elif not node.left:
+                if node.parent.left ==node:
+                    node.parent.left = node.right
+                else:
+                    node.parent.right = node.right
+                removed = True
+            elif not node.right:
+                if node.parent.left ==node:
+                    node.parent.left = node.left
+                else:
+                    node.parent.right = node.left
+                removed = True
         # UPDATE SIZE OF PARENTS
         p = node.parent
         while p:
             p.update_size()
             p = p.parent
-        # Remove references to the node
         node.parent = node.left = node.right = node.prev = node.next = None
+
+        # if node.left and node.right:
+        #     # The next node has no right or no left child
+        #     next = node.suc
+        #     self.swap_nodes(next, node)
+        # if node.suc:
+        #     node.suc.pred = node.pred
+        # if node.pred:
+        #     node.pred.suc = node.suc
+        #
+        # rep = None
+        # if node.left:
+        #     rep = node.left
+        # else:
+        #     rep = node.right
+        # if rep:
+        #     rep.parent = node.parent
+        # if node.parent:
+        #     if node.parent.left == node:  # If left child
+        #         node.parent.left = rep
+        #     else:                         # Right child
+        #         node.parent.right = rep
+        # # UPDATE SIZE OF PARENTS
+        # p = node.parent
+        # while p:
+        #     p.update_size()
+        #     p = p.parent
+        # # Remove references to the node
 
 
     def split(self, where):

@@ -25,11 +25,11 @@ if __name__ == '__main__':
     print("T1 second :",T1.first.suc.data)
     print("T1 last :",T1.last.data)
 
-    T1.swap_nodes(T1.first,T1.root)
+    to_remove = T1.last.pred.pred.pred.pred
+    print("Remove :",to_remove.data)
+    T1.remove(to_remove)
     print("T1",T1)
-    T1.plot("After swap first and second")
-    # T1.remove(T1.first)
-    # T1.plot("After remove first")
+    T1.plot("After remove "+repr(to_remove.data))
     plt.show()
 
 
