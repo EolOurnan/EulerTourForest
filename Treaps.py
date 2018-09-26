@@ -230,31 +230,38 @@ class Treap(object):
         u.priority, v.priority = v.priority, u.priority
 
         # Swap parents
-        if u.parent:
-            if u.parent.left == u:
-                u.parent.left = v
-            else:
-                u.parent.right = v
+        temp = u.parent
+        u.parent = v.parent
         if v.parent:
             if v.parent.left == v:
                 v.parent.left = u
             else:
                 v.parent.right = u
-        u.parent, v.parent = v.parent, u.parent
+        v.parent = temp
+        if u.parent:
+            if u.parent.left == u:
+                u.parent.left = v
+            else:
+                u.parent.right = v
 
         # Swap left child
-        if u.left:
-            u.left.parent = v
+        temp = u.left
+        u.left = v.left
         if v.left:
             v.left.parent = u
-        u.left, v.left = v.left, u.left
+        v.left = temp
+        if u.left:
+            u.left.parent = v
 
         # Swap right child
-        if u.right:
-            u.right.parent = v
+        temp = u.right
+        u.right = v.right
         if v.right:
             v.right.parent = u
-        u.right,v.right = v.right,u.right
+        v.right = temp
+        if u.right:
+            u.right.parent = v
+
 
         # Eventually change suc and pred (TODO)
         # if u.suc:

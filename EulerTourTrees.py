@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from Chained_Treap import union_treaps,CTreap
+from Chained_Treap import union_treap,CTreap
 
 
 # 'TODO' ALLLL
@@ -58,7 +58,7 @@ def plot_euler_tour_tree(root,pos = None):
 class EulerTourTrees(object):
     #  A rajouter en list, ou dict, à part
     def __init__(self, tree=None, tree_edge_2_keys=None,
-                 nt_al = None, size=None):
+                 nt_al = None, weight=None):
         '''
 
         :param tree: A Treap
@@ -68,7 +68,7 @@ class EulerTourTrees(object):
         self.tree = tree
         self.tree_edge_2_keys = tree_edge_2_keys  # Edge to key in Tree
         self.nt_al = nt_al                      # Adjacency list for non tree edges (x2 already included : adj list)
-        self.size = size                        # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
+        self.weight = weight                        # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
 
 
 
@@ -77,16 +77,9 @@ class EulerTourTrees(object):
         rep += " Non Tree edge : "+str(self.nt_al)+ "\n"
         rep += str(self.tree)
         rep += " Euler Tour :"+str(self.get_euler_tour())+"\n"
-        rep += " In order :"+str(self.tree.get_data_in_key_order())+"\n"
         rep += " Priority Order :"+str(self.tree.get_data_in_priority_order())+"\n"
-
         return rep
 
-    def find_min_value(self):
-        return self.tree.find_min_value()
-
-    def find_max_value(self):
-        return self.tree.find_max_value()
 
     def swap_nodes(self, e1, e2):
         self.tree.swap_nodes(self.tree_edge_2_keys[e1], self.tree_edge_2_keys[e2])
@@ -106,13 +99,14 @@ class EulerTourTrees(object):
         Return the induced euler tour representation of the Tree
         :return:
         '''
-        euler_tour = [self.tree.first.data]
-        current = self.tree.first.suc
+        first = self.tree.first
+        euler_tour = [first.data]
+        current = first.suc
         # print("############################")
         # print("First :",self.tree.first.key)
         # print("Last :",self.tree.last.key)
         cnt =0
-        while current.key != self.tree.first.key:
+        while current != first:
             # if cnt >= 25:
             #     exit()
             # print("Current key :",current.key)
@@ -185,7 +179,7 @@ class EulerTourTrees(object):
             print("  E1 after cut : \n",E1)
             E1.plot("E1 after cut "+repr(e))
             if L:
-                E2 = EulerTourTrees(union_treaps(J,L), self.tree_edge_2_keys, self.nt_al)
+                E2 = EulerTourTrees(union_treap(J,L), self.tree_edge_2_keys, self.nt_al)
             else:
                 E2 = EulerTourTrees(J, self.tree_edge_2_keys,self.nt_al)
             print("  E2 : \n",E2)
@@ -264,7 +258,7 @@ def link_ett(T1,T2,e):
     print("After insertion of :",e," with key :",uv_key)
     T1.plot("T1 after insertion of :"+repr(e)+" with key :"+repr(uv_key))
     print(T1)
-    E = union_treaps(T1.tree,T2.tree)
+    E = union_treap(T1.tree,T2.tree)
     print(" After Union :")
     E.plot("Union of T1 and T2 ")
     print(EulerTourTrees(E,T1.tree_edge_2_keys,T1.nt_al))
@@ -298,7 +292,12 @@ def construct_euler_tour_tree(edge_list):
             edge_2_occurences[(n[1],n[0])].append(i)
         else:
             edge_2_occurences[n].append(i)
-        T.insert(key=i,data=n)
+        print("Insert ",n)
+        T.insert(data=n,inlast=True)
     print("Edge occurences :",edge_2_occurences)
-    return EulerTourTrees(tree=T, tree_edge_2_keys=edge_2_occurences)
+    ETT = EulerTourTrees(tree=T, tree_edge_2_keys=edge_2_occurences)
+    print("ETT :",ETT)
+    ETT.plot()
+    plt.show()
+    return ETT
 

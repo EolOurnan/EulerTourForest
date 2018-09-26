@@ -9,7 +9,7 @@ class CTreapNode(object):
     A node of a Treap (priority is determined at random and used to balance the Treap)
     '''
 
-    def __init__(self, data=None):
+    def __init__(self, data=None, parent=None, pred=None, suc=None, size=None):
         '''
 
         :param value:
@@ -17,18 +17,109 @@ class CTreapNode(object):
         '''
         self.data = data
         self.priority = random.random()
-        self.parent = None
-        self.left = None   # Left child
+        self.parent = parent
+        self.left = None  # Left child
         self.right = None  # Right child
-        self.pred = None   # Predecessor
-        self.suc = None    # successor
+        self.pred = pred  # Predecessor (used in Euler Tour)
+        self.suc = suc  # successor   (used in Euler Tour
+        self.size = size  # Used to count the number of nodes in the subtree rooted at the current node
 
+    def left_rotation(self):
+        '''
+        (TODO) CHANGE SIZE ATTRIBUTE
+        Perform a left rotation on the Treap with the current TreapNode as the root
+        https://en.wikipedia.org/wiki/Tree_rotation
+        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
+        :return:
+        '''
+        root = self
+        pivot = root.right
+
+        # Change filiation
+        if self.parent:
+            pivot.parent = root.parent
+            root.parent = pivot
+            if pivot.left:
+                pivot.left.parent = root
+
+        # Rotate
+        root.right = pivot.left
+        pivot.left = root
+        root = pivot
+        return root
+
+    def right_rotation(self):
+        '''
+        (TODO) CHANGE SIZE ATTRIBUTE
+        Perform a right rotation on the Treap with the current TreapNode as the root
+        https://en.wikipedia.org/wiki/Tree_rotation
+        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
+        :return:
+        '''
+        root = self
+        pivot = root.left
+
+        # Change filiation
+        if self.parent:
+            pivot.parent = root.parent
+            root.parent = pivot
+            if pivot.right:
+                pivot.right.parent = root
+
+        # Rotate
+        root.left = pivot.right
+
+        root.update_size()
+        pivot.right = root
+
+        pivot.update_size()
+        root = pivot
+
+        return root
+
+    def update_size(self):
+        '''
+        Used to keep the size
+        :param node:
+        :return:
+        '''
+        c = 1
+        if self.left:
+            c += self.left.size
+        if self.right:
+            c += self.right.size
+        self.size = c
+
+    def __repr__(self, depth=0, left_offset=0, right_offset=0):
+
+        # print(" depth : ",depth," right offset : ",right_offset," left offset : ",left_offset)
+        ret = "\t" * depth
+        if self.parent:
+            ret += " parent data : " + repr(self.parent.data)
+        if self.suc:
+            ret += " | suc data : " + repr(self.suc.data)
+        if self.pred:
+            ret += " | pred data : " + repr(self.pred.data)
+
+        ret += " | node data : " + repr(
+            self.data) + " priority : " + repr(
+            self.priority) + "\n"
+
+        if self.right:
+            ret += "Right " + self.right.__repr__(depth=depth + 1, right_offset=right_offset + 1,
+                                                  left_offset=left_offset)
+        if self.left:
+            ret += "Left " + self.left.__repr__(depth=depth + 1, left_offset=left_offset + 1,
+                                                right_offset=right_offset)
+        return ret
 
 
 class CTreap(object):
+    '''
+    Treap, binary randomized tree self balanced and key by index ( not a usual key)
+    '''
 
-
-    def __init__(self, root=None, first = None, last = None):
+    def __init__(self, root=None, first=None, last=None):
         '''
         :param root: Root of the Treap (a TreapNode)
         :param first: First node of Euler Tree
@@ -38,64 +129,79 @@ class CTreap(object):
         self.first = first
         self.last = last
 
+    def _get_data_in_priority_order(self, node, L):
+        if node:
+            L.append(node.data)
+        if node.right:
+            self._get_data_in_priority_order(node.right, L)
+        if node.left:
+            self._get_data_in_priority_order(node.left, L)
+
+    def get_data_in_priority_order(self):
+        L = []
+        self._get_data_in_priority_order(self.root, L)
+        return [i for i in L]
 
     def __repr__(self):
         return str(self.root)
 
-
-    def first(self):
-        return self.first
-
-    def last(self):
-        return self.last
-
-
     def swap_nodes(self, u, v):
-        # Swap priorities
-        u.priority, v.priority = v.priority, u.priority
+        u.priority, v.priority = v.priority, u.priority         # Swap priorities
+
+        u.data, v.data = v.data, u.data         # Swap data
+
+        u.size, v.size = v.size, u.size        # Swap size
 
         # Swap parents
-        if u.parent:
-            if u.parent.left == u:
-                u.parent.left = v
-            else:
-                u.parent.right = v
+        temp = u.parent
+        u.parent = v.parent
         if v.parent:
             if v.parent.left == v:
                 v.parent.left = u
             else:
                 v.parent.right = u
-        u.parent, v.parent = v.parent, u.parent
+        v.parent = temp
+        if temp:
+            if temp.left == u:
+                temp.left = v
+            else:
+                temp.right = v
 
         # Swap left child
-        if u.left:
-            u.left.parent = v
+        temp = u.left
+        u.left = v.left
         if v.left:
             v.left.parent = u
-        u.left, v.left = v.left, u.left
+        v.left = temp
+        if temp:
+            temp.parent = v
 
         # Swap right child
-        if u.right:
-            u.right.parent = v
+        temp = u.right
+        u.right = v.right
         if v.right:
             v.right.parent = u
-        u.right,v.right = v.right,u.right
+        v.right = temp
+        if temp:
+            temp.parent = v
 
-        # Eventually change suc and pred (TODO)
-        # if u.suc:
-        #     u.suc.pred = v
-        # if v.suc:
-        #     v.suc.pred = u
-        # u.suc,v.suc = v.suc,u.suc
-        #
-        # if u.pred:
-        #     u.pred.suc =v
-        # if v.pred:
-        #     v.pred.suc =u
-        # u.pred,v.pred = v.pred,u.pred
-        # Eventulally change #SIZE
-        # u.size,v.size = v.size,u.size
+        # Swap suc
+        temp = u.suc
+        u.suc = v.suc
+        if v.suc:
+            v.suc.pred = u
+        v.suc = temp
+        if temp:
+            temp.pred = v
 
+        # Swap pred
+        temp = u.pred
+        u.pred = v.pred
+        if v.pred:
+            v.pred.suc = u
+        v.pred = temp
+        if temp:
+            temp.suc = v
 
     def get_internal_structure(self):
         return self._get_internal_structure(self.root)
@@ -111,7 +217,7 @@ class CTreap(object):
             N = []
         if not E:
             E = []
-        N.append(((x_parent, y_parent), (node.key, node.data))) #,node.priority))) # priority
+        N.append(((x_parent, y_parent), (node.data)))  # ,node.priority))) # priority
         if node.left:
             if y_parent:
                 y_pos = y_parent - 1
@@ -148,14 +254,13 @@ class CTreap(object):
         '''
         return self._check_heap_invariant(self.root)
 
-
     def _check_heap_invariant(self, node):
         if node.left:
             assert node.priority <= node.left.priority
-            assert self._check_tree_invariant(node.left)
+            assert self._check_heap_invariant(node.left)
         if node.right:
             assert node.priority <= node.right.priority
-            assert self._check_tree_invariant(node.right)
+            assert self._check_heap_invariant(node.right)
         return True
 
     def plot(self, title=None):
@@ -166,7 +271,7 @@ class CTreap(object):
         x_max = 0
         # Nodes are ordered as in a DFS traversal of the tree
         for pos, data in N:
-            label = str(data[0]) + "\n"+ str(data[1]) #+"\n"+str(data[2])  #priority
+            label = str(data)  # + "\n" + str(data[1])  # +"\n"+str(data[2])  #priority
             x_max = max(x_max, pos[0])
             x_min = min(x_min, pos[0])
             y_min = min(y_min, pos[1])
@@ -174,7 +279,7 @@ class CTreap(object):
                     bbox=dict(facecolor='none', edgecolor='#2d5986', boxstyle='round,pad=1'))
 
         # Set limit
-        edge_collections = mcol.LineCollection(E, colors=['#2d5986'])
+        edge_collections = mcol.LineCollection(E, colors=['#2d5986'], linewidths=2, alpha=0.5)
 
         ax.add_collection(edge_collections)
         ax.set_ylim(y_min - 1, 1)
@@ -182,87 +287,77 @@ class CTreap(object):
         if title:
             ax.set_title(title)
 
+    def insert(self, where=None, data=None, inlast=False, infirst=False):
 
-    def insert(self, key, data=None, priority=False,
-               suc =None,pred = None,inlast=False,infirst=False):
-        '''
-        (TODO)
-        Insert a node in the Treap
-        :param key:
-        :param data:
-        :param priority:
-        :param suc:
-        :param pred:
-        :return:
-        '''
-        self.root = self._insert(self.root, key=key,
-                                 data= data, priority= priority,
-                                 suc = suc, pred = pred)
-        node = self.search(key)
-        if inlast:       # It means that this node is the new last
+        if not self.root:
+            node = CTreapNode(data=data, size=1, parent=None, pred=None, suc=None)
+            self.root = node
+            self.first = node
+            self.last = node
+        elif inlast:  # It means that this node is the new last
+            node = self._insert(where=self.last, data=data)
             self.last.suc = node
-            node.pred = self.last
             self.last = node
             self.last.suc = self.first
             self.first.pred = node
         elif infirst:
+            node = self._insert(where=self.first, data=data)
             self.first.pred = node
-            node.suc = self.first
             self.first = node
             self.first.pred = self.last
             self.last.suc = node
-        elif not pred and not suc:
-            node.pred = self.predecessor(node)
-            if node.pred:
-                node.pred.suc = node
-            else:
-                self.first = node
-                node.pred = self.last
-            node.suc = self.successor(node)
-            if node.suc:
-                node.suc.pred = node
-            else:
-                node.suc = self.first
-                self.last = node
-                self.first.pred = node
+        else:
+            self._insert(where=where, data=data)
 
-
-    def _insert(self, node, key, data, priority, suc=None, pred=None, parent=None):
+    def _insert(self, where, data=None):
         '''
-        (TODO)
-        :param node:
+        (TODO) different balance : just from the children to the root
+        Insert a node in the Treap after 'where' (a node of the CTreap)
         :param key:
         :param data:
         :param priority:
         :param suc:
         :param pred:
-        :param parent:
         :return:
         '''
-        if node is None:
-            node = CTreapNode(key, data)
-            if priority:
-                node.priority = priority
-            if parent:
-                node.parent = parent
-            if suc:
-                node.suc = suc
-            if pred:
-                node.pred = pred
+        if not where.right:
+            node = CTreapNode(data=data, size=1, parent=where, pred=where, suc=where.suc)
+            where.right = node
+            if where.suc:
+                where.suc.pred = node
+            where.suc = node
+            self.balance()
             return node
-
-        # On sait où on insert (TODO)
-        # if key < node.key:
-        #     node.left = self._insert(node.left, key, data, priority, suc, pred, node)
-        #     if node.left.priority < node.priority:
-        #         node = node.right_rotation()
-        #
-        # elif key >= node.key:
-        #     node.right = self._insert(node.right, key, data, priority, suc, pred, node)
-        #     if node.right.priority < node.priority:
-        #         node = node.left_rotation()
-
+        next = where.suc
+        node = CTreapNode(data=data, size=1, parent=next, pred=next, suc=where)
+        next.left = node
+        next.pred = node
+        where.suc = node
+        self.balance()
         return node
+
+    def find_root(self, node):
+        '''
+        Find the root of the current node
+        :param node:
+        :return:
+        '''
+        current = node
+        while current.parent:
+            current = current.parent
+        return current
+
+    def find_first(self):
+        current = self.root
+        while current.left:
+            current = current.left
+        return current
+
+    def find_last(self):
+        current = self.root
+        while current.right:
+            current = current.right
+        return current
 
     def _balance(self, node):
         if node.left:
@@ -283,190 +378,69 @@ class CTreap(object):
         '''
         self.root = self._balance(self.root)
 
-
-    def sub_pred(self,node):
+    def remove(self,node):
         '''
-        Find the predecessor in the subtree rooted at this node
-        :Status: OK
-        :param node:
-        :return:
-        '''
-        if node is None:
-            raise KeyError
-        pred = None
-        current = node.left
-        while current:
-            pred = current
-            current = current.right
-        return pred
-
-    def sub_suc(self,node):
-        '''
-        Find the successor in the subtree rooted at this node
-        :Status: OK
-        :param node:
-        :return:
-        '''
-        if node is None:
-            raise KeyError
-        suc = None
-        current = node.right
-        while current:
-            suc = current
-            current =current.left
-        return suc
-
-    def predecessor(self, node):
-        '''
-        (TODO)
-        Find the predecessor of 'node' in the key ordering (biggest key smaller than node.key)
-        :Status: CAN BE OPTIMIZED WITH PARENT ATTRIBUTE
-        :param node:
-        :return:
-        '''
-        pred = None
-        current = self.root
-        if current is None:
-            raise KeyError
-        if node.left:
-            node = self._find_max_node(node.left)
-            return node
-        while current:
-            if node.key > current.key:
-                pred = current
-                current = current.right
-            elif node.key < current.key:
-                current = current.left
-            else:
-                break
-        return pred
-
-    def successor(self, node):
-        '''
-        (TODO)
-        Find the successor of 'node' in the key ordering (smallest key bigger than node.key)
-        :Status: CAN BE OPTIMIZED WITH PARENT ATTRIBUTE
-        :param node:
-        :return:
-        '''
-        succ = None
-        current = self.root
-        if current is None:
-            raise KeyError
-        if node.right:
-            node = self._find_min_node(node.right)
-            return node
-        while current:
-            if node.key < current.key:
-                succ = current
-                current = current.left
-            elif node.key > current.key:
-                current = current.right
-            else:
-                break
-        return succ
-
-    def remove(self, key):
-        '''
-        (TODO)
         Remove the node corresponding to the key
         :param key: The key to remove
         :return:
         '''
-        self.root = self._remove(self.root, key)
 
-    def _remove(self, node, key):
-        '''
-        (TODO)
-        :param node:
-        :param key:
-        :return:
-        '''
-        def update(node):
-            if node == self.first:
-                self.first = node.suc
-            if node == self.last:
-                self.last = node.pred
-            if node.pred:
-                node.pred.suc = node.suc
-            if node.suc:
-                node.suc.pred = node.pred
+        if node == self.first:
+            self.first = node.suc
+        if node == self.last:
+            self.last = node.pred
 
-        if node.key == key:
-            if not node.left and not node.right:
-                update(node)
-                return None
+        if node.left and node.right:
+            # The next node has no right or no left child
+            next = node.suc
+            self.swap_nodes(next, node)
+        if node.suc:
+            node.suc.pred = node.pred
+        if node.pred:
+            node.pred.suc = node.suc
 
-            elif not node.left:
-                update(node)
-                if node.parent:
-                    node.right.parent = node.parent
-                return node.right
-
-            elif not node.right:
-                update(node)
-                #Change filiation
-                if node.parent:
-                    node.left.parent = node.parent
-                return node.left
-            else:
-                if node.left.priority < node.right.priority:
-                    node = node.right_rotation()
-                    node.right = self._remove(node.right, key)
-                else:
-                    node = node.left_rotation()
-                    node.left = self._remove(node.left, key)
-        elif key < node.key:
-            node.left = self._remove(node.left, key)
+        rep = None
+        if node.left:
+            rep = node.left
         else:
-            node.right = self._remove(node.right, key)
-        return node
+            rep = node.right
+        if rep:
+            rep.parent = node.parent
+        if node.parent:
+            if node.parent.left == node:  # If left child
+                node.parent.left = rep
+            else:                         # Right child
+                node.parent.right = rep
+        # UPDATE SIZE OF PARENTS
+        p = node.parent
+        while p:
+            p.update_size()
+            p = p.parent
+        # Remove references to the node
+        node.parent = node.left = node.right = node.prev = node.next = None
 
-    def _split_(self, node, key):
+
+    def split(self, where):
         '''
-        (TODO)
-        On sait où on split
-        :param node:
+        (TODO) YA un truc à optimiser au niveau des pointeurs etc....
         :param key:
         :return:
         '''
-        N = self._insert(node, key, data=None, priority=1 * (10 ** -9))
-        return N.left, N.right
-
-    def split(self, key):
-        '''
-        (TODO)
-        :param key:
-        :return:
-        '''
-        print(" Split on :", key)
-        L, R = self._split_(self.root, key)
-        # Fixed pred and suc
-        LT = None
-        RT = None
-        if L:
-            print("  L key :", L.key)
-            if L.pred:
-                print("  L pred :", L.pred.key)
-            if L.suc:
-                print("  L suc :", L.suc.key)
-            L_first_node = self.first
-            L_last_node = self._find_max_node(L)
-            L_first_node.pred = L_last_node
-            L_last_node.suc = L_first_node
-            LT = Treap(L, first=L_first_node, last=L_last_node)
-        if R:
-            print("  R key :", R.key)
-            if R.pred:
-                print("  R pred :", R.pred.key)
-            if R.suc:
-                print("  R suc :", R.suc.key)
-            R_first_node = self._find_min_node(R)
-            R_last_node = self.last
-            R_first_node.pred = R_last_node
-            R_last_node.suc = R_first_node
-            RT = CTreap(R, first=R_first_node, last=R_last_node)
-        return LT, RT
+        print(" Split on :", where.data)
+        s = self.insert(where)
+        s.priority = 1 * 10 ** -9
+        self.balance()
+        T_left = s.left
+        T_right = s.right
+        if T_left:
+            T_left.parent = None
+        if T_right:
+            T_right.parent = None
+        if s.pred:
+            s.pred.suc = None
+        if s.suc:
+            s.suc.pred = None
+        return T_left, T_right
 
     def reroot(self, N):
         N.priority = 1 * (10 ** -9)
@@ -485,48 +459,41 @@ class CTreap(object):
         self.first = N.suc
 
 
-def union_treaps(T1, T2):
-    '''
-    Merge Tree T1 and T2
-    :param T1: A Tree
-    :param T2: A Tree
-    :return:
-    '''
-    # print("T1 first key :",T1.first.key)
-    # print("T1 last key :",T1.last.key)
-    # print("T2 first key :",T2.first.key)
-    # print("T2 last key :",T2.last.key)
-    # print("Union Treap:")
-    # MIDDLE
-    T1.last.suc = T2.first
-    T2.first.pred = T1.last
+def union_treap(T1, T2):
+    if not T2:
+        return
+    T1, T2 = T1.root, T2.root
+    # We get the right most leaf of T1
+    rl = T1
+    while rl.right:
+        rl = rl.right
 
-    #BEGINNING
-    T1.first.pred = T2.last
+    # We get the left most leaf of T2
+    ll = T2
+    while ll.left:
+        ll = ll.right
 
-    #ENDING
-    T2.last.suc = T1.first
-
-    T = CTreap(_union_treaps(T1.root, T2.root), first=T1.first, last=T2.last)
-    # print("T first key :",T.first.key)
-    # print("T last key :",T.last.key)
-    return T
+    # We concat the induced euler tour
+    # Maximum of first tree with minimum of second tree
+    rl.suc = ll
+    ll.pred = rl
+    new_root = _union_treap(T1, T2)
+    new_root.parent = None
+    return new_root
 
 
-def _union_treaps(N1, N2):
-    if not N1:
-        return N2
-    if not N2:
-        return N1
-    if N1.priority < N2.priority:
-        N1, N2 = N2, N1
-    TN2 = CTreap(N2)
-    t_left, t_right = TN2._split_on_key(TN2.root, N1.key)
-    N = CTreapNode(key=N1.key, data=N1.data)
-    N.priority = N1.priority
-    N.parent = N1.parent
-    N.suc = N1.suc
-    N.pred = N1.pred
-    N.left = _union_treaps(N1.left, t_left)
-    N.right = _union_treaps(N1.right, t_right)
-    return N
+def _union_treap(T1, T2):
+    if not T1:
+        return T2
+    elif not T2:
+        return T1
+    elif T1.priority < T2.priority:
+        T1.right = union_treap(T1.right, T2)
+        T1.right.parent = T1
+        T1.update_size()
+        return T1
+    else:
+        T2.left = union_treap(T1, T2.left)
+        T2.left.parent = T2
+        T2.update()
+        return T2

@@ -1,7 +1,7 @@
 
 
 from collections import defaultdict
-from EulerTourTrees_old import construct_euler_tour_tree
+from EulerTourTrees import construct_euler_tour_tree
 from EulerTourForest import construct_euler_tour_forest
 from Treaps import Treap,TreapNode
 import matplotlib.pyplot as plt
@@ -21,6 +21,18 @@ if __name__ == '__main__':
     ET = ETF.trees[0]
     T1 = ET.tree
     T1.plot()
+    print("T1 first :",T1.first.data)
+    print("T1 second :",T1.first.suc.data)
+    print("T1 last :",T1.last.data)
+
+    T1.swap_nodes(T1.first,T1.root)
+    print("T1",T1)
+    T1.plot("After swap first and second")
+    # T1.remove(T1.first)
+    # T1.plot("After remove first")
+    plt.show()
+
+
 
     print("T1 :")
     print(ET)
