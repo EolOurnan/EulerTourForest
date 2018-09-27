@@ -2,6 +2,8 @@
 
 
 from EulerTourForest import construct_euler_tour_forest
+from EulerTourTrees import EulerTourTrees
+from Chained_Treap import CTreap,union_treap
 import matplotlib.pyplot as plt
 import random
 
@@ -41,15 +43,30 @@ if __name__ == '__main__':
     # T1.plot('after left rotation in :'+repr(rotate_in.data))
     # T1.first.suc.right_rotation()
     # T1.plot('after right rotation in :'+repr(T1.first.suc.suc.data)
-    # exit()
+    ################################################
     ############# TEST DELETION ####################
-    to_remove = T1.last.pred.pred.pred.pred
-    print("Remove :",to_remove.data)
-    T1.remove(to_remove)
-    print("T1",T1)
-    T1.plot("After remove "+repr(to_remove.data))
+    # to_remove = T1.last.pred.pred.pred.pred
+    # print("Remove :",to_remove.data)
+    # T1.remove(to_remove)
+    # print("T1",T1)
+    # T1.plot("After remove "+repr(to_remove.data))
+    # plt.show()
+    ################################################
+    ############# TEST SPLIT  ######################
+    to_split = T1.first.suc.suc.suc.suc.suc.suc.suc
+    L,R =T1.split(to_split)
+    # L,R = EulerTourTrees(CTreap(L)),EulerTourTrees(CTreap(R))
+    L, R = CTreap(L), CTreap(R)
+    L.plot("Left tree after split in "+repr(to_split.data))
+    R.plot("Right tree after split in "+repr(to_split.data))
+    print("L :\n",L)
+    print("R :\n",R)
+    ################################################
+    ############# TEST UNION  ######################
+    E = CTreap(union_treap(L,R))
+    print("E :\n",E)
+    E.plot("Union of previous left and right ")
     plt.show()
-
 
 
     print("T1 :")

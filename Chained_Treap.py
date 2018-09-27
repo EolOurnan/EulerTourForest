@@ -315,7 +315,8 @@ class CTreap(object):
             self.last.suc = self.first
             self.first.pred = node
         else:
-            self._insert(where=where, data=data)
+            node = self._insert(where=where, data=data)
+        return node
 
     def _insert(self, where, data=None):
         '''
@@ -512,12 +513,12 @@ def _union_treap(T1, T2):
     elif not T2:
         return T1
     elif T1.priority < T2.priority:
-        T1.right = union_treap(T1.right, T2)
+        T1.right = _union_treap(T1.right, T2)
         T1.right.parent = T1
         T1.update_size()
         return T1
     else:
-        T2.left = union_treap(T1, T2.left)
+        T2.left = _union_treap(T1, T2.left)
         T2.left.parent = T2
-        T2.update()
+        T2.update_size()
         return T2
