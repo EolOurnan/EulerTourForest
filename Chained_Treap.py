@@ -24,13 +24,25 @@ class CTreapNode(object):
         self.suc = suc  # successor   (used in Euler Tour
         self.size = size  # Used to count the number of nodes in the subtree rooted at the current node
 
+
+    def find_root(self):
+        '''
+        Find the root of the current node
+        :param node:
+        :return:
+        '''
+        current = self
+        while current.parent:
+            current = current.parent
+        return current
+
     def left_rotation(self):
         '''
         (TODO) CHANGE SIZE ATTRIBUTE
         Perform a left rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
         Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
-        :return:
+        :return: New root (aka the right child)
         '''
         root = self
         pivot = root.right
@@ -45,6 +57,7 @@ class CTreapNode(object):
         root.right = pivot.left
         pivot.left = root
         root = pivot
+
         return root
 
     def right_rotation(self):
@@ -53,7 +66,7 @@ class CTreapNode(object):
         Perform a right rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
         Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
-        :return:
+        :return: New root ( aka the left child)
         '''
         root = self
         pivot = root.left
@@ -66,11 +79,7 @@ class CTreapNode(object):
 
         # Rotate
         root.left = pivot.right
-
-        root.update_size()
         pivot.right = root
-
-        pivot.update_size()
         root = pivot
 
         return root
@@ -87,6 +96,13 @@ class CTreapNode(object):
         if self.right:
             c += self.right.size
         self.size = c
+
+    def clear(self):
+        self.parent = None
+        self.left = None
+        self.right = None
+        self.pred = None
+        self.suc = None
 
     def __repr__(self, depth=0, left_offset=0, right_offset=0):
 
@@ -285,10 +301,10 @@ class CTreap(object):
         if title:
             ax.set_title(title)
 
-    def insert(self, where=None, data=None, inlast=False, infirst=False):
+    def insert(self, where=None, data=None, inlast=False):
 
         if not self.root:
-            node = CTreapNode(data=data, size=1, parent=None, pred=None, suc=None)
+            node = CTreapNode(data=data, size=1)
             self.root = node
             self.first = node
             self.last = node
@@ -298,12 +314,6 @@ class CTreap(object):
             self.last = node
             self.last.suc = self.first
             self.first.pred = node
-        elif infirst:
-            node = self._insert(where=self.first, data=data)
-            self.first.pred = node
-            self.first = node
-            self.first.pred = self.last
-            self.last.suc = node
         else:
             self._insert(where=where, data=data)
 
@@ -311,6 +321,10 @@ class CTreap(object):
         '''
         (TODO) different balance : just from the children to the root
         Insert a node in the Treap after 'where' (a node of the CTreap)
+        Idea : If where doesn't have any right children, given the fact that the current node
+        come after 'where', we can add it directly, it respects the order
+        Otherwise the idea is to put it just before the node that came before 'where'
+        so has left children of the successor of 'where'.
         :param key:
         :param data:
         :param priority:
@@ -326,10 +340,13 @@ class CTreap(object):
             where.suc = node
             self.balance()
             return node
-        next = where.suc
-        node = CTreapNode(data=data, size=1, parent=next, pred=next, suc=where)
-        next.left = node
-        next.pred = node
+        suc = where.suc
+        node = CTreapNode(data=data, size=1, parent=suc, pred=where, suc=suc)
+        if suc.left:
+            print("Noeud left a dejà un voisin, bizarre")
+            raise ValueError
+        suc.left = node
+        suc.pred = node
         where.suc = node
         self.balance()
         return node
@@ -378,11 +395,10 @@ class CTreap(object):
 
     def remove(self,node):
         '''
-        Remove the node corresponding to the key
-        :param key: The key to remove
+        Remove the node
+        :param node: Node to remove
         :return:
         '''
-
         if node == self.first:
             self.first = node.suc
         if node == self.last:
@@ -391,72 +407,42 @@ class CTreap(object):
             node.suc.pred = node.pred
         if node.pred:
             node.pred.suc = node.suc
-        removed = False
-        while not removed:
-            if node.left and node.right:
-                if node.left.priority < node.right.priority:
-                    node.right_rotation()
-                    self.plot("right rotation in "+repr(node.data))
-                    plt.show()
-                else:
-                    node.left_rotation()
-                    self.plot("left rotation in "+repr(node.data))
-                    plt.show()
 
-
-            elif not node.left and not node.right:
-                if node.parent.left ==node:
-                    node.parent.left = None
-                else:
-                    node.parent.right = None
-                removed = True
-            elif not node.left:
-                if node.parent.left ==node:
-                    node.parent.left = node.right
-                else:
-                    node.parent.right = node.right
-                removed = True
-            elif not node.right:
-                if node.parent.left ==node:
-                    node.parent.left = node.left
-                else:
-                    node.parent.right = node.left
-                removed = True
+        if node.parent.left == node:
+            # print("Our node is a Left child")
+            p = node.parent
+            p.left = self._remove(node)
+        else:
+            # print("Our node is a right child")
+            p = node.parent
+            p.right = self._remove(node)
         # UPDATE SIZE OF PARENTS
-        p = node.parent
         while p:
             p.update_size()
             p = p.parent
-        node.parent = node.left = node.right = node.prev = node.next = None
 
-        # if node.left and node.right:
-        #     # The next node has no right or no left child
-        #     next = node.suc
-        #     self.swap_nodes(next, node)
-        # if node.suc:
-        #     node.suc.pred = node.pred
-        # if node.pred:
-        #     node.pred.suc = node.suc
-        #
-        # rep = None
-        # if node.left:
-        #     rep = node.left
-        # else:
-        #     rep = node.right
-        # if rep:
-        #     rep.parent = node.parent
-        # if node.parent:
-        #     if node.parent.left == node:  # If left child
-        #         node.parent.left = rep
-        #     else:                         # Right child
-        #         node.parent.right = rep
-        # # UPDATE SIZE OF PARENTS
-        # p = node.parent
-        # while p:
-        #     p.update_size()
-        #     p = p.parent
-        # # Remove references to the node
 
+    def _remove(self,node):
+        if not node.left and not node.right:
+            return None
+        elif not node.left:
+            if node.parent:
+                node.right.parent = node.parent
+            return node.right
+        elif not node.right:
+            if node.parent:
+                node.left.parent = node.parent
+            return node.left
+        else:
+            if node.left.priority < node.right.priority:
+                print("Right rotation")
+                node = node.right_rotation()    # Rotation already deals with filiation
+                node.right = self._remove(node.right)
+            else:
+                print("Left rotation")
+                node = node.left_rotation()     # Rotation already deals with filiation
+                node.left = self._remove(node.left)
+        return node
 
     def split(self, where):
         '''

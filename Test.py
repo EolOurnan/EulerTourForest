@@ -1,9 +1,7 @@
 
 
-from collections import defaultdict
-from EulerTourTrees import construct_euler_tour_tree
+
 from EulerTourForest import construct_euler_tour_forest
-from Treaps import Treap,TreapNode
 import matplotlib.pyplot as plt
 import random
 
@@ -21,10 +19,30 @@ if __name__ == '__main__':
     ET = ETF.trees[0]
     T1 = ET.tree
     T1.plot()
+    print("T1",ET)
     print("T1 first :",T1.first.data)
     print("T1 second :",T1.first.suc.data)
     print("T1 last :",T1.last.data)
-
+    ############### TEST INSERTION #################
+    # T1.insert(data=(5,2),where = T1.first)
+    # T1.plot()
+    # plt.show()
+    ################################################
+    ############## TEST FIND ROOT ##################
+    # print("T1 root :",T1.first.find_root().data)
+    # print("T1 root :",T1.last.find_root().data)
+    # print("T1 root :",T1.last.pred.find_root().data)
+    ################################################
+    ############# TEST ROTATION ####################
+    # rotate_in = T1.first.suc.suc
+    # print("Rotate in :",rotate_in.data)
+    # rotate_in.left_rotation()
+    # print("Rotate in right :",rotate_in.right)
+    # T1.plot('after left rotation in :'+repr(rotate_in.data))
+    # T1.first.suc.right_rotation()
+    # T1.plot('after right rotation in :'+repr(T1.first.suc.suc.data)
+    # exit()
+    ############# TEST DELETION ####################
     to_remove = T1.last.pred.pred.pred.pred
     print("Remove :",to_remove.data)
     T1.remove(to_remove)
