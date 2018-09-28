@@ -56,19 +56,35 @@ if __name__ == '__main__':
     to_split = T1.first.suc.suc.suc.suc.suc.suc.suc
     L,R =T1.split(to_split)
     # L,R = EulerTourTrees(CTreap(L)),EulerTourTrees(CTreap(R))
-    L, R = CTreap(L), CTreap(R)
     L.plot("Left tree after split in "+repr(to_split.data))
     R.plot("Right tree after split in "+repr(to_split.data))
-    print("L :\n",L)
-    print("R :\n",R)
+    print()
+    print(" L before first :",L.first.pred.data)
+    print(" L first :",L.first.data)
+    print(" L last :",L.last.data)
+    print(" L after last :",L.last.suc.data)
+    print()
+    print(" R before first :",R.first.pred.data)
+    print(" R first :",R.first.data)
+    print(" R last :",R.last.data)
+    print(" R after last :",R.last.suc.data)
+    print()
+
+    print("L :\n",EulerTourTrees(L))
+    print("R :\n",EulerTourTrees(R))
     ################################################
     ############# TEST UNION  ######################
-    E = CTreap(union_treap(L,R))
-    print("E :\n",E)
+    # E = CTreap(union_treap(L,R))
+    E = union_treap(R,L)
+    print(" E before first :",E.first.pred.data)
+    print(" E first :",E.first.data)
+    print(" E last :",E.last.data)
+    print(" E after last :",E.last.suc.data)
+    print("E :\n",EulerTourTrees(E))
     E.plot("Union of previous left and right ")
     plt.show()
 
-
+    exit()
     print("T1 :")
     print(ET)
     key= 4

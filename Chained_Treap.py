@@ -452,6 +452,9 @@ class CTreap(object):
         :return:
         '''
         print(" Split on :", where.data)
+        after_where = where.suc
+        first = self.first
+        last = self.last
         s = self.insert(where)
         s.priority = 1 * 10 ** -9
         self.balance()
@@ -461,10 +464,23 @@ class CTreap(object):
             T_left.parent = None
         if T_right:
             T_right.parent = None
-        if s.pred:
-            s.pred.suc = None
-        if s.suc:
-            s.suc.pred = None
+        # if s.pred:  # ==WHERE
+        #     s.pred.suc = first
+        # if s.suc:   # == AFTER WHERE
+        #     s.suc.pred = last
+
+        T_left,T_right = CTreap(T_left),CTreap(T_right)
+
+        T_left.first = first
+        first.pred = where
+        T_left.last = where
+        where.suc = first
+
+        T_right.first = after_where
+        after_where.pred = last
+        T_right.last = last
+        last.suc = after_where
+
         return T_left, T_right
 
     def reroot(self, N):
@@ -485,6 +501,9 @@ class CTreap(object):
 
 
 def union_treap(T1, T2):
+    first = T1.first
+    last = T2.last
+
     if not T2:
         return
     T1, T2 = T1.root, T2.root
@@ -496,7 +515,7 @@ def union_treap(T1, T2):
     # We get the left most leaf of T2
     ll = T2
     while ll.left:
-        ll = ll.right
+        ll = ll.left
 
     # We concat the induced euler tour
     # Maximum of first tree with minimum of second tree
@@ -504,7 +523,12 @@ def union_treap(T1, T2):
     ll.pred = rl
     new_root = _union_treap(T1, T2)
     new_root.parent = None
-    return new_root
+    T = CTreap(new_root)
+    T.first = first
+    T.first.pred = last
+    T.last = last
+    T.last.suc = first
+    return T
 
 
 def _union_treap(T1, T2):
