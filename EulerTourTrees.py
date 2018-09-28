@@ -57,23 +57,23 @@ def plot_euler_tour_tree(root,pos = None):
 
 class EulerTourTrees(object):
     #  A rajouter en list, ou dict, à part
-    def __init__(self, tree=None, tree_edge_2_keys=None,
+    def __init__(self, tree=None, tree_edge_2_node=None,
                  nt_al = None, weight=None):
         '''
 
         :param tree: A Treap
-        :param tree_edge_2_keys: A dictionary associating a tree edge to his key
+        :param tree_edge_2_node: A dictionary associating a tree edge to his key
         :param nt_al: An adjacency set for non tree edges
         '''
         self.tree = tree
-        self.tree_edge_2_keys = tree_edge_2_keys  # Edge to key in Tree
+        self.tree_edge_2_node = tree_edge_2_node  # Edge to key in Tree
         self.nt_al = nt_al                      # Adjacency list for non tree edges (x2 already included : adj list)
         self.weight = weight                        # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
 
 
 
     def __repr__(self):
-        rep = "Tree edge : " + str(self.tree_edge_2_keys) + "\n"
+        rep = " Tree edge : " + str([k for k in self.tree_edge_2_node.keys()]) + "\n"
         rep += " Non Tree edge : "+str(self.nt_al)+ "\n"
         rep += str(self.tree)
         rep += " Euler Tour :"+str(self.get_euler_tour())+"\n"
@@ -82,8 +82,8 @@ class EulerTourTrees(object):
 
 
     def swap_nodes(self, e1, e2):
-        self.tree.swap_nodes(self.tree_edge_2_keys[e1], self.tree_edge_2_keys[e2])
-        self.tree_edge_2_keys[e2], self.tree_edge_2_keys[e1] = self.tree_edge_2_keys[e1], self.tree_edge_2_keys[e2]
+        self.tree.swap_nodes(self.tree_edge_2_node[e1], self.tree_edge_2_node[e2])
+        self.tree_edge_2_node[e2], self.tree_edge_2_node[e1] = self.tree_edge_2_node[e1], self.tree_edge_2_node[e2]
 
 
     def get_in_order(self):
@@ -130,9 +130,9 @@ class EulerTourTrees(object):
         :param e: an edge
         :return:
         '''
-        if e in self.tree_edge_2_keys:
+        if e in self.tree_edge_2_node:
             return True
-        if (e[1],e[0]) in self.tree_edge_2_keys:
+        if (e[1],e[0]) in self.tree_edge_2_node:
             return True
         return False
 
@@ -156,47 +156,48 @@ class EulerTourTrees(object):
         '''
         if self.is_tree_edge(e):
             print("  Tree Edge Deletion")
-            if e not in self.tree_edge_2_keys:
+            if e not in self.tree_edge_2_node:
                 e = (e[1],e[0])
-            positions = self.tree_edge_2_keys[e]
-            print("  Positions :",positions)
+            nodes = self.tree_edge_2_node[e]
+            print("  Nodes :",[i.data for i in nodes])
 
             # Remove the first occurence of the link :
-            print(" Remove first occurence of ",e," at key ",positions[0])
-            J,K = self.tree.split(positions[0])
-            if J and J.search(positions[0]): # USELESS TEST
-                J.remove(positions[0])
-            J.plot(" Left after first occurence removal ")
-            K.plot(" Right after first occurence removal ")
-            print(" Remove second occurence of ",e," at key ",positions[1])
+            print(" Remove first occurence of ",e," : ",nodes[0].data)
+            J,K = self.tree.split(nodes[0])
+            J.remove(nodes[0])
+            J.plot(" Left after removal of "+repr(nodes[0].data))
+            K.plot(" Right after removal of "+repr(nodes[0].data))
+            print(" Remove second occurence of ",e," : ",nodes[1].data)
             # Remove the second occurence of the link
-            if K and K.search(positions[1]): # USELESS TEST
-                K,L = K.split(positions[1])
-                K.remove(positions[1])
-            K.plot(" Left after second occurence removal ")
-            L.plot(" Right after second occurence removal ")
-            E1 = EulerTourTrees(K, self.tree_edge_2_keys, self.nt_al)
+            K,L = K.split(nodes[1])
+
+            K.remove(nodes[1])
+            K.plot(" Left after removal of "+repr(nodes[1].data))
+            print("L :\n",L)
+            if L:
+                L.plot(" Right after removal of "+repr(nodes[1].data))
+            E1 = EulerTourTrees(K, self.tree_edge_2_node, self.nt_al)
             print("  E1 after cut : \n",E1)
             E1.plot("E1 after cut "+repr(e))
             if L:
-                E2 = EulerTourTrees(union_treap(J,L), self.tree_edge_2_keys, self.nt_al)
+                E2 = EulerTourTrees(union_treap(J,L), self.tree_edge_2_node, self.nt_al)
             else:
-                E2 = EulerTourTrees(J, self.tree_edge_2_keys,self.nt_al)
+                E2 = EulerTourTrees(J, self.tree_edge_2_node, self.nt_al)
             print("  E2 : \n",E2)
             E2.plot("E2 after cut "+repr(e))
-            del self.tree_edge_2_keys[e]
+            del self.tree_edge_2_node[e]
             e = self.replace(E1,E2)
             if e:
                 print("  Replacement edge :", e)
                 print("  Found Replacement Edge :) hamdoulilah")
                 E = link_ett(E1, E2, e)
-                E.nt_al[e[0]].remove(e[1])
-                E.nt_al[e[1]].remove(e[0])
+                self.nt_al[e[0]].remove(e[1])
+                self.nt_al[e[1]].remove(e[0])
                 return [E]
             else:
                 print("  Did not Find Replacement Edge :( starfullah")
-                return EulerTourTrees(E1, self.tree_edge_2_keys, self.nt_al),\
-                       EulerTourTrees(E2, self.tree_edge_2_keys, self.nt_al)
+                return EulerTourTrees(E1, self.tree_edge_2_node, self.nt_al),\
+                       EulerTourTrees(E2, self.tree_edge_2_node, self.nt_al)
         else:
             print("  Non Tree Edge Deletion :")
             self.nt_al[e[0]].remove(e[1])
@@ -211,10 +212,12 @@ class EulerTourTrees(object):
         :return: a replacement edge if found, false otherwise
         '''
         # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
+        et1 = set(E1.get_euler_tour())
+        et2 = set(E2.get_euler_tour())
         for u in self.nt_al:
-            if E1.tree.search(self.tree_edge_2_keys[(u, u)][0]):
+            if (u, u) in et1:
                 for v in self.nt_al[u]:
-                    if E2.tree.search(self.tree_edge_2_keys[(v, v)][0]):
+                     if (v,v) in et2:
                         return (u,v)
         return False
 
@@ -226,55 +229,46 @@ def link_ett(T1,T2,e):
     :param e: An edge
     :return:
     '''
-    u,v = e
-    u_key = T1.tree_edge_2_keys[(u, u)][0]
-    v_key = T2.tree_edge_2_keys[(v,v)][0]
-    print("   u pos :",u_key,"  v pos :",v_key)
-    if T2.tree.search(u_key):
-        T1,T2 =T2,T1
+    u,v = e # We know that u is in T1 and v in T2
+    u_node = T1.tree_edge_2_node[(u, u)][0]
+    v_node = T2.tree_edge_2_node[(v,v)][0]
+    print("   u pos :",u_node.data,"  v pos :",v_node.data)
 
-    T1.tree.releaf(u_key)
-    print("  After releafing :")
-    T1.plot("  T1 after releafing in :"+repr(u_key))
-    print(T1)
+    # RELEAF (TODO : Make a function)
+    if T1.tree.last != u_node:
+        L,R =T1.tree.split(where = u_node)
+        T1 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T1.tree_edge_2_node)
+        print("  After releafing :")
+        print(T1)
+        T1.plot("  T1 after releafing in :"+repr(u_node.data))
 
-    T2.tree.reroot(v_key)
-    print("  After rerooting :")
-    T2.plot("  T2 after rerooting in :"+repr(v_key))
-    print(T2)
-
-    # DEFINE NEW Key (astuce de merde )
-    u_node = T1.tree.search(u_key)
-    # if u_node.suc != T1.tree.first:
-    #     uv_key = (u_node.key + T1.successor(u_node).key)/2
-    # else:
-    # uv_key = u_node.key +1 # If u is already the last node
-    uv_key = T1.tree.find_max_value()+1
+    # REROOT (TODO: Make a function)
+    if T2.tree.first != v_node:
+        L,R = T2.tree.split(where = v_node.pred)
+        T2 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T2.tree_edge_2_node)
+        print("  After rerooting :")
+        print(T2)
+        T2.plot("  T2 after rerooting in :"+repr(v_node.data))
     print("###########################################################")
-    print("T1 first :",T1.tree.first.key)
-    print("T1 last :",T1.tree.last.key)
-    T1.tree.insert(key=uv_key, data=e,inlast=True) # Puisque l'on a rerooter T1 en u
-    T1.tree_edge_2_keys[e].append(uv_key)
-    print("After insertion of :",e," with key :",uv_key)
-    T1.plot("T1 after insertion of :"+repr(e)+" with key :"+repr(uv_key))
+    print("T1 first :",T1.tree.first.data)
+    print("T1 last :",T1.tree.last.data)
+    uv_node = T1.tree.insert(data=e,inlast=True) # (u,u) is in T1
+    T1.tree_edge_2_node[e].append(uv_node)
+    print("After insertion of :",e," with data :",uv_node.data)
+    T1.plot("T1 after insertion of :"+repr(e))
     print(T1)
     E = union_treap(T1.tree,T2.tree)
     print(" After Union :")
     E.plot("Union of T1 and T2 ")
-    print(EulerTourTrees(E,T1.tree_edge_2_keys,T1.nt_al))
+    print(EulerTourTrees(E,T1.tree_edge_2_node,T1.nt_al))
 
-    # Define new key ( astuce de merde bis) to insert after (v,v)
-    v_node = E.search(v_key)
-    # if v_node.pred != E.last:
-    #     vu_key = (v_node.key + E.predecessor(v_node).key)/2
-    # else:
-    vu_key = E.find_min_value()-1 # If v is already the first node
-    E.insert(key= vu_key, data=(v, u),infirst=True)
-    T1.tree_edge_2_keys[e].append(vu_key)
-    print(" After final insertion of :",(v,u)," with key :",vu_key)
-    E = EulerTourTrees(E,T1.tree_edge_2_keys,T1.nt_al)
+    vu_node = E.insert(data=(v, u),inlast=True)
+    T1.tree_edge_2_node[e].append(vu_node)
+    print(" After final insertion of :",(v,u)," with data :",vu_node.data)
+    E = EulerTourTrees(E,T1.tree_edge_2_node,T1.nt_al)
     print(E)
-    E.plot(" After Final insertion of : "+repr((v,u))+" with key :"+repr(vu_key))
+    E.plot(" After Final insertion of : "+repr((v,u)))
+    plt.show()
     return E
 
 
@@ -286,18 +280,14 @@ def construct_euler_tour_tree(edge_list):
     '''
     euler_tour = euler_tour_from_edge_list(edge_list)
     T = CTreap()
-    edge_2_occurences = defaultdict(list)
+    edge_2_node = defaultdict(list)
     for i,n in enumerate(euler_tour):
-        if (n[1],n[0]) in edge_2_occurences:
-            edge_2_occurences[(n[1],n[0])].append(i)
+        node = T.insert(data=n,inlast=True)
+        if (n[1],n[0]) in edge_2_node:
+            edge_2_node[(n[1],n[0])].append(node)
         else:
-            edge_2_occurences[n].append(i)
-        print("Insert ",n)
-        T.insert(data=n,inlast=True)
-    print("Edge occurences :",edge_2_occurences)
-    ETT = EulerTourTrees(tree=T, tree_edge_2_keys=edge_2_occurences)
-    print("ETT :",ETT)
-    ETT.plot()
-    plt.show()
+            edge_2_node[n].append(node)
+    # print("Edge occurences :",edge_2_node)
+    ETT = EulerTourTrees(tree=T, tree_edge_2_node=edge_2_node)
     return ETT
 

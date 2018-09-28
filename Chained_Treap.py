@@ -469,17 +469,20 @@ class CTreap(object):
         # if s.suc:   # == AFTER WHERE
         #     s.suc.pred = last
 
-        T_left,T_right = CTreap(T_left),CTreap(T_right)
+        T_left = CTreap(T_left)
+        if T_right:
+            T_right = CTreap(T_right)
 
         T_left.first = first
         first.pred = where
         T_left.last = where
         where.suc = first
 
-        T_right.first = after_where
-        after_where.pred = last
-        T_right.last = last
-        last.suc = after_where
+        if T_right:
+            T_right.first = after_where
+            after_where.pred = last
+            T_right.last = last
+            last.suc = after_where
 
         return T_left, T_right
 
