@@ -1,6 +1,6 @@
 import random
 from collections import defaultdict
-from EulerTourTrees import EulerTourTrees
+from EulerTourTrees import EulerTourTrees,link_ett
 # Source  : https://dl.acm.org/citation.cfm?id=320215
 
 # TODO :Fonction de refactor à la fin (pour les composantes temporelles à stocker)
@@ -220,7 +220,7 @@ class EulerTourForest(object):
             print(" Merge Trees ", v_pos, " and ", u_pos)
             u_tree = self.trees[u_pos]
             v_tree = self.trees[v_pos]
-            uv_tree = EulerTourTrees.link_ett(u_tree, v_tree, e)
+            uv_tree = link_ett(u_tree, v_tree, e)
             # TODO : Actualize position of nodes in v_tree
             self.trees[u_pos] = uv_tree
             self.node_2_tree[v] = u_pos
@@ -239,6 +239,7 @@ class EulerTourForest(object):
         # TODO : edge_2_pos to fix
         if R:
             for ETT in R:
+                print(" Non tree EDGE :", ETT.nt_al)
                 self.trees.append(ETT)
                 l = len(self.trees) - 1
                 for v in self.node_2_tree:
@@ -292,6 +293,6 @@ if __name__ == '__main__':
          # (13,14)
          ]  # Initial edge list
     # M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
-    M = [(-1, 4, 5), (-1, 4, 6)]
-    # M = [(-1,1,3),(-1,1,2),(-1,4,5),(-1,4,6)]
+    # M = [(-1, 4, 5), (-1, 4, 6)]
+    M = [(1,4,5),(1,1,2),(-1,1,2),(-1,1,3),(-1,4,5),(-1,4,6)]
     dynamic_connectivity(E, M)

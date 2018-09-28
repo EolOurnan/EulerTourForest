@@ -76,7 +76,7 @@ class EulerTourTrees(object):
         rep = " Tree edge : " + str([k for k in self.tree_edge_2_node.keys()]) + "\n"
         rep += " Non Tree edge : "+str(self.nt_al)+ "\n"
         rep += str(self.tree)
-        rep += " Euler Tour :"+str(self.get_euler_tour())+"\n"
+        #rep += " Euler Tour :"+str(self.get_euler_tour())+"\n"
         rep += " Priority Order :"+str(self.tree.get_data_in_priority_order())+"\n"
         return rep
 
@@ -99,21 +99,7 @@ class EulerTourTrees(object):
         Return the induced euler tour representation of the Tree
         :return:
         '''
-        first = self.tree.first
-        euler_tour = [first.data]
-        current = first.suc
-        # print("############################")
-        # print("First :",self.tree.first.key)
-        # print("Last :",self.tree.last.key)
-        cnt =0
-        while current != first:
-            # if cnt >= 25:
-            #     exit()
-            # print("Current key :",current.key)
-            euler_tour.append(current.data)
-            current = current.suc
-            cnt += 1
-        return euler_tour
+        return self.tree.get_euler_tour()
 
 
     def plot(self,title=None):
@@ -162,30 +148,47 @@ class EulerTourTrees(object):
             print("  Nodes :",[i.data for i in nodes])
 
             # Remove the first occurence of the link :
-            print(" Remove first occurence of ",e," : ",nodes[0].data)
+            print("\n Remove first occurence of ",e," : ",nodes[0].data)
             J,K = self.tree.split(nodes[0])
             J.remove(nodes[0])
             J.plot(" Left after removal of "+repr(nodes[0].data))
             K.plot(" Right after removal of "+repr(nodes[0].data))
-            print(" Remove second occurence of ",e," : ",nodes[1].data)
+            print(" J :\n",J)
+            print(" K :\n",K)
+            print("\n Remove second occurence of ",e," : ",nodes[1].data)
             # Remove the second occurence of the link
-            K,L = K.split(nodes[1])
+            if nodes[1].data in set(K.get_euler_tour()):
+                K,L = K.split(nodes[1])
+                K.remove(nodes[1])
+                K.plot(" Left after removal of " + repr(nodes[1].data))
+                print(" K :\n", K)
+                print(" L :\n", L)
+                E1 = EulerTourTrees(K, self.tree_edge_2_node, self.nt_al)
+                if L:
+                    L.plot(" Right after removal of " + repr(nodes[1].data))
+                    E2 = EulerTourTrees(union_treap(J, L), self.tree_edge_2_node, self.nt_al)
+                else:
+                    E2 = EulerTourTrees(J, self.tree_edge_2_node, self.nt_al)
 
-            K.remove(nodes[1])
-            K.plot(" Left after removal of "+repr(nodes[1].data))
-            print("L :\n",L)
-            if L:
-                L.plot(" Right after removal of "+repr(nodes[1].data))
-            E1 = EulerTourTrees(K, self.tree_edge_2_node, self.nt_al)
+            else:
+                J,L = J.split(nodes[1])
+                J.remove(nodes[1])
+                J.plot(" Left after removal of " + repr(nodes[1].data))
+                print(" J :\n",J)
+                print(" L :\n",L)
+                if K:
+                    E1 = EulerTourTrees(union_treap(J,K), self.tree_edge_2_node, self.nt_al)
+                else:
+                    E1 = EulerTourTrees(J, self.tree_edge_2_node, self.nt_al)
+                E2 = EulerTourTrees(L, self.tree_edge_2_node, self.nt_al)
+
             print("  E1 after cut : \n",E1)
             E1.plot("E1 after cut "+repr(e))
-            if L:
-                E2 = EulerTourTrees(union_treap(J,L), self.tree_edge_2_node, self.nt_al)
-            else:
-                E2 = EulerTourTrees(J, self.tree_edge_2_node, self.nt_al)
+
             print("  E2 : \n",E2)
             E2.plot("E2 after cut "+repr(e))
             del self.tree_edge_2_node[e]
+            print(" # NON TREE EDGES :",self.nt_al)
             e = self.replace(E1,E2)
             if e:
                 print("  Replacement edge :", e)
@@ -193,11 +196,11 @@ class EulerTourTrees(object):
                 E = link_ett(E1, E2, e)
                 self.nt_al[e[0]].remove(e[1])
                 self.nt_al[e[1]].remove(e[0])
+                E.nt_al = self.nt_al
                 return [E]
             else:
                 print("  Did not Find Replacement Edge :( starfullah")
-                return EulerTourTrees(E1, self.tree_edge_2_node, self.nt_al),\
-                       EulerTourTrees(E2, self.tree_edge_2_node, self.nt_al)
+                return E1,E2
         else:
             print("  Non Tree Edge Deletion :")
             self.nt_al[e[0]].remove(e[1])
@@ -265,7 +268,7 @@ def link_ett(T1,T2,e):
     vu_node = E.insert(data=(v, u),inlast=True)
     T1.tree_edge_2_node[e].append(vu_node)
     print(" After final insertion of :",(v,u)," with data :",vu_node.data)
-    E = EulerTourTrees(E,T1.tree_edge_2_node,T1.nt_al)
+    E = EulerTourTrees(E,T1.tree_edge_2_node)
     print(E)
     E.plot(" After Final insertion of : "+repr((v,u)))
     plt.show()

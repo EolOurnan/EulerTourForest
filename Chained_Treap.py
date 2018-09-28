@@ -38,10 +38,9 @@ class CTreapNode(object):
 
     def left_rotation(self):
         '''
-        (TODO) CHANGE SIZE ATTRIBUTE
         Perform a left rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
-        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
+        Note : This doesn't change the cyclic order, successor and predecessor unchanged
         :return: New root (aka the right child)
         '''
         root = self
@@ -53,6 +52,9 @@ class CTreapNode(object):
         if pivot.left:
             pivot.left.parent = root
 
+        # Change size
+        root.size,pivot.size = pivot.size,root.size
+
         # Rotate
         root.right = pivot.left
         pivot.left = root
@@ -62,10 +64,9 @@ class CTreapNode(object):
 
     def right_rotation(self):
         '''
-        (TODO) CHANGE SIZE ATTRIBUTE
         Perform a right rotation on the Treap with the current TreapNode as the root
         https://en.wikipedia.org/wiki/Tree_rotation
-        Note : This doesn't chang ethe cyclic order, successor and predecessor unchanged
+        Note : This doesn't change the cyclic order, successor and predecessor unchanged
         :return: New root ( aka the left child)
         '''
         root = self
@@ -76,6 +77,9 @@ class CTreapNode(object):
         root.parent = pivot
         if pivot.right:
             pivot.right.parent = root
+
+        # Change size
+        root.size,pivot.size = pivot.size,root.size
 
         # Rotate
         root.left = pivot.right
@@ -156,8 +160,29 @@ class CTreap(object):
         self._get_data_in_priority_order(self.root, L)
         return [i for i in L]
 
+    def get_euler_tour(self):
+        '''
+        Return the induced euler tour representation of the Tree
+        :return:
+        '''
+        first = self.first
+        euler_tour = [first.data]
+        current = first.suc
+        # print("############################")
+        # print("First :",self.tree.first.key)
+        # print("Last :",self.tree.last.key)
+        cnt =0
+        while current != first:
+            # if cnt >= 25:
+            #     exit()
+            # print("Current key :",current.key)
+            euler_tour.append(current.data)
+            current = current.suc
+            cnt += 1
+        return euler_tour
+
     def __repr__(self):
-        return str(self.root)
+        return "Euler Tour : "+repr(self.get_euler_tour())+"\n"+str(self.root)
 
     def swap_nodes(self, u, v):
         u.priority, v.priority = v.priority, u.priority         # Swap priorities
@@ -231,7 +256,7 @@ class CTreap(object):
             N = []
         if not E:
             E = []
-        N.append(((x_parent, y_parent), (node.data)))  # ,node.priority))) # priority
+        N.append(((x_parent, y_parent), (node.data,node.size)))  # ,node.priority))) # priority
         if node.left:
             if y_parent:
                 y_pos = y_parent - 1
@@ -285,7 +310,7 @@ class CTreap(object):
         x_max = 0
         # Nodes are ordered as in a DFS traversal of the tree
         for pos, data in N:
-            label = str(data)  # + "\n" + str(data[1])  # +"\n"+str(data[2])  #priority
+            label = str(data[0])+ "\n" + str(data[1])  # Data + Size
             x_max = max(x_max, pos[0])
             x_min = min(x_min, pos[0])
             y_min = min(y_min, pos[1])
@@ -308,6 +333,7 @@ class CTreap(object):
             self.root = node
             self.first = node
             self.last = node
+            return node
         elif inlast:  # It means that this node is the new last
             node = self._insert(where=self.last, data=data)
             self.last.suc = node
@@ -316,6 +342,11 @@ class CTreap(object):
             self.first.pred = node
         else:
             node = self._insert(where=where, data=data)
+        # UPDATE SIZE OF PARENTS
+        p = node.parent
+        while p:
+            p.update_size()
+            p = p.parent
         return node
 
     def _insert(self, where, data=None):
