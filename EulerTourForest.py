@@ -227,6 +227,7 @@ class EulerTourForest(object):
             self.trees[v_pos] = None
         return
 
+
     def remove_edge(self, e):
         '''
         Remove an edge from the Euler Tour Forest
