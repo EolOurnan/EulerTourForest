@@ -95,7 +95,7 @@ def construct_euler_tour_forest(edge_list):
         Trees.append(ETT)
         cnt_trees += 1
     plt.show()
-    return EulerTourForest(trees=Trees, node_2_tree=node_2_tree)
+    return EulerTourForest(trees=Trees, tree_edge_2_node=node_2_tree)
 
 
 class ETF_collections(object):
@@ -162,23 +162,47 @@ class EulerTourForest(object):
     In the same manner as a Spanning forest if composed of Spanning Tree
     '''
 
-    def __init__(self, trees=[], node_2_tree={}):
+    def __init__(self, trees=[], tree_edge_2_node={}, non_tree_edges_al = defaultdict(set)):
         '''
-        # TODO: MUST FOllow node 2 tree, number 1 Piority
-        :param trees:  List of trees constituting the spanning forest (each Tree an EulerTourTree)
-        :param node_2_tree : List of node position in the forest : the index of the tree in :param trees:
+        :param trees:  List of trees constituting the spanning forest (each Tree an EulerTourTree).
+        :param tree_edge_2_node : List of node position in the forest : the index of the tree in trees.
+        :param non_tree_edges_al: Adjacency List (set) of non tree edges.
         '''
         self.trees = trees
-        self.node_2_tree = node_2_tree
+        self.tree_edge_2_node = tree_edge_2_node
+        self.non_tree_edges_al = non_tree_edges_al
+
 
     def __repr__(self):
-        rp = "Node to tree : " + str(self.node_2_tree) + "\n"
+        rep = " Tree edges : " + str([k for k in self.tree_edge_2_node.keys()]) + "\n"
+        rep += " Non Tree edges : " + str(self.non_tree_edges_al) + "\n"
         for i in range(len(self.trees)):
-            rp += str(self.trees[i]) + "\n"
-        return rp
+            rep += str(self.trees[i]) + "\n"
+        return rep
+
+    def is_tree_edge(self,e):
+        '''
+        Return true if *e* is tree edge, false otherwise
+        :param e: an edge
+        :return:
+        '''
+        if e in self.tree_edge_2_node:
+            return True
+        if (e[1],e[0]) in self.tree_edge_2_node:
+            return True
+        return False
 
     def plot(self, title=None):
-        self.trees[0].plot(title)
+        '''
+        Plot the Euler Tour Trees in the Euler Tour Forest
+        :param title: An optional title
+        :return:
+        '''
+        for i,T in enumerate(self.trees):
+            if title:
+                T.plot(title)
+            else:
+                T.plot(str(i)+" Tree of the Euler Tour Forest ")
 
     def check_edge_presence(self, e):
         '''
@@ -186,9 +210,9 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
-        if e[0] not in self.node_2_tree:
+        if e[0] not in self.tree_edge_2_node:
             return False
-        if e[1] not in self.node_2_tree:
+        if e[1] not in self.tree_edge_2_node:
             return False
         return True
 
@@ -198,9 +222,9 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
-        if e[0] in self.node_2_tree:
+        if e[0] in self.tree_edge_2_node:
             return True
-        if e[1] in self.node_2_tree:
+        if e[1] in self.tree_edge_2_node:
             return True
         return False
 
@@ -211,8 +235,8 @@ class EulerTourForest(object):
         :return:
         '''
         u, v = e
-        u_tree_number = self.node_2_tree[u]
-        v_tree_number = self.node_2_tree[v]
+        u_tree_number = self.tree_edge_2_node[u]
+        v_tree_number = self.tree_edge_2_node[v]
         if u_tree_number == v_tree_number:  # They are already in the same tree
             print(" Insert in tree number :", u_tree_number)
             self.trees[u_tree_number].insert(e)
@@ -225,7 +249,7 @@ class EulerTourForest(object):
             self.trees[u_tree_number] = uv_tree
             for n in v_tree.get_euler_tour():
                 if n[0] == n[1]:
-                    self.node_2_tree[n[0]] = u_tree_number
+                    self.tree_edge_2_node[n[0]] = u_tree_number
             self.trees[v_tree_number] = None
         return
 
@@ -236,7 +260,7 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
-        tree_number = self.node_2_tree[e[0]]
+        tree_number = self.tree_edge_2_node[e[0]]
         print(" Remove in tree number :", tree_number)
         R = self.trees[tree_number].cut(e)
         # TODO : edge_2_pos to fix
@@ -245,14 +269,14 @@ class EulerTourForest(object):
                 print(" Non tree EDGE :", ETT.nt_al)
                 self.trees.append(ETT)
                 l = len(self.trees) - 1
-                for v in self.node_2_tree:
+                for v in self.tree_edge_2_node:
                     if (v, v) not in ETT.tree_edge_2_node:
-                        self.node_2_tree[v] = None
+                        self.tree_edge_2_node[v] = None
                     else:
                         # et = set(ETT.get_euler_tour())
                         # if (v,v) in et:
                         if ETT.tree_edge_2_node[(v,v)][0].find_root() == ETT.tree.root:
-                            self.node_2_tree[v] = l
+                            self.tree_edge_2_node[v] = l
             self.trees[tree_number] = None
 
     def reformat(self):

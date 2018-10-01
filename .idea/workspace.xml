@@ -2,35 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a938dd3-54ef-4672-b10f-8939c5e1c480" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/EulerTourForest.rst" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/EulerTourForest.rst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/EulerTourTrees.rst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/doctrees/EulerTourForest.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/doctrees/EulerTourForest.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/doctrees/EulerTourTrees.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/doctrees/EulerTourTrees.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/doctrees/environment.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/doctrees/modules.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/doctrees/modules.doctree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/.buildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/EulerTourForest.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/EulerTourForest.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/EulerTourTrees.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/EulerTourTrees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/EulerTourForest.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/EulerTourForest.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/EulerTourTrees.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/EulerTourTrees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/Treaps.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourForest/Treaps.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourTrees.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_modules/EulerTourTrees.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_modules/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_modules/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_sources/EulerTourForest.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_sources/EulerTourForest.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_sources/modules.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_sources/modules.rst.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_static/basic.css" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_static/basic.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_static/doctools.js" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_static/doctools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_static/jquery.js" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_static/jquery.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/_static/websupport.js" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/_static/websupport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/genindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/modules.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/modules.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/objects.inv" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/objects.inv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/py-modindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/py-modindex.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/_build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/_build/html/searchindex.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Doc/modules.rst" beforeDir="false" afterPath="$PROJECT_DIR$/Doc/modules.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chained_Treap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chained_Treap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EulerTourForest.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourForest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EulerTourTrees.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourTrees.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EulerTourTrees_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/EulerTourTrees_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Treaps.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/Treaps.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -66,20 +42,8 @@
       <file leaf-file-name="EulerTourTrees.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="78" column="50" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Treaps.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Treaps.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="475">
-              <caret line="341" column="32" selection-start-line="341" selection-start-column="32" selection-end-line="341" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="182">
+              <caret line="95" selection-start-line="95" selection-end-line="95" />
             </state>
           </provider>
         </entry>
@@ -87,8 +51,8 @@
       <file leaf-file-name="Chained_Treap.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+            <state relative-caret-position="1950">
+              <caret line="186" column="30" selection-start-line="186" selection-start-column="30" selection-end-line="186" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -96,8 +60,11 @@
       <file leaf-file-name="EulerTourForest.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="226" column="32" lean-forward="true" selection-start-line="226" selection-start-column="32" selection-end-line="226" selection-end-column="32" />
+            <state relative-caret-position="238">
+              <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
+              <folding>
+                <element signature="e#3604#5458#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -124,6 +91,8 @@
       <find>Merge Tree</find>
       <find>plt.sho</find>
       <find>__repr</find>
+      <find>get_data_</find>
+      <find>nt_al</find>
       <find>get_euler</find>
     </findStrings>
     <replaceStrings>
@@ -144,12 +113,13 @@
         <option value="$PROJECT_DIR$/EulerSpanningForest.py" />
         <option value="$PROJECT_DIR$/Test.py" />
         <option value="$PROJECT_DIR$/Test.py" />
+        <option value="$PROJECT_DIR$/Chained_Treap.py" />
         <option value="$PROJECT_DIR$/Treaps.py" />
         <option value="$PROJECT_DIR$/Treaps.py" />
-        <option value="$PROJECT_DIR$/EulerTourForest.py" />
-        <option value="$PROJECT_DIR$/EulerTourForest.py" />
         <option value="$PROJECT_DIR$/EulerTourTrees.py" />
         <option value="$PROJECT_DIR$/EulerTourTrees.py" />
+        <option value="$PROJECT_DIR$/EulerTourForest.py" />
+        <option value="$PROJECT_DIR$/EulerTourForest.py" />
       </list>
     </option>
   </component>
@@ -185,6 +155,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/OLD" />
       <recent name="$PROJECT_DIR$/.." />
       <recent name="$USER_HOME$/CODE" />
     </key>
@@ -285,7 +256,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Treaps.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/OLD/Treaps.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -517,7 +488,14 @@
       <option name="project" value="LOCAL" />
       <updated>1538389966139</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root">
+      <created>1538406809123</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1538406809123</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -526,8 +504,9 @@
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11710739" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50677085" side_tool="true" visible="true" weight="0.33051643" />
-      <window_info active="true" anchor="bottom" x="67" y="55" width="1853" height="1145" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5083648" side_tool="true" visible="true" weight="0.33051643" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49163517" weight="0.32769954" />
+      <window_info anchor="bottom" x="67" y="55" width="1853" height="1145" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49791667" weight="0.3295688" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -541,7 +520,6 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49322918" weight="0.32854208" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -561,7 +539,8 @@
     <MESSAGE value="Regarder les TODO (penser aux améliorations décrites, ya une bonne idée&#10;qui traine)" />
     <MESSAGE value="La galère" />
     <MESSAGE value="Non tree edge deletion, update adjacency list" />
-    <option name="LAST_COMMIT_MESSAGE" value="Non tree edge deletion, update adjacency list" />
+    <MESSAGE value="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root" />
+    <option name="LAST_COMMIT_MESSAGE" value="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -579,7 +558,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
           <caret line="116" column="27" lean-forward="true" selection-start-line="116" selection-start-column="27" selection-end-line="116" selection-end-column="27" />
@@ -592,7 +571,7 @@
     <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2826">
           <caret line="161" column="32" lean-forward="true" selection-start-line="161" selection-start-column="32" selection-end-line="161" selection-end-column="32" />
@@ -609,7 +588,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
@@ -630,7 +609,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
@@ -662,7 +647,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1062">
           <caret line="63" column="24" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
@@ -676,6 +661,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="774">
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -723,10 +711,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="511">
           <caret line="116" column="27" selection-start-line="116" selection-start-column="27" selection-end-line="116" selection-end-column="27" />
@@ -753,7 +744,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3723">
           <caret line="224" column="27" lean-forward="true" selection-start-line="224" selection-start-column="27" selection-end-line="224" selection-end-column="27" />
@@ -767,6 +758,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3706">
           <caret line="237" column="31" lean-forward="true" selection-start-line="237" selection-start-column="31" selection-end-line="237" selection-end-column="31" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -787,7 +781,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1972">
           <caret line="116" column="27" lean-forward="true" selection-start-line="116" selection-start-column="27" selection-end-line="116" selection-end-column="27" />
@@ -801,13 +795,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2023">
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2826">
           <caret line="161" column="32" lean-forward="true" selection-start-line="161" selection-start-column="32" selection-end-line="161" selection-end-column="32" />
@@ -824,7 +821,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="7" selection-start-line="7" selection-end-line="7" />
@@ -845,7 +842,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -871,7 +874,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1062">
           <caret line="63" column="24" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
@@ -885,6 +888,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="774">
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -919,17 +925,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Treaps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="341" column="32" selection-start-line="341" selection-start-column="32" selection-end-line="341" selection-end-column="32" />
+        <state relative-caret-position="458">
+          <caret line="673" column="8" selection-start-line="673" selection-start-column="8" selection-end-line="673" selection-end-column="8" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
@@ -938,15 +937,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="78" column="50" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="50" />
+        <state relative-caret-position="182">
+          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1950">
+          <caret line="186" column="30" selection-start-line="186" selection-start-column="30" selection-end-line="186" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="226" column="32" lean-forward="true" selection-start-line="226" selection-start-column="32" selection-end-line="226" selection-end-column="32" />
+        <state relative-caret-position="238">
+          <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
+          <folding>
+            <element signature="e#3604#5458#0" />
+          </folding>
         </state>
       </provider>
     </entry>

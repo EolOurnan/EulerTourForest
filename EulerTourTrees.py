@@ -3,14 +3,14 @@ from collections import defaultdict
 from Chained_Treap import union_treap,CTreap
 
 
-# 'TODO' ALLLL
-
 def euler_tour_from_edge_list(edge_list):
     '''
     Compute the euler tour of a graph ( with edges, including self loops,
-     instead of nodes)
-    :param edge_list: An edge list
-    :return: A lsit containing the euler tour
+     instead of nodes).
+
+     https://en.wikipedia.org/wiki/Euler_tour_technique
+    :param edge_list: An edge list.
+    :return: A list containing the euler tour.
     '''
     a_l = defaultdict(list)
     for l in edge_list:  # Create edge list (2*m links)
@@ -37,7 +37,14 @@ def euler_tour_from_edge_list(edge_list):
         edge_tour.append((u,tour[i+1]))
     return edge_tour
 
+
 def plot_euler_tour_tree(root,pos = None):
+    '''
+    Deprecated, use .plot() method instead
+    :param root:
+    :param pos:
+    :return:
+    '''
     if not pos:
         pos = [0,0]
     else:
@@ -57,42 +64,19 @@ def plot_euler_tour_tree(root,pos = None):
 
 class EulerTourTrees(object):
     #  A rajouter en list, ou dict, à part
-    def __init__(self, tree=None, tree_edge_2_node=None,
-                 nt_al = None, weight=None):
+    def __init__(self, tree=None,weight=None):
         '''
 
         :param tree: A Treap
         :param tree_edge_2_node: A dictionary associating a tree edge to his key
-        :param nt_al: An adjacency set for non tree edges
+        :param non_tree_edges_al: An adjacency set for non tree edges
         '''
         self.tree = tree
-        self.tree_edge_2_node = tree_edge_2_node  # Edge to key in Tree
-        self.nt_al = nt_al                      # Adjacency list for non tree edges (x2 already included : adj list)
-        self.weight = weight                        # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
-
-
+        self.weight = weight   # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
 
     def __repr__(self):
-        rep = " Tree edge : " + str([k for k in self.tree_edge_2_node.keys()]) + "\n"
-        rep += " Non Tree edge : "+str(self.nt_al)+ "\n"
-        rep += str(self.tree)
-        #rep += " Euler Tour :"+str(self.get_euler_tour())+"\n"
-        rep += " Priority Order :"+str(self.tree.get_data_in_priority_order())+"\n"
+        rep = str(self.tree)
         return rep
-
-
-    def swap_nodes(self, e1, e2):
-        self.tree.swap_nodes(self.tree_edge_2_node[e1], self.tree_edge_2_node[e2])
-        self.tree_edge_2_node[e2], self.tree_edge_2_node[e1] = self.tree_edge_2_node[e1], self.tree_edge_2_node[e2]
-
-
-    def get_in_order(self):
-        '''
-        Return the in-order representation of the Tree
-        :return:
-        '''
-        in_order = self.tree.get_data_in_key_order()
-        return in_order
 
     def get_euler_tour(self):
         '''
@@ -110,17 +94,6 @@ class EulerTourTrees(object):
         '''
         self.tree.plot(title)
 
-    def is_tree_edge(self,e):
-        '''
-        Return true if :param e: is tree edge, false otherwise
-        :param e: an edge
-        :return:
-        '''
-        if e in self.tree_edge_2_node:
-            return True
-        if (e[1],e[0]) in self.tree_edge_2_node:
-            return True
-        return False
 
     def insert(self,e):
         '''

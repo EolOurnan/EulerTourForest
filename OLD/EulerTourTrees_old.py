@@ -1,7 +1,7 @@
 
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from Treaps import union_treaps,Treap
+from OLD.Treaps import union_treaps,Treap
 
 
 def euler_tour_from_edge_list(edge_list):

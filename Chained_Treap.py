@@ -182,7 +182,10 @@ class CTreap(object):
         return euler_tour
 
     def __repr__(self):
-        return "Euler Tour : "+repr(self.get_euler_tour())+"\n"+str(self.root)
+        rep = "Euler Tour : "+repr(self.get_euler_tour())+"\n"
+        rep += " Priority Order :"+str(self.get_data_in_priority_order())+"\n"
+        rep += +str(self.root)
+        return rep
 
     def swap_nodes(self, u, v):
         u.priority, v.priority = v.priority, u.priority         # Swap priorities
