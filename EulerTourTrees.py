@@ -194,9 +194,8 @@ class EulerTourTrees(object):
                 print("  Replacement edge :", e)
                 print("  Found Replacement Edge :) hamdoulilah")
                 E = link_ett(E1, E2, e)
-                self.nt_al[e[0]].remove(e[1])
-                self.nt_al[e[1]].remove(e[0])
-                E.nt_al = self.nt_al
+                E.nt_al[e[0]].remove(e[1])
+                E.nt_al[e[1]].remove(e[0])
                 return [E]
             else:
                 print("  Did not Find Replacement Edge :( starfullah")
@@ -240,7 +239,7 @@ def link_ett(T1,T2,e):
     # RELEAF (TODO : Make a function)
     if T1.tree.last != u_node:
         L,R =T1.tree.split(where = u_node)
-        T1 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T1.tree_edge_2_node)
+        T1 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T1.tree_edge_2_node,nt_al=T1.nt_al)
         print("  After releafing :")
         print(T1)
         T1.plot("  T1 after releafing in :"+repr(u_node.data))
@@ -248,7 +247,7 @@ def link_ett(T1,T2,e):
     # REROOT (TODO: Make a function)
     if T2.tree.first != v_node:
         L,R = T2.tree.split(where = v_node.pred)
-        T2 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T2.tree_edge_2_node)
+        T2 = EulerTourTrees(union_treap(R,L),tree_edge_2_node=T2.tree_edge_2_node,nt_al=T1.nt_al)
         print("  After rerooting :")
         print(T2)
         T2.plot("  T2 after rerooting in :"+repr(v_node.data))
@@ -269,9 +268,11 @@ def link_ett(T1,T2,e):
     T1.tree_edge_2_node[e].append(vu_node)
     print(" After final insertion of :",(v,u)," with data :",vu_node.data)
     E = EulerTourTrees(E,T1.tree_edge_2_node)
-    print(E)
     E.plot(" After Final insertion of : "+repr((v,u)))
-    plt.show()
+    # plt.show()
+    T1.nt_al.update(T2.nt_al)
+    E.nt_al = T1.nt_al
+    print(E)
     return E
 
 

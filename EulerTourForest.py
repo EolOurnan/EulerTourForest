@@ -211,20 +211,22 @@ class EulerTourForest(object):
         :return:
         '''
         u, v = e
-        u_pos = self.node_2_tree[u]
-        v_pos = self.node_2_tree[v]
-        if u_pos == v_pos:  # They are already in the same tree
-            print(" Insert in tree number :", u_pos)
-            self.trees[u_pos].insert(e)
+        u_tree_number = self.node_2_tree[u]
+        v_tree_number = self.node_2_tree[v]
+        if u_tree_number == v_tree_number:  # They are already in the same tree
+            print(" Insert in tree number :", u_tree_number)
+            self.trees[u_tree_number].insert(e)
         else:  # They are in different trees
-            print(" Merge Trees ", v_pos, " and ", u_pos)
-            u_tree = self.trees[u_pos]
-            v_tree = self.trees[v_pos]
+            print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
+            u_tree = self.trees[u_tree_number]
+            v_tree = self.trees[v_tree_number]
             uv_tree = link_ett(u_tree, v_tree, e)
-            # TODO : Actualize position of nodes in v_tree
-            self.trees[u_pos] = uv_tree
-            self.node_2_tree[v] = u_pos
-            self.trees[v_pos] = None
+            #TODO : Actualize position of nodes in v_tree
+            self.trees[u_tree_number] = uv_tree
+            for n in v_tree.get_euler_tour():
+                if n[0] == n[1]:
+                    self.node_2_tree[n[0]] = u_tree_number
+            self.trees[v_tree_number] = None
         return
 
 
@@ -269,11 +271,11 @@ def dynamic_connectivity(E, M):
         if c == -1:  # Deletion
             print("\nDeletion : ", (u, v))
             ETF.remove_edge((u, v))
-            plt.show()
+            # plt.show()
         if c == 1:  # Insertion
             print("\nInsertion : ", (u, v))
             ETF.insert_edge((u, v))
-            plt.show()
+            # plt.show()
         print("ETF :\n", ETF)
     print("ETF after sequence :\n", ETF)
     G = ETF.reformat()
