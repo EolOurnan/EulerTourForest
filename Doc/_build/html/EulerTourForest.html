@@ -84,8 +84,10 @@
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">EulerTourForest package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-EulerTourForest.Chained_Treap">EulerTourForest.Chained_Treap module</a></li>
 <li><a class="reference internal" href="#module-EulerTourForest.EulerTourForest">EulerTourForest.EulerTourForest module</a></li>
 <li><a class="reference internal" href="#module-EulerTourForest.EulerTourTrees">EulerTourForest.EulerTourTrees module</a></li>
+<li><a class="reference internal" href="#module-EulerTourForest.EulerTourTrees_old">EulerTourForest.EulerTourTrees_old module</a></li>
 <li><a class="reference internal" href="#eulertourforest-test-module">EulerTourForest.Test module</a></li>
 <li><a class="reference internal" href="#module-EulerTourForest.Treaps">EulerTourForest.Treaps module</a></li>
 <li><a class="reference internal" href="#module-EulerTourForest">Module contents</a></li>
@@ -160,12 +162,164 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-EulerTourForest.Chained_Treap">
+<span id="eulertourforest-chained-treap-module"></span><h2>EulerTourForest.Chained_Treap module<a class="headerlink" href="#module-EulerTourForest.Chained_Treap" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="EulerTourForest.Chained_Treap.CTreap">
+<em class="property">class </em><code class="descclassname">EulerTourForest.Chained_Treap.</code><code class="descname">CTreap</code><span class="sig-paren">(</span><em>root=None</em>, <em>first=None</em>, <em>last=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Treap, binary randomized tree self balanced and key by index ( not a usual key)</p>
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.balance">
+<code class="descname">balance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.balance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Balance the Treap to respect the Heap invariant
+:Status: OK
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.check_heap_invariant">
+<code class="descname">check_heap_invariant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.check_heap_invariant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.check_heap_invariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the heap invariant of the Treap
+:return: True if invariant respected, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.find_first">
+<code class="descname">find_first</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.find_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.find_first" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.find_last">
+<code class="descname">find_last</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.find_last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.find_last" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.find_root">
+<code class="descname">find_root</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.find_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.find_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the root of the current node
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.get_data_in_priority_order">
+<code class="descname">get_data_in_priority_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.get_data_in_priority_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.get_data_in_priority_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.get_euler_tour">
+<code class="descname">get_euler_tour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.get_euler_tour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.get_euler_tour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the induced euler tour representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.get_internal_structure">
+<code class="descname">get_internal_structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.get_internal_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.get_internal_structure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>where=None</em>, <em>data=None</em>, <em>inlast=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.insert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.releaf">
+<code class="descname">releaf</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.releaf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.releaf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the node
+:param node: Node to remove
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.reroot">
+<code class="descname">reroot</code><span class="sig-paren">(</span><em>N</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.reroot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.reroot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.split">
+<code class="descname">split</code><span class="sig-paren">(</span><em>where</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>(TODO) YA un truc à optimiser au niveau des pointeurs etc….
+:param key:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreap.swap_nodes">
+<code class="descname">swap_nodes</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreap.swap_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreap.swap_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode">
+<em class="property">class </em><code class="descclassname">EulerTourForest.Chained_Treap.</code><code class="descname">CTreapNode</code><span class="sig-paren">(</span><em>data=None</em>, <em>parent=None</em>, <em>pred=None</em>, <em>suc=None</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A node of a Treap (priority is determined at random and used to balance the Treap)</p>
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode.find_root">
+<code class="descname">find_root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode.find_root"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode.find_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the root of the current node
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode.left_rotation">
+<code class="descname">left_rotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode.left_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode.left_rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a left rotation on the Treap with the current TreapNode as the root
+<a class="reference external" href="https://en.wikipedia.org/wiki/Tree_rotation">https://en.wikipedia.org/wiki/Tree_rotation</a>
+Note : This doesn’t change the cyclic order, successor and predecessor unchanged
+:return: New root (aka the right child)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode.right_rotation">
+<code class="descname">right_rotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode.right_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode.right_rotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a right rotation on the Treap with the current TreapNode as the root
+<a class="reference external" href="https://en.wikipedia.org/wiki/Tree_rotation">https://en.wikipedia.org/wiki/Tree_rotation</a>
+Note : This doesn’t change the cyclic order, successor and predecessor unchanged
+:return: New root ( aka the left child)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Chained_Treap.CTreapNode.update_size">
+<code class="descname">update_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#CTreapNode.update_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.CTreapNode.update_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to keep the size
+:param node:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="EulerTourForest.Chained_Treap.union_treap">
+<code class="descclassname">EulerTourForest.Chained_Treap.</code><code class="descname">union_treap</code><span class="sig-paren">(</span><em>T1</em>, <em>T2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Chained_Treap.html#union_treap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Chained_Treap.union_treap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="module-EulerTourForest.EulerTourForest">
 <span id="eulertourforest-eulertourforest-module"></span><h2>EulerTourForest.EulerTourForest module<a class="headerlink" href="#module-EulerTourForest.EulerTourForest" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EulerTourForest.EulerTourForest.ETF_collections">
 <em class="property">class </em><code class="descclassname">EulerTourForest.EulerTourForest.</code><code class="descname">ETF_collections</code><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#ETF_collections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.ETF_collections" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Collection of Spanning Euler Forest (1 for each level of the algorithm)</p>
 <dl class="method">
 <dt id="EulerTourForest.EulerTourForest.ETF_collections.insert">
@@ -202,7 +356,7 @@
 <dl class="class">
 <dt id="EulerTourForest.EulerTourForest.EulerTourForest">
 <em class="property">class </em><code class="descclassname">EulerTourForest.EulerTourForest.</code><code class="descname">EulerTourForest</code><span class="sig-paren">(</span><em>trees=[]</em>, <em>node_2_tree={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#EulerTourForest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.EulerTourForest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Custom Data Structure Consisting in a Forest of Euler Tour Tree
 In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <dl class="method">
@@ -224,10 +378,15 @@ In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <dl class="method">
 <dt id="EulerTourForest.EulerTourForest.EulerTourForest.insert_edge">
 <code class="descname">insert_edge</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#EulerTourForest.insert_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.EulerTourForest.insert_edge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert an edge
+<dd><p>Insert an edge in the Euler Tour Forest
 :param e:
 :return:</p>
 </dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourForest.EulerTourForest.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#EulerTourForest.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.EulerTourForest.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.EulerTourForest.EulerTourForest.reformat">
@@ -237,17 +396,8 @@ In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <dl class="method">
 <dt id="EulerTourForest.EulerTourForest.EulerTourForest.remove_edge">
 <code class="descname">remove_edge</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#EulerTourForest.remove_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.EulerTourForest.remove_edge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove an edge
+<dd><p>Remove an edge from the Euler Tour Forest
 :param e:
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="EulerTourForest.EulerTourForest.EulerTourForest.replace">
-<code class="descname">replace</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourForest.html#EulerTourForest.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourForest.EulerTourForest.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Repalce a tree edge
-:param e:
-:param i:
 :return:</p>
 </dd></dl>
 
@@ -279,11 +429,66 @@ In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <span id="eulertourforest-eulertourtrees-module"></span><h2>EulerTourForest.EulerTourTrees module<a class="headerlink" href="#module-EulerTourForest.EulerTourTrees" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EulerTourForest.EulerTourTrees.EulerTourTrees">
-<em class="property">class </em><code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">EulerTourTrees</code><span class="sig-paren">(</span><em>tree=None</em>, <em>tree_edge_2_pos=None</em>, <em>nt_al=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">EulerTourTrees</code><span class="sig-paren">(</span><em>tree=None</em>, <em>tree_edge_2_node=None</em>, <em>nt_al=None</em>, <em>weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.cut">
 <code class="descname">cut</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and edge from the Euler Tour Tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.get_euler_tour">
+<code class="descname">get_euler_tour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.get_euler_tour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.get_euler_tour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the induced euler tour representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.get_in_order">
+<code class="descname">get_in_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.get_in_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.get_in_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the in-order representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert an edge into the euler tour tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.is_tree_edge">
+<code class="descname">is_tree_edge</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.is_tree_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.is_tree_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if :param e: is tree edge, false otherwise
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the euler Tour tree
+:param title:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>E1</em>, <em>E2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find is there is a non tree edge linking E1 and E2
+:param E1: An euler tour tree
+:param E2: An euler tour tree
+:return: a replacement edge if found, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees.EulerTourTrees.swap_nodes">
+<code class="descname">swap_nodes</code><span class="sig-paren">(</span><em>e1</em>, <em>e2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#EulerTourTrees.swap_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.EulerTourTrees.swap_nodes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -292,23 +497,163 @@ In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <dt id="EulerTourForest.EulerTourTrees.construct_euler_tour_tree">
 <code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">construct_euler_tour_tree</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#construct_euler_tour_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.construct_euler_tour_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct an Euler Tour Tree from an edge list
-:param edge_list:
-:return:</p>
+:param edge_list: An edge list
+:return: An euler tour tree</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="EulerTourForest.EulerTourTrees.euler_tour_from_edge_list">
 <code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">euler_tour_from_edge_list</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#euler_tour_from_edge_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.euler_tour_from_edge_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="docutils">
+<dt>Compute the euler tour of a graph ( with edges, including self loops,</dt>
+<dd>instead of nodes)</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edge_list</strong> – An edge list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A lsit containing the euler tour</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="EulerTourForest.EulerTourTrees.link_ett">
 <code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">link_ett</code><span class="sig-paren">(</span><em>T1</em>, <em>T2</em>, <em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#link_ett"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.link_ett" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Merge two euler tour tree
+:param T1: An euler tour tree
+:param T2: An euler tour tree
+:param e: An edge
+:return:</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="EulerTourForest.EulerTourTrees.plot_euler_tour_tree">
 <code class="descclassname">EulerTourForest.EulerTourTrees.</code><code class="descname">plot_euler_tour_tree</code><span class="sig-paren">(</span><em>root</em>, <em>pos=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees.html#plot_euler_tour_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees.plot_euler_tour_tree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-EulerTourForest.EulerTourTrees_old">
+<span id="eulertourforest-eulertourtrees-old-module"></span><h2>EulerTourForest.EulerTourTrees_old module<a class="headerlink" href="#module-EulerTourForest.EulerTourTrees_old" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees">
+<em class="property">class </em><code class="descclassname">EulerTourForest.EulerTourTrees_old.</code><code class="descname">EulerTourTrees</code><span class="sig-paren">(</span><em>tree=None</em>, <em>tree_edge_2_keys=None</em>, <em>nt_al=None</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.cut">
+<code class="descname">cut</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and edge from the Euler Tour Tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.find_max_value">
+<code class="descname">find_max_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.find_max_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.find_max_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.find_min_value">
+<code class="descname">find_min_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.find_min_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.find_min_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.get_euler_tour">
+<code class="descname">get_euler_tour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.get_euler_tour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.get_euler_tour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the induced euler tour representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.get_in_order">
+<code class="descname">get_in_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.get_in_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.get_in_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the in-order representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert an edge into the euler tour tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.is_tree_edge">
+<code class="descname">is_tree_edge</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.is_tree_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.is_tree_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if :param e: is tree edge, false otherwise
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the euler Tour tree
+:param title:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>E1</em>, <em>E2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find is there is a non tree edge linking E1 and E2
+:param E1: An euler tour tree
+:param E2: An euler tour tree
+:return: a replacement edge if found, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.EulerTourTrees_old.EulerTourTrees.swap_nodes">
+<code class="descname">swap_nodes</code><span class="sig-paren">(</span><em>e1</em>, <em>e2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#EulerTourTrees.swap_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.EulerTourTrees.swap_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="EulerTourForest.EulerTourTrees_old.construct_euler_tour_tree">
+<code class="descclassname">EulerTourForest.EulerTourTrees_old.</code><code class="descname">construct_euler_tour_tree</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#construct_euler_tour_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.construct_euler_tour_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an Euler Tour Tree from an edge list
+:param edge_list: An edge list
+:return: An euler tour tree</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="EulerTourForest.EulerTourTrees_old.euler_tour_from_edge_list">
+<code class="descclassname">EulerTourForest.EulerTourTrees_old.</code><code class="descname">euler_tour_from_edge_list</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#euler_tour_from_edge_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.euler_tour_from_edge_list" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Compute the euler tour of a graph ( with edges, including self loops,</dt>
+<dd>instead of nodes)</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edge_list</strong> – An edge list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A lsit containing the euler tour</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="EulerTourForest.EulerTourTrees_old.link_ett">
+<code class="descclassname">EulerTourForest.EulerTourTrees_old.</code><code class="descname">link_ett</code><span class="sig-paren">(</span><em>T1</em>, <em>T2</em>, <em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#link_ett"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.link_ett" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge two euler tour tree
+:param T1: An euler tour tree
+:param T2: An euler tour tree
+:param e: An edge
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="EulerTourForest.EulerTourTrees_old.plot_euler_tour_tree">
+<code class="descclassname">EulerTourForest.EulerTourTrees_old.</code><code class="descname">plot_euler_tour_tree</code><span class="sig-paren">(</span><em>root</em>, <em>pos=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/EulerTourTrees_old.html#plot_euler_tour_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.EulerTourTrees_old.plot_euler_tour_tree" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -319,35 +664,120 @@ In the same manner as a Spanning forest if composed of Spanning Tree</p>
 <span id="eulertourforest-treaps-module"></span><h2>EulerTourForest.Treaps module<a class="headerlink" href="#module-EulerTourForest.Treaps" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EulerTourForest.Treaps.Treap">
-<em class="property">class </em><code class="descclassname">EulerTourForest.Treaps.</code><code class="descname">Treap</code><span class="sig-paren">(</span><em>root=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">EulerTourForest.Treaps.</code><code class="descname">Treap</code><span class="sig-paren">(</span><em>root=None</em>, <em>first=None</em>, <em>last=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Data Structure that combine a tree and a heap
 <a class="reference external" href="https://gist.github.com/irachex/3922705">https://gist.github.com/irachex/3922705</a>
 see also : <a class="reference external" href="https://pypi.org/project/treap/1.39/">https://pypi.org/project/treap/1.39/</a></p>
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.balance">
 <code class="descname">balance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.balance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Balance the Treap to respect the Heap invariant
+:Status: OK
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.check_heap_invariant">
+<code class="descname">check_heap_invariant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.check_heap_invariant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.check_heap_invariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the heap invariant of the Treap
+:return: True if invariant respected, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.check_invariants">
+<code class="descname">check_invariants</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.check_invariants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.check_invariants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the two invariants of the Treap :
+- Heap invariant
+- (Binary) Tree invariant
+:return: True if invariants respected, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.check_tree_invariant">
+<code class="descname">check_tree_invariant</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.check_tree_invariant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.check_tree_invariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the tree invariant of the Treap
+:return: True if invariant respected, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.find_max_node">
+<code class="descname">find_max_node</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.find_max_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.find_max_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the maximum node in the Treap
+:return: Maximum node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.find_max_value">
+<code class="descname">find_max_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.find_max_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.find_max_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the maximum value in the Treap
+:return: Maximum value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.find_min_node">
+<code class="descname">find_min_node</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.find_min_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.find_min_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the minimum node in the Treap
+:return: Minimum node</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.find_min_value">
+<code class="descname">find_min_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.find_min_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.find_min_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the minimum value in the Treap
+:return: Minimum value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.first">
+<code class="descname">first</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.first" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.get_data_in_key_order">
-<code class="descname">get_data_in_key_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_data_in_key_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_data_in_key_order" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_data_in_key_order</code><span class="sig-paren">(</span><em>with_key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_data_in_key_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_data_in_key_order" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="EulerTourForest.Treaps.Treap.get_max_value">
-<code class="descname">get_max_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_max_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_max_value" title="Permalink to this definition">¶</a></dt>
+<dt id="EulerTourForest.Treaps.Treap.get_data_in_priority_order">
+<code class="descname">get_data_in_priority_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_data_in_priority_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_data_in_priority_order" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="EulerTourForest.Treaps.Treap.get_min_value">
-<code class="descname">get_min_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_min_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_min_value" title="Permalink to this definition">¶</a></dt>
+<dt id="EulerTourForest.Treaps.Treap.get_internal_structure">
+<code class="descname">get_internal_structure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.get_internal_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.get_internal_structure" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.insert">
-<code class="descname">insert</code><span class="sig-paren">(</span><em>key</em>, <em>data=None</em>, <em>priority=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.insert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">insert</code><span class="sig-paren">(</span><em>key</em>, <em>data=None</em>, <em>priority=False</em>, <em>suc=None</em>, <em>pred=None</em>, <em>inlast=False</em>, <em>infirst=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a node in the Treap
+:param key:
+:param data:
+:param priority:
+:param suc:
+:param pred:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.last">
+<code class="descname">last</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.last" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.predecessor">
+<code class="descname">predecessor</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.predecessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.predecessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the predecessor of ‘node’ in the key ordering (biggest key smaller than node.key)
+:Status: CAN BE OPTIMIZED WITH PARENT ATTRIBUTE
+:param node:
+:return:</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.releaf">
@@ -357,7 +787,10 @@ see also : <a class="reference external" href="https://pypi.org/project/treap/1.
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.remove">
 <code class="descname">remove</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.remove" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Remove the node corresponding to the key
+:param key: The key to remove
+:return:</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.reroot">
@@ -367,7 +800,10 @@ see also : <a class="reference external" href="https://pypi.org/project/treap/1.
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.search">
 <code class="descname">search</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.search" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Search a key in the Treap $O(log(n))$
+:param key: The key to query
+:return: The Node with the corresponding key</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="EulerTourForest.Treaps.Treap.search_set">
@@ -379,18 +815,56 @@ see also : <a class="reference external" href="https://pypi.org/project/treap/1.
 <code class="descname">split_on_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.split_on_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.split_on_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.sub_pred">
+<code class="descname">sub_pred</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.sub_pred"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.sub_pred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the predecessor in the subtree rooted at this node
+:Status: OK
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.sub_suc">
+<code class="descname">sub_suc</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.sub_suc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.sub_suc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the successor in the subtree rooted at this node
+:Status: OK
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.successor">
+<code class="descname">successor</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.successor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.successor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the successor of ‘node’ in the key ordering (smallest key bigger than node.key)
+:Status: CAN BE OPTIMIZED WITH PARENT ATTRIBUTE
+:param node:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.swap_data">
+<code class="descname">swap_data</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.swap_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.swap_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="EulerTourForest.Treaps.Treap.swap_nodes">
+<code class="descname">swap_nodes</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#Treap.swap_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.Treap.swap_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="EulerTourForest.Treaps.TreapNode">
 <em class="property">class </em><code class="descclassname">EulerTourForest.Treaps.</code><code class="descname">TreapNode</code><span class="sig-paren">(</span><em>key</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#TreapNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.TreapNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A node of a Treap (priority is determined at random and used to balance the Treap)</p>
 <dl class="method">
 <dt id="EulerTourForest.Treaps.TreapNode.left_rotation">
 <code class="descname">left_rotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#TreapNode.left_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.TreapNode.left_rotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a left rotation on the Treap with the current TreapNode as the root
 <a class="reference external" href="https://en.wikipedia.org/wiki/Tree_rotation">https://en.wikipedia.org/wiki/Tree_rotation</a>
+Note : This doesn’t chang ethe cyclic order, successor and predecessor unchanged
 :return:</p>
 </dd></dl>
 
@@ -399,6 +873,7 @@ see also : <a class="reference external" href="https://pypi.org/project/treap/1.
 <code class="descname">right_rotation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#TreapNode.right_rotation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.TreapNode.right_rotation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform a right rotation on the Treap with the current TreapNode as the root
 <a class="reference external" href="https://en.wikipedia.org/wiki/Tree_rotation">https://en.wikipedia.org/wiki/Tree_rotation</a>
+Note : This doesn’t chang ethe cyclic order, successor and predecessor unchanged
 :return:</p>
 </dd></dl>
 
@@ -407,7 +882,11 @@ see also : <a class="reference external" href="https://pypi.org/project/treap/1.
 <dl class="function">
 <dt id="EulerTourForest.Treaps.merge_treap">
 <code class="descclassname">EulerTourForest.Treaps.</code><code class="descname">merge_treap</code><span class="sig-paren">(</span><em>T1</em>, <em>T2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourForest/Treaps.html#merge_treap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourForest.Treaps.merge_treap" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Merge Treap from a former Split
+:param T1:
+:param T2:
+:return:</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="EulerTourForest.Treaps.union_treaps">

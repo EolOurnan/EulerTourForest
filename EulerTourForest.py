@@ -249,8 +249,9 @@ class EulerTourForest(object):
                     if (v, v) not in ETT.tree_edge_2_node:
                         self.node_2_tree[v] = None
                     else:
-                        et = set(ETT.get_euler_tour())
-                        if (v,v) in et:
+                        # et = set(ETT.get_euler_tour())
+                        # if (v,v) in et:
+                        if ETT.tree_edge_2_node[(v,v)][0].find_root() == ETT.tree.root:
                             self.node_2_tree[v] = l
             self.trees[tree_number] = None
 

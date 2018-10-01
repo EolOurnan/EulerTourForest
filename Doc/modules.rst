@@ -1,7 +1,7 @@
-EulerTourTrees
-==============
+EulerTourForest
+===============
 
 .. toctree::
    :maxdepth: 4
 
-   EulerTourTrees
+   EulerTourForest

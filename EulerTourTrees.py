@@ -157,7 +157,7 @@ class EulerTourTrees(object):
             print(" K :\n",K)
             print("\n Remove second occurence of ",e," : ",nodes[1].data)
             # Remove the second occurence of the link
-            if nodes[1].data in set(K.get_euler_tour()):
+            if nodes[1].find_root() == K.root:
                 K,L = K.split(nodes[1])
                 K.remove(nodes[1])
                 K.plot(" Left after removal of " + repr(nodes[1].data))
@@ -214,12 +214,14 @@ class EulerTourTrees(object):
         :return: a replacement edge if found, false otherwise
         '''
         # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
-        et1 = set(E1.get_euler_tour())
-        et2 = set(E2.get_euler_tour())
+        # et1 = set(E1.get_euler_tour())
+        # et2 = set(E2.get_euler_tour())
+        r1 = E1.tree.root
+        r2 = E2.tree.root
         for u in self.nt_al:
-            if (u, u) in et1:
+            if E1.tree_edge_2_node[(u,u)][0].find_root() == r1:
                 for v in self.nt_al[u]:
-                     if (v,v) in et2:
+                     if E2.tree_edge_2_node[(v,v)][0].find_root() == r2:
                         return (u,v)
         return False
 

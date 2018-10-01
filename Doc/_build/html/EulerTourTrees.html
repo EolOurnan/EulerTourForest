@@ -176,11 +176,66 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-EulerTourTrees" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="EulerTourTrees.EulerTourTrees">
-<em class="property">class </em><code class="descclassname">EulerTourTrees.</code><code class="descname">EulerTourTrees</code><span class="sig-paren">(</span><em>tree=None</em>, <em>tree_edge_2_pos=None</em>, <em>nt_al=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<em class="property">class </em><code class="descclassname">EulerTourTrees.</code><code class="descname">EulerTourTrees</code><span class="sig-paren">(</span><em>tree=None</em>, <em>tree_edge_2_node=None</em>, <em>nt_al=None</em>, <em>weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="EulerTourTrees.EulerTourTrees.cut">
 <code class="descname">cut</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and edge from the Euler Tour Tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.get_euler_tour">
+<code class="descname">get_euler_tour</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.get_euler_tour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.get_euler_tour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the induced euler tour representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.get_in_order">
+<code class="descname">get_in_order</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.get_in_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.get_in_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the in-order representation of the Tree
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.insert">
+<code class="descname">insert</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert an edge into the euler tour tree
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.is_tree_edge">
+<code class="descname">is_tree_edge</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.is_tree_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.is_tree_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if :param e: is tree edge, false otherwise
+:param e: an edge
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>title=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the euler Tour tree
+:param title:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>E1</em>, <em>E2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find is there is a non tree edge linking E1 and E2
+:param E1: An euler tour tree
+:param E2: An euler tour tree
+:return: a replacement edge if found, false otherwise</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="EulerTourTrees.EulerTourTrees.swap_nodes">
+<code class="descname">swap_nodes</code><span class="sig-paren">(</span><em>e1</em>, <em>e2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#EulerTourTrees.swap_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.EulerTourTrees.swap_nodes" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -189,19 +244,38 @@
 <dt id="EulerTourTrees.construct_euler_tour_tree">
 <code class="descclassname">EulerTourTrees.</code><code class="descname">construct_euler_tour_tree</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#construct_euler_tour_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.construct_euler_tour_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct an Euler Tour Tree from an edge list
-:param edge_list:
-:return:</p>
+:param edge_list: An edge list
+:return: An euler tour tree</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="EulerTourTrees.euler_tour_from_edge_list">
 <code class="descclassname">EulerTourTrees.</code><code class="descname">euler_tour_from_edge_list</code><span class="sig-paren">(</span><em>edge_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#euler_tour_from_edge_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.euler_tour_from_edge_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="docutils">
+<dt>Compute the euler tour of a graph ( with edges, including self loops,</dt>
+<dd>instead of nodes)</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>edge_list</strong> – An edge list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A lsit containing the euler tour</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="EulerTourTrees.link_ett">
 <code class="descclassname">EulerTourTrees.</code><code class="descname">link_ett</code><span class="sig-paren">(</span><em>T1</em>, <em>T2</em>, <em>e</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EulerTourTrees.html#link_ett"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#EulerTourTrees.link_ett" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Merge two euler tour tree
+:param T1: An euler tour tree
+:param T2: An euler tour tree
+:param e: An edge
+:return:</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="EulerTourTrees.plot_euler_tour_tree">

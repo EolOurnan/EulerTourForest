@@ -143,13 +143,20 @@
            <div itemprop="articleBody">
             
   <h1>Source code for EulerTourForest.EulerTourTrees</h1><div class="highlight"><pre>
-<span></span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">Treaps</span> <span class="k">import</span> <span class="n">union_treaps</span><span class="p">,</span><span class="n">Treap</span>
+<span class="kn">from</span> <span class="nn">Chained_Treap</span> <span class="k">import</span> <span class="n">union_treap</span><span class="p">,</span><span class="n">CTreap</span>
 
+
+<span class="c1"># &#39;TODO&#39; ALLLL</span>
 
 <div class="viewcode-block" id="euler_tour_from_edge_list"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.euler_tour_from_edge_list">[docs]</a><span class="k">def</span> <span class="nf">euler_tour_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute the euler tour of a graph ( with edges, including self loops,</span>
+<span class="sd">     instead of nodes)</span>
+<span class="sd">    :param edge_list: An edge list</span>
+<span class="sd">    :return: A lsit containing the euler tour</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">a_l</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>  <span class="c1"># Create edge list (2*m links)</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">l</span>
@@ -192,116 +199,247 @@
         <span class="n">plot_euler_tour_tree</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">left</span><span class="p">,</span><span class="n">pos</span><span class="p">)</span></div>
 
 
+
 <div class="viewcode-block" id="EulerTourTrees"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees">[docs]</a><span class="k">class</span> <span class="nc">EulerTourTrees</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tree_edge_2_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">nt_al</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="c1">#  A rajouter en list, ou dict, à part</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tree_edge_2_node</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">nt_al</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="sd">        :param tree: A Treap</span>
-<span class="sd">        :param tree_edge_2_pos: A dictionary associating a tree edge to his key</span>
-<span class="sd">        :param nt_al: An adjacency list for non tree edges</span>
+<span class="sd">        :param tree_edge_2_node: A dictionary associating a tree edge to his key</span>
+<span class="sd">        :param nt_al: An adjacency set for non tree edges</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span> <span class="o">=</span> <span class="n">tree_edge_2_pos</span> <span class="c1"># Edge to key in Tree</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span> <span class="o">=</span><span class="n">nt_al</span> <span class="c1">#Adjacency list for non tree edges</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span> <span class="o">=</span> <span class="n">tree_edge_2_node</span>  <span class="c1"># Edge to key in Tree</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span> <span class="o">=</span> <span class="n">nt_al</span>                      <span class="c1"># Adjacency list for non tree edges (x2 already included : adj list)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>                        <span class="c1"># Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()</span>
+
+
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+        <span class="n">rep</span> <span class="o">=</span> <span class="s2">&quot; Tree edge : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">rep</span> <span class="o">+=</span> <span class="s2">&quot; Non Tree edge : &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span><span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">rep</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+        <span class="c1">#rep += &quot; Euler Tour :&quot;+str(self.get_euler_tour())+&quot;\n&quot;</span>
+        <span class="n">rep</span> <span class="o">+=</span> <span class="s2">&quot; Priority Order :&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_priority_order</span><span class="p">())</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">rep</span>
+
+
+<div class="viewcode-block" id="EulerTourTrees.swap_nodes"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.swap_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">swap_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">swap_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="EulerTourTrees.get_in_order"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.get_in_order">[docs]</a>    <span class="k">def</span> <span class="nf">get_in_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the in-order representation of the Tree</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">in_order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_key_order</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">in_order</span></div>
+
+<div class="viewcode-block" id="EulerTourTrees.get_euler_tour"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.get_euler_tour">[docs]</a>    <span class="k">def</span> <span class="nf">get_euler_tour</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the induced euler tour representation of the Tree</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_euler_tour</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="EulerTourTrees.plot"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Plot the euler Tour tree</span>
+<span class="sd">        :param title:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EulerTourTrees.is_tree_edge"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.is_tree_edge">[docs]</a>    <span class="k">def</span> <span class="nf">is_tree_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return true if :param e: is tree edge, false otherwise</span>
+<span class="sd">        :param e: an edge</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="EulerTourTrees.insert"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Insert an edge into the euler tour tree</span>
+<span class="sd">        :param e: an edge</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tree_edge</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+            <span class="k">return</span>  <span class="c1"># Nothing to do be do be do</span>
+        <span class="c1"># Else insert in non tree edges, same cost as checking if its already a non tree edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="EulerTourTrees.cut"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
-        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
-        <span class="n">J</span><span class="p">,</span><span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">split_on_key</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">J</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; pos : &quot;</span><span class="p">,</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot; pos in J &quot;</span><span class="p">)</span>
-            <span class="n">J</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">K</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; pos 2: &quot;</span><span class="p">,</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot; pos 2 in K &quot;</span><span class="p">)</span>
-            <span class="n">K</span><span class="p">,</span><span class="n">L</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">split_on_key</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">K</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">E1</span> <span class="o">=</span> <span class="n">K</span>
-        <span class="n">E2</span> <span class="o">=</span> <span class="n">union_treaps</span><span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">),</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_pos</span><span class="p">)</span></div></div>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Remove and edge from the Euler Tour Tree</span>
+<span class="sd">        :param e: an edge</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_tree_edge</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Tree Edge Deletion&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">:</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Nodes :&quot;</span><span class="p">,[</span><span class="n">i</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">])</span>
+
+            <span class="c1"># Remove the first occurence of the link :</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Remove first occurence of &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; : &quot;</span><span class="p">,</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">J</span><span class="p">,</span><span class="n">K</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">J</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">J</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; Left after removal of &quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">K</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; Right after removal of &quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; J :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">J</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; K :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">K</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Remove second occurence of &quot;</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; : &quot;</span><span class="p">,</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># Remove the second occurence of the link</span>
+            <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">K</span><span class="o">.</span><span class="n">get_euler_tour</span><span class="p">()):</span>
+                <span class="n">K</span><span class="p">,</span><span class="n">L</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">K</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">K</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; Left after removal of &quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; K :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; L :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span>
+                <span class="n">E1</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">L</span><span class="p">:</span>
+                    <span class="n">L</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; Right after removal of &quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+                    <span class="n">E2</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">union_treap</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">L</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">E2</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">J</span><span class="p">,</span><span class="n">L</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">J</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">J</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; Left after removal of &quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; J :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">J</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; L :</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">L</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">K</span><span class="p">:</span>
+                    <span class="n">E1</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">union_treap</span><span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="n">K</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">E1</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+                <span class="n">E2</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  E1 after cut : </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">E1</span><span class="p">)</span>
+            <span class="n">E1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;E1 after cut &quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  E2 : </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">E2</span><span class="p">)</span>
+            <span class="n">E2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;E2 after cut &quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; # NON TREE EDGES :&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Replacement edge :&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Found Replacement Edge :) hamdoulilah&quot;</span><span class="p">)</span>
+                <span class="n">E</span> <span class="o">=</span> <span class="n">link_ett</span><span class="p">(</span><span class="n">E1</span><span class="p">,</span> <span class="n">E2</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">E</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">E</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">E</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Did not Find Replacement Edge :( starfullah&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">E1</span><span class="p">,</span><span class="n">E2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Non Tree Edge Deletion :&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="EulerTourTrees.replace"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.EulerTourTrees.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">E1</span><span class="p">,</span><span class="n">E2</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Find is there is a non tree edge linking E1 and E2</span>
+<span class="sd">        :param E1: An euler tour tree</span>
+<span class="sd">        :param E2: An euler tour tree</span>
+<span class="sd">        :return: a replacement edge if found, false otherwise</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?</span>
+        <span class="n">et1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">E1</span><span class="o">.</span><span class="n">get_euler_tour</span><span class="p">())</span>
+        <span class="n">et2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">E2</span><span class="o">.</span><span class="n">get_euler_tour</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="n">et1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nt_al</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                     <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">et2</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div></div>
 
 <div class="viewcode-block" id="link_ett"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.link_ett">[docs]</a><span class="k">def</span> <span class="nf">link_ett</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span><span class="n">T2</span><span class="p">,</span><span class="n">e</span><span class="p">):</span>
-    <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">e</span>
-    <span class="n">u_pos</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">v_pos</span> <span class="o">=</span> <span class="n">T2</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">u_pos</span><span class="p">):</span>
-        <span class="n">T1</span><span class="p">,</span><span class="n">T2</span> <span class="o">=</span><span class="n">T2</span><span class="p">,</span><span class="n">T1</span>
-    <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">reroot</span><span class="p">(</span><span class="n">u_pos</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After rerooting :&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_key_order</span><span class="p">())</span>
-    <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">releaf</span><span class="p">(</span><span class="n">v_pos</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Adter releafing :&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_data_in_key_order</span><span class="p">())</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_max_value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>
-    <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert_edge</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">e</span><span class="p">)</span> <span class="c1"># Puisque l&#39;on a rerooter T1 en u</span>
-    <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Merge two euler tour tree</span>
+<span class="sd">    :param T1: An euler tour tree</span>
+<span class="sd">    :param T2: An euler tour tree</span>
+<span class="sd">    :param e: An edge</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">e</span> <span class="c1"># We know that u is in T1 and v in T2</span>
+    <span class="n">u_node</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v_node</span> <span class="o">=</span> <span class="n">T2</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   u pos :&quot;</span><span class="p">,</span><span class="n">u_node</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="s2">&quot;  v pos :&quot;</span><span class="p">,</span><span class="n">v_node</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="n">E</span> <span class="o">=</span> <span class="n">union_treaps</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="p">,</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+    <span class="c1"># RELEAF (TODO : Make a function)</span>
+    <span class="k">if</span> <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">last</span> <span class="o">!=</span> <span class="n">u_node</span><span class="p">:</span>
+        <span class="n">L</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">where</span> <span class="o">=</span> <span class="n">u_node</span><span class="p">)</span>
+        <span class="n">T1</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">union_treap</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">L</span><span class="p">),</span><span class="n">tree_edge_2_node</span><span class="o">=</span><span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span><span class="n">nt_al</span><span class="o">=</span><span class="n">T1</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  After releafing :&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="p">)</span>
+        <span class="n">T1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;  T1 after releafing in :&quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">u_node</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
 
-    <span class="n">key</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">get_max_value</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>
-    <span class="n">E</span><span class="o">.</span><span class="n">insert_edge</span><span class="p">(</span><span class="n">key</span><span class="o">=</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
-    <span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">edge_2_pos</span><span class="p">)</span></div>
+    <span class="c1"># REROOT (TODO: Make a function)</span>
+    <span class="k">if</span> <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">first</span> <span class="o">!=</span> <span class="n">v_node</span><span class="p">:</span>
+        <span class="n">L</span><span class="p">,</span><span class="n">R</span> <span class="o">=</span> <span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">where</span> <span class="o">=</span> <span class="n">v_node</span><span class="o">.</span><span class="n">pred</span><span class="p">)</span>
+        <span class="n">T2</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">union_treap</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">L</span><span class="p">),</span><span class="n">tree_edge_2_node</span><span class="o">=</span><span class="n">T2</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span><span class="n">nt_al</span><span class="o">=</span><span class="n">T1</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  After rerooting :&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">T2</span><span class="p">)</span>
+        <span class="n">T2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;  T2 after rerooting in :&quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">v_node</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;###########################################################&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1 first :&quot;</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;T1 last :&quot;</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">uv_node</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">e</span><span class="p">,</span><span class="n">inlast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># (u,u) is in T1</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uv_node</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After insertion of :&quot;</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="s2">&quot; with data :&quot;</span><span class="p">,</span><span class="n">uv_node</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;T1 after insertion of :&quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">T1</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">union_treap</span><span class="p">(</span><span class="n">T1</span><span class="o">.</span><span class="n">tree</span><span class="p">,</span><span class="n">T2</span><span class="o">.</span><span class="n">tree</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; After Union :&quot;</span><span class="p">)</span>
+    <span class="n">E</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;Union of T1 and T2 &quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">nt_al</span><span class="p">))</span>
+
+    <span class="n">vu_node</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">),</span><span class="n">inlast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vu_node</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; After final insertion of :&quot;</span><span class="p">,(</span><span class="n">v</span><span class="p">,</span><span class="n">u</span><span class="p">),</span><span class="s2">&quot; with data :&quot;</span><span class="p">,</span><span class="n">vu_node</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">E</span><span class="p">,</span><span class="n">T1</span><span class="o">.</span><span class="n">tree_edge_2_node</span><span class="p">)</span>
+    <span class="n">E</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot; After Final insertion of : &quot;</span><span class="o">+</span><span class="nb">repr</span><span class="p">((</span><span class="n">v</span><span class="p">,</span><span class="n">u</span><span class="p">)))</span>
+    <span class="c1"># plt.show()</span>
+    <span class="n">T1</span><span class="o">.</span><span class="n">nt_al</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">T2</span><span class="o">.</span><span class="n">nt_al</span><span class="p">)</span>
+    <span class="n">E</span><span class="o">.</span><span class="n">nt_al</span> <span class="o">=</span> <span class="n">T1</span><span class="o">.</span><span class="n">nt_al</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">E</span></div>
 
 
 <div class="viewcode-block" id="construct_euler_tour_tree"><a class="viewcode-back" href="../../EulerTourForest.html#EulerTourForest.EulerTourTrees.construct_euler_tour_tree">[docs]</a><span class="k">def</span> <span class="nf">construct_euler_tour_tree</span><span class="p">(</span><span class="n">edge_list</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Construct an Euler Tour Tree from an edge list</span>
-<span class="sd">    :param edge_list:</span>
-<span class="sd">    :return:</span>
+<span class="sd">    :param edge_list: An edge list</span>
+<span class="sd">    :return: An euler tour tree</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">euler_tour</span> <span class="o">=</span> <span class="n">euler_tour_from_edge_list</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">Treap</span><span class="p">()</span>
-    <span class="n">edge_2_occurences</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">CTreap</span><span class="p">()</span>
+    <span class="n">edge_2_node</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">euler_tour</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">edge_2_occurences</span><span class="p">:</span>
-            <span class="n">edge_2_occurences</span><span class="p">[(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">inlast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">in</span> <span class="n">edge_2_node</span><span class="p">:</span>
+            <span class="n">edge_2_node</span><span class="p">[(</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">edge_2_occurences</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">T</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">i</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">edge_2_occurences</span><span class="p">)</span></div>
+            <span class="n">edge_2_node</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="c1"># print(&quot;Edge occurences :&quot;,edge_2_node)</span>
+    <span class="n">ETT</span> <span class="o">=</span> <span class="n">EulerTourTrees</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">T</span><span class="p">,</span> <span class="n">tree_edge_2_node</span><span class="o">=</span><span class="n">edge_2_node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ETT</span></div>
 
-
-<span class="c1">#</span>
-<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
-<span class="c1">#     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6),(3,4)]</span>
-<span class="c1">#     Data = {0:[0,1,2,3],</span>
-<span class="c1">#             1:[0,4,5,8],</span>
-<span class="c1">#             2:[],</span>
-<span class="c1">#             3:[8,9,10,11],</span>
-<span class="c1">#             4 :[],5:[],6:[]}</span>
-<span class="c1">#</span>
-<span class="c1">#     euler_tour = euler_tour_from_edge_list(E)</span>
-<span class="c1">#     print(&quot;Euler tour :\n&quot;, euler_tour)</span>
-<span class="c1">#     ETT = Treap()</span>
-<span class="c1">#     edge_2_occurences = defaultdict(list)</span>
-<span class="c1">#     for i,n in enumerate(euler_tour):</span>
-<span class="c1">#         if (n[1],n[0]) in edge_2_occurences:</span>
-<span class="c1">#             edge_2_occurences[(n[1],n[0])].append(i)</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             edge_2_occurences[n].append(i)</span>
-<span class="c1">#         ETT.insert(key=i,data=n)</span>
-<span class="c1">#     print(&quot;Edge 2 occurences :&quot;,edge_2_occurences)</span>
-<span class="c1">#     ETT = EulerTourTrees(ETT,edge_2_occurences)</span>
-<span class="c1">#     print(&quot;ETT :\n&quot;,ETT)</span>
-<span class="c1">#     print(ETT.tree.get_data_in_key_order())</span>
-<span class="c1">#     e = (1,2)</span>
-<span class="c1">#     E1,E2 = ETT.cut(e)</span>
-<span class="c1">#     print(&quot;E1 :&quot;, E1)</span>
-<span class="c1">#     print(E1.tree.get_data_in_key_order())</span>
-<span class="c1">#     print()</span>
-<span class="c1">#     print(&quot;E2 :&quot;, E2)</span>
-<span class="c1">#     print(E2.tree.get_data_in_key_order())</span>
-<span class="c1">#     ETT = link_ett(E1,E2,e)</span>
-<span class="c1">#     ETT.tree.balance()</span>
-<span class="c1">#     print(&quot; after link ETT :\n&quot;, ETT)</span>
-<span class="c1">#     print(&quot;KEY :&quot;)</span>
-<span class="c1">#     print(ETT.tree.get_data_in_key_order())</span>
 </pre></div>
 
            </div>
