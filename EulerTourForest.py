@@ -264,7 +264,6 @@ class EulerTourForest(object):
         :param E2: An euler tour tree
         :return: a replacement edge if found, false otherwise
         '''
-
         # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
         def replacement_edge(E1, E2):
             r1 = E1.root
