@@ -2,7 +2,7 @@
 
 
 from EulerTourForest import construct_euler_tour_forest
-from EulerTourTrees import EulerTourTrees
+from EulerTourTree import EulerTourTree
 from Chained_Treap import CTreap,union_treap
 import matplotlib.pyplot as plt
 import random
@@ -70,8 +70,8 @@ if __name__ == '__main__':
     print(" R after last :",R.last.suc.data)
     print()
 
-    print("L :\n",EulerTourTrees(L))
-    print("R :\n",EulerTourTrees(R))
+    print("L :\n", EulerTourTree(L))
+    print("R :\n", EulerTourTree(R))
     ################################################
     ############# TEST UNION  ######################
     # E = CTreap(union_treap(L,R))
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     print(" E first :",E.first.data)
     print(" E last :",E.last.data)
     print(" E after last :",E.last.suc.data)
-    print("E :\n",EulerTourTrees(E))
+    print("E :\n", EulerTourTree(E))
     E.plot("Union of previous left and right ")
     plt.show()
 
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         print(suc.key)
     else:
         print("No suc")
-    T1.reroot(4)
+    T1.releaf(4)
 
     n = T1.search(key)
     print("T1 sub pred of :",key)

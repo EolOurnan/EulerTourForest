@@ -1,26 +1,17 @@
 import random
 from collections import defaultdict
-from EulerTourTrees import EulerTourTrees,link_ett
+
+from EulerTourTree import construct_euler_tour_tree, union_treap
+
+
 # Source  : https://dl.acm.org/citation.cfm?id=320215
 
-# TODO :Fonction de refactor à la fin (pour les composantes temporelles à stocker)
-
-# TODO : Utiliser des list ou des dict pour les pointers vers les données des noeuds
-#      - Utiliser un dictionnaire noeud_to_pos : qui donne l'occurence du noeud dans son arbre
 
 # TODO :? Utiliser les temps de départ des noeuds en lieu et place des priority des TreapNode ?
 #  MIEUX : - Lors des stream graphs : prendre le liens qui partent le plus tard comme tree edges
 #        - Lorsqu'on remplace un tree edge, prendre un non tree edge qui part le plus tard possible,
 #          du coup les choisir dans l'ordre de départ inverse (héhé)
 
-# TODO: -Fonction balance des keys (utile pour edgeremoval or edgeinsertion in a ETT)
-# TODO: - Fonction balance des priority (utile pour removal or insertion in a TREAP)
-
-
-from EulerTourTrees import construct_euler_tour_tree
-
-
-# MUST ADAPT FROM EULERTOURTREES AVEC CTREAP
 
 def spanning_forest_from_edge_list(edge_list):
     '''
@@ -73,29 +64,27 @@ def construct_euler_tour_forest(edge_list):
     :return:
     '''
     SF = spanning_forest_from_edge_list(edge_list)
-    node_2_tree = {}
+    tree_edge_2_node = {}
+    tree_edge_2_tree = {}
     Trees = []
-    cnt_trees = 0
-
+    non_tree_edges_al = defaultdict(set)
     for tree_edges, non_tree_edges in SF:
         print("Tree edges :", tree_edges)
         print("Non tree edges :", non_tree_edges)
-        ETT = construct_euler_tour_tree(list(tree_edges))
+        ETT, d = construct_euler_tour_tree(list(tree_edges))
+        tree_edge_2_node.update(d)
         for l in tree_edges:  # Every node is present in tree edges
-            node_2_tree[l[0]] = cnt_trees
-            node_2_tree[l[1]] = cnt_trees
-        non_tree_edges_a_l = defaultdict(set)
+            if l[0] not in tree_edge_2_tree:
+                tree_edge_2_tree[l[0]] = ETT
+            if l[1] not in tree_edge_2_tree:
+                tree_edge_2_tree[l[1]] = ETT
         for l in non_tree_edges:
             u, v = l
-            non_tree_edges_a_l[u].add(v)
-            non_tree_edges_a_l[v].add(u)
-        ETT.nt_al = non_tree_edges_a_l
-        print("ETT :", ETT)
-        ETT.plot()
+            non_tree_edges_al[u].add(v)
+            non_tree_edges_al[v].add(u)
         Trees.append(ETT)
-        cnt_trees += 1
-    plt.show()
-    return EulerTourForest(trees=Trees, tree_edge_2_node=node_2_tree)
+    return EulerTourForest(trees=Trees, tree_edge_2_tree=tree_edge_2_tree, tree_edge_2_node=tree_edge_2_node,
+                           non_tree_edges_al=non_tree_edges_al)
 
 
 class ETF_collections(object):
@@ -162,34 +151,36 @@ class EulerTourForest(object):
     In the same manner as a Spanning forest if composed of Spanning Tree
     '''
 
-    def __init__(self, trees=[], tree_edge_2_node={}, non_tree_edges_al = defaultdict(set)):
+    def __init__(self, trees=[], tree_edge_2_tree={}, tree_edge_2_node={}, non_tree_edges_al=defaultdict(set)):
         '''
         :param trees:  List of trees constituting the spanning forest (each Tree an EulerTourTree).
-        :param tree_edge_2_node : List of node position in the forest : the index of the tree in trees.
+        :param tree_edge_2_tree: Dictionary associating a tree edge -> Euler Tour Tree it belongs
+        :param tree_edge_2_node : Dictionary associating a tree edge -> the corresponding node (CTreapNode)
         :param non_tree_edges_al: Adjacency List (set) of non tree edges.
         '''
         self.trees = trees
+        self.tree_edge_2_tree = tree_edge_2_tree
         self.tree_edge_2_node = tree_edge_2_node
         self.non_tree_edges_al = non_tree_edges_al
 
-
     def __repr__(self):
         rep = " Tree edges : " + str([k for k in self.tree_edge_2_node.keys()]) + "\n"
+        rep += "Tree edges to tree :" + str([(n, v.root.data) for n, v in self.tree_edge_2_tree.items()]) + "\n"
         rep += " Non Tree edges : " + str(self.non_tree_edges_al) + "\n"
         for i in range(len(self.trees)):
             rep += str(self.trees[i]) + "\n"
         return rep
 
-    def is_tree_edge(self,e):
+    def is_tree_edge(self, e):
         '''
         Return true if *e* is tree edge, false otherwise
         :param e: an edge
         :return:
         '''
         if e in self.tree_edge_2_node:
-            return True
-        if (e[1],e[0]) in self.tree_edge_2_node:
-            return True
+            return e
+        if (e[1], e[0]) in self.tree_edge_2_node:
+            return (e[1], e[0])
         return False
 
     def plot(self, title=None):
@@ -198,11 +189,11 @@ class EulerTourForest(object):
         :param title: An optional title
         :return:
         '''
-        for i,T in enumerate(self.trees):
+        for i, T in enumerate(self.trees):
             if title:
                 T.plot(title)
             else:
-                T.plot(str(i)+" Tree of the Euler Tour Forest ")
+                T.plot(str(i) + " Tree of the Euler Tour Forest ")
 
     def check_edge_presence(self, e):
         '''
@@ -234,6 +225,19 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
+
+        def insert(self, e):
+            '''
+            Insert an edge into the euler tour tree
+            :param e: an edge
+            :return:
+            '''
+            if self.is_tree_edge(e):
+                return  # Nothing to do be do be do
+            # Else insert in non tree edges, same cost as checking if its already a non tree edge
+            self.nt_al[e[0]].add(e[1])
+            self.nt_al[e[1]].add(e[0])
+
         u, v = e
         u_tree_number = self.tree_edge_2_node[u]
         v_tree_number = self.tree_edge_2_node[v]
@@ -244,8 +248,8 @@ class EulerTourForest(object):
             print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
             u_tree = self.trees[u_tree_number]
             v_tree = self.trees[v_tree_number]
-            uv_tree = link_ett(u_tree, v_tree, e)
-            #TODO : Actualize position of nodes in v_tree
+            uv_tree = self.link_ett(u_tree, v_tree, e)
+            # TODO : Actualize position of nodes in v_tree
             self.trees[u_tree_number] = uv_tree
             for n in v_tree.get_euler_tour():
                 if n[0] == n[1]:
@@ -253,6 +257,38 @@ class EulerTourForest(object):
             self.trees[v_tree_number] = None
         return
 
+    def replace_edge(self, E1, E2):
+        '''
+        Find is there is a non tree edge linking E1 and E2
+        :param E1: An euler tour tree
+        :param E2: An euler tour tree
+        :return: a replacement edge if found, false otherwise
+        '''
+
+        # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
+        def replacement_edge(E1, E2):
+            r1 = E1.root
+            r2 = E2.root
+            for u in self.non_tree_edges_al:
+                if self.tree_edge_2_node[(u, u)][0].find_root() == r1:
+                    for v in self.non_tree_edges_al[u]:
+                        if self.tree_edge_2_node[(v, v)][0].find_root() == r2:
+                            return (u, v)
+            return False
+
+        e = replacement_edge(E1, E2)
+        if e:
+            print("  Replacement edge :", e)
+            print("  Found Replacement Edge :) hamdoulilah")
+            E = self.link_euler_tour_trees(E1, E2, e)
+            self.tree_edge_2_tree[e[0]] = E
+            self.tree_edge_2_tree[e[1]] = E
+            self.non_tree_edges_al[e[0]].remove(e[1])
+            self.non_tree_edges_al[e[1]].remove(e[0])
+            return [E]
+        else:
+            print("  Did not Find Replacement Edge :( starfullah")
+        return False
 
     def remove_edge(self, e):
         '''
@@ -260,24 +296,86 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
-        tree_number = self.tree_edge_2_node[e[0]]
-        print(" Remove in tree number :", tree_number)
-        R = self.trees[tree_number].cut(e)
-        # TODO : edge_2_pos to fix
-        if R:
-            for ETT in R:
-                print(" Non tree EDGE :", ETT.nt_al)
-                self.trees.append(ETT)
-                l = len(self.trees) - 1
-                for v in self.tree_edge_2_node:
-                    if (v, v) not in ETT.tree_edge_2_node:
-                        self.tree_edge_2_node[v] = None
-                    else:
-                        # et = set(ETT.get_euler_tour())
-                        # if (v,v) in et:
-                        if ETT.tree_edge_2_node[(v,v)][0].find_root() == ETT.tree.root:
-                            self.tree_edge_2_node[v] = l
-            self.trees[tree_number] = None
+        current_tree = self.tree_edge_2_tree[e[0]]
+        print("Current TREE :\n",current_tree)
+        print(" Remove in tree rooted at : ", current_tree.root.data)
+        e = self.is_tree_edge(e)
+        if e:
+            nodes = self.tree_edge_2_node[e]
+            # Cut the euler tour into two distincts euler tour corresponding
+            # to the removal of *e*
+            E1, E2 = current_tree.cut(nodes)
+            # Try to find a replacement edge among the non tree edges
+            R = self.replace_edge(E1, E2)
+            if R:
+                for ETT in R:
+                    print(" Remove tree edge : ", e)
+                    self.trees.append(ETT)
+                    # for v in self.tree_edge_2_node:
+                    #     if (v, v) not in self.tree_edge_2_node:
+                    #         self.tree_edge_2_node[(v,v)] = None
+                    #     else:
+                    #         # et = set(ETT.get_euler_tour())
+                    #         # if (v,v) in et:
+                    #         if ETT.tree_edge_2_node[(v,v)][0].find_root() == ETT.tree.root:
+                    #             self.tree_edge_2_node[v] = l
+                    # TODO: tree_edge_2_tree
+                del current_tree
+            else:
+                self.trees += [E1, E2]
+            del self.tree_edge_2_node[e]
+        else:
+            print(" Remove non tree edge : ", e)
+            u, v = e
+            self.non_tree_edges_al[u].remove(v)
+            self.non_tree_edges_al[v].remove(u)
+
+    def link_euler_tour_trees(self, E1, E2, e):
+        '''
+        Merge two euler tour tree
+        :param E1: An euler tour tree
+        :param E2: An euler tour tree
+        :param e: An edge
+        :return:
+        '''
+        u, v = e  # We know that u is in E1 and v in E2
+        u_node = self.tree_edge_2_node[(u, u)][0]
+        v_node = self.tree_edge_2_node[(v, v)][0]
+        print("   u pos :", u_node.data, "  v pos :", v_node.data)
+        # Releaf
+        if E1.last != u_node:
+            E1 = E1.releaf(where=u_node)
+            print("  After releafing :")
+            print(E1)
+            E1.plot("  E1 after releafing in :" + repr(u_node.data))
+        # Reroot (so releaf in v_node.pred)
+
+        if E2.first != v_node:
+            E2 = E2.releaf(where=v_node.pred)
+            print("  After rerooting :")
+            print(E2)
+            E2.plot("  E2 after rerooting in :" + repr(v_node.data))
+
+        print("###########################################################")
+        print("E1 first :", E1.first.data)
+        print("E1 last :", E1.last.data)
+        uv_node = E1.insert(data=e, inlast=True)  # (u,u) is in E1
+
+        print("After insertion of :", e, " with data :", uv_node.data)
+        E1.plot("E1 after insertion of :" + repr(e))
+        print(E1)
+        E = union_treap(E1, E2)
+        print(" After Union :")
+        E.plot("Union of E1 and E2 ")
+        print(E)
+        vu_node = E.insert(data=(v, u), inlast=True)  # (v,v) is in E2
+
+        self.tree_edge_2_node[e] = [uv_node]
+        self.tree_edge_2_node[e].append(vu_node)
+        print(" After final insertion of :", (v, u), " with data :", vu_node.data)
+        E.plot(" After Final insertion of : " + repr((v, u)))
+        print(E)
+        return E
 
     def reformat(self):
         #  TODO : Output the connected component
@@ -300,7 +398,7 @@ def dynamic_connectivity(E, M):
         if c == 1:  # Insertion
             print("\nInsertion : ", (u, v))
             ETF.insert_edge((u, v))
-            # plt.show()
+            plt.show()
         print("ETF :\n", ETF)
     print("ETF after sequence :\n", ETF)
     G = ETF.reformat()
@@ -322,5 +420,5 @@ if __name__ == '__main__':
          ]  # Initial edge list
     # M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
     # M = [(-1, 4, 5), (-1, 4, 6)]
-    M = [(1,4,5),(1,1,2),(-1,1,2),(-1,1,3),(-1,4,5),(-1,4,6)]
+    M = [(1, 4, 5), (1, 1, 2), (-1, 1, 2), (-1, 1, 3), (-1, 4, 5), (-1, 4, 6)]
     dynamic_connectivity(E, M)

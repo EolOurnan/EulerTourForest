@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a938dd3-54ef-4672-b10f-8939c5e1c480" name="Default" comment="">
+    <list default="true" id="0a938dd3-54ef-4672-b10f-8939c5e1c480" name="Default" comment="Refactoring in Progress">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Chained_Treap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chained_Treap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EulerTourForest.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourForest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EulerTourTrees.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourTrees.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EulerTourTrees_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/EulerTourTrees_old.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Treaps.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/Treaps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EulerTourTrees.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourTree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OLD/EulerTourTrees_old.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/EulerTourTrees_old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,8 +24,8 @@
             <file leaf-file-name="Test.py" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Test.py">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="170">
-                    <caret line="10" column="14" lean-forward="true" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+                  <state relative-caret-position="314">
+                    <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
                     <folding>
                       <element signature="e#3#58#0" expanded="true" />
                     </folding>
@@ -38,38 +39,50 @@
     </window>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="EulerTourTrees.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="95" selection-start-line="95" selection-end-line="95" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Chained_Treap.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1950">
-              <caret line="186" column="30" selection-start-line="186" selection-start-column="30" selection-end-line="186" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EulerTourForest.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
-              <folding>
-                <element signature="e#3604#5458#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.6404959">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="Chained_Treap.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="369">
+                  <caret line="103" column="24" lean-forward="true" selection-start-line="103" selection-start-column="24" selection-end-line="103" selection-end-column="24" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EulerTourForest.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="739">
+                  <caret line="283" column="28" selection-start-line="283" selection-start-column="28" selection-end-line="283" selection-end-column="28" />
+                  <folding>
+                    <element signature="e#0#13#0" expanded="true" />
+                    <element signature="e#3609#5463#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="EulerTourTree.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="807">
+                  <caret line="434" column="21" lean-forward="true" selection-start-line="434" selection-start-column="21" selection-end-line="434" selection-end-column="21" />
+                  <folding>
+                    <element signature="e#0#31#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -94,6 +107,10 @@
       <find>get_data_</find>
       <find>nt_al</find>
       <find>get_euler</find>
+      <find>remove</find>
+      <find>Ctreap</find>
+      <find>eulertourtr</find>
+      <find>reroot</find>
     </findStrings>
     <replaceStrings>
       <replace>node_2_tree</replace>
@@ -113,11 +130,12 @@
         <option value="$PROJECT_DIR$/EulerSpanningForest.py" />
         <option value="$PROJECT_DIR$/Test.py" />
         <option value="$PROJECT_DIR$/Test.py" />
+        <option value="$PROJECT_DIR$/Treaps.py" />
+        <option value="$PROJECT_DIR$/Treaps.py" />
+        <option value="$PROJECT_DIR$/EulerTourTrees.py" />
+        <option value="$PROJECT_DIR$/EulerTourTrees.py" />
         <option value="$PROJECT_DIR$/Chained_Treap.py" />
-        <option value="$PROJECT_DIR$/Treaps.py" />
-        <option value="$PROJECT_DIR$/Treaps.py" />
-        <option value="$PROJECT_DIR$/EulerTourTrees.py" />
-        <option value="$PROJECT_DIR$/EulerTourTrees.py" />
+        <option value="$PROJECT_DIR$/EulerTourTree.py" />
         <option value="$PROJECT_DIR$/EulerTourForest.py" />
         <option value="$PROJECT_DIR$/EulerTourForest.py" />
       </list>
@@ -185,7 +203,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EulerTourTrees.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EulerTourTree.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -495,18 +513,25 @@
       <option name="project" value="LOCAL" />
       <updated>1538406809123</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Refactoring in Progress">
+      <created>1538412516475</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1538412516475</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1175" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11710739" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0858068" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5083648" side_tool="true" visible="true" weight="0.33051643" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49163517" weight="0.32769954" />
-      <window_info anchor="bottom" x="67" y="55" width="1853" height="1145" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.51106316" side_tool="true" visible="true" weight="0.01596244" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.48893687" weight="0.32769954" />
+      <window_info active="true" anchor="bottom" x="1920" y="148" width="1920" height="1052" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49791667" weight="0.3295688" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -540,24 +565,15 @@
     <MESSAGE value="La galère" />
     <MESSAGE value="Non tree edge deletion, update adjacency list" />
     <MESSAGE value="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root" />
-    <option name="LAST_COMMIT_MESSAGE" value="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root" />
+    <MESSAGE value="Refactoring in Progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactoring in Progress" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="10" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="e#3#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
@@ -568,7 +584,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
@@ -581,7 +597,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1620">
           <caret line="104" column="44" selection-start-line="104" selection-start-column="44" selection-end-line="104" selection-end-column="44" />
@@ -612,7 +628,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
@@ -620,7 +637,7 @@
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
           <caret line="81" column="25" lean-forward="true" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
@@ -630,7 +647,7 @@
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="15" selection-start-line="15" selection-end-line="22" selection-end-column="38" />
@@ -662,7 +679,8 @@
         <state relative-caret-position="774">
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
@@ -700,7 +718,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1098">
           <caret line="75" column="23" selection-start-line="75" selection-start-column="23" selection-end-line="75" selection-end-column="23" />
@@ -712,7 +730,8 @@
         <state relative-caret-position="432">
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
@@ -727,7 +746,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2533">
           <caret line="163" column="31" selection-start-line="163" selection-start-column="31" selection-end-line="163" selection-end-column="31" />
@@ -759,12 +778,13 @@
         <state relative-caret-position="3706">
           <caret line="237" column="31" lean-forward="true" selection-start-line="237" selection-start-column="31" selection-end-line="237" selection-end-column="31" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1037">
           <caret line="75" column="19" lean-forward="true" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
@@ -796,12 +816,13 @@
         <state relative-caret-position="2023">
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
@@ -814,7 +835,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1620">
           <caret line="104" column="44" selection-start-line="104" selection-start-column="44" selection-end-line="104" selection-end-column="44" />
@@ -845,19 +866,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
           <caret line="81" column="25" lean-forward="true" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="15" selection-start-line="15" selection-end-line="22" selection-end-column="38" />
@@ -889,7 +911,8 @@
         <state relative-caret-position="774">
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>
@@ -915,16 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="14" lean-forward="true" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-          <folding>
-            <element signature="e#3#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="458">
@@ -935,26 +948,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTrees.py">
+    <entry file="file://$PROJECT_DIR$/Test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        <state relative-caret-position="314">
+          <caret line="19" column="10" selection-start-line="19" selection-start-column="10" selection-end-line="19" selection-end-column="10" />
+          <folding>
+            <element signature="e#3#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="688">
+          <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1950">
-          <caret line="186" column="30" selection-start-line="186" selection-start-column="30" selection-end-line="186" selection-end-column="30" />
+        <state relative-caret-position="369">
+          <caret line="103" column="24" lean-forward="true" selection-start-line="103" selection-start-column="24" selection-end-line="103" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="807">
+          <caret line="434" column="21" lean-forward="true" selection-start-line="434" selection-start-column="21" selection-end-line="434" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="184" column="23" selection-start-line="184" selection-start-column="23" selection-end-line="184" selection-end-column="23" />
+        <state relative-caret-position="739">
+          <caret line="283" column="28" selection-start-line="283" selection-start-column="28" selection-end-line="283" selection-end-column="28" />
           <folding>
-            <element signature="e#3604#5458#0" />
+            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#3609#5463#0" />
           </folding>
         </state>
       </provider>

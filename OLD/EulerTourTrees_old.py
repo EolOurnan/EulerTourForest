@@ -243,7 +243,7 @@ def link_ett(T1,T2,e):
     T1.plot("  T1 after releafing in :"+repr(u_key))
     print(T1)
 
-    T2.tree.reroot(v_key)
+    T2.tree.releaf(v_key)
     print("  After rerooting :")
     T2.plot("  T2 after rerooting in :"+repr(v_key))
     print(T2)
