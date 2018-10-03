@@ -19,7 +19,17 @@ class CTreapNode(object):
         self.pred = pred  # Predecessor (used in Euler Tour)
         self.suc = suc  # successor   (used in Euler Tour
         self.size = size  # Used to count the number of nodes in the subtree rooted at the current node
+        self.__tree_number = None # Used to catch a Tree in a forest, only accessible if the current node is root
 
+    @property
+    def tree_number(self):
+        if self.parent is None:
+            return self.__tree_number
+
+    @tree_number.setter
+    def tree_number(self,number):
+        if self.parent is None:
+            self.__tree_number = number
 
     def find_root(self):
         '''
