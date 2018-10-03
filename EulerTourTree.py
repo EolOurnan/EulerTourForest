@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.collections as mcol
-import random
+import msgpack
 
 from collections import defaultdict
 from Chained_Treap import CTreapNode
@@ -347,7 +347,7 @@ class EulerTourTree(object):
     def split(self, where):
         '''
         (TODO) YA un truc à optimiser au niveau des pointeurs etc....
-        :param key:
+        :param where: The split is effectuated juste after *where*
         :return:
         '''
         print(" Split on :", where.data)
@@ -396,34 +396,47 @@ class EulerTourTree(object):
         # Remove the first occurence of the link :
         print("\n Remove first occurence : ", nodes[0].data)
         J, K = self.split(nodes[0])
-        J.remove(nodes[0])
-        J.plot(" Left after removal of " + repr(nodes[0].data))
+        # print(" J :\n", J)
+        # print(" K :\n", K)
+        if J.root != nodes[0]:
+            J.remove(nodes[0])
+            J.plot(" Left after removal of " + repr(nodes[0].data))
+        else:
+            # It means that it only remain nodes[0] in J
+            J = None
         K.plot(" Right after removal of " + repr(nodes[0].data))
-        print(" J :\n", J)
-        print(" K :\n", K)
+
         print("\n Remove second occurence : ", nodes[1].data)
         #  Remove the second occurence of the link
         if nodes[1].find_root() == K.root:
             K, L = K.split(nodes[1])
             K.remove(nodes[1])
             K.plot(" Left after removal of " + repr(nodes[1].data))
-            print(" K :\n", K)
-            print(" L :\n", L)
+            # print(" K :\n", K)
+            # print(" L :\n", L)
             E1 = K
-            if L:
+            if L and J:
                 L.plot(" Right after removal of " + repr(nodes[1].data))
                 E2 = union_treap(J, L)
+            elif L:
+                E2 = L
             else:
                 E2 = J
         else:
             J, L = J.split(nodes[1])
-            J.remove(nodes[1])
-            J.plot(" Left after removal of " + repr(nodes[1].data))
-            print(" J :\n", J)
-            print(" L :\n", L)
+            if J.root != nodes[1]:
+                J.remove(nodes[1])
+                J.plot(" Left after removal of " + repr(nodes[1].data))
+            else:
+                # It means that it only remain nodes[0] in J
+                J = None
+            # print(" J :\n", J)
+            # print(" L :\n", L)
             E2 = L
-            if K:
+            if K and J:
                 E1 = union_treap(J, K)
+            elif K:
+                E1 = K
             else:
                 E1 = J
 

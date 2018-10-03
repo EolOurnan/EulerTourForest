@@ -1,7 +1,8 @@
 import random
 import matplotlib.pyplot as plt
-
+import msgpack
 from collections import defaultdict
+import copy
 
 
 from EulerTourTree import construct_euler_tour_tree, union_treap
@@ -219,31 +220,96 @@ class EulerTourForest(object):
             return True
         return False
 
+    def add_edge_to_tree(self, E, present_node, node_to_add):
+        '''
+        We assume that u is in E and we just add v
+        :param E:
+        :param v:
+        :return:
+        '''
+        u_node = self.tree_edge_2_node[(present_node,present_node)][0]
+        # Releaf
+        # E.plot(" Inital E")
+        if E.last != u_node:
+            E = E.releaf(where=u_node)
+        uv_node = E.insert(data=(present_node,node_to_add),inlast =True)
+        # E.plot(" After insertion of "+str((present_node,node_to_add)))
+        # print(" After insertion of "+str((present_node,node_to_add)))
+        # print(E)
+        v_node = E.insert(data = (node_to_add,node_to_add),inlast=True)
+        # E.plot(" After insertion of "+str((node_to_add,node_to_add)))
+        # print(" After insertion of "+str((node_to_add,node_to_add)))
+        # print(E)
+        vu_node = E.insert(data = (node_to_add,present_node),inlast = True)
+        # E.plot(" After insertion of "+str((node_to_add, present_node)))
+        # print(" After insertion of "+str((node_to_add, present_node)))
+        # print(E)
+        self.tree_edge_2_node[(present_node,node_to_add)] = [uv_node,vu_node]
+        self.tree_edge_2_node[(node_to_add,node_to_add)] = [v_node]
+        return E
+
+
+
+
     def insert_edge(self, e):
         '''
         Insert an edge in the Euler Tour Forest
         :param e:
         :return:
         '''
-        # TODO : The case where one of the node is new
         u, v = e
-        u_tree_number = self.tree_edge_2_node[(u,u)][0].find_root().tree_number
-        v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
-        if u_tree_number == v_tree_number:  # They are already in the same tree
-            print(" Insert in tree number :", u_tree_number)
-            if self.is_tree_edge(e):
-                return  # Nothing to do be do be do
-            # Else insert in non tree edges, same cost as checking if its already a non tree edge
-            self.non_tree_edges_al[e[0]].add(e[1])
-            self.non_tree_edges_al[e[1]].add(e[0])
-        else:  # They are in different trees
-            print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
-            u_tree = self.trees[u_tree_number]
+        if (u,u) not in self.tree_edge_2_node and (v,v) not in self.tree_edge_2_node:
+            # New Nodes, New edge, New Spanning Tree, New EulerTourTree
+            E,d = construct_euler_tour_tree([(u,v)])
+            self.tree_edge_2_node.update(d)
+            self.trees.append(E)
+            E.root.tree_number = len(self.trees)-1
+
+        elif (u,u) not in self.tree_edge_2_node:
+            # New Node, New edge
+            print(" Add new node :",u)
+            v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
             v_tree = self.trees[v_tree_number]
-            uv_tree = self.link_euler_tour_trees(u_tree, v_tree, e)
-            uv_tree.root.tree_number = u_tree_number
-            self.trees[u_tree_number] = uv_tree
-            self.trees[v_tree_number] = None
+            self.write_to_msgpack(v_tree)
+
+            E = self.add_edge_to_tree(v_tree,present_node=v,node_to_add=u)
+            E.root.tree_number = v_tree_number
+            self.trees[v_tree_number] = E
+
+        elif (v,v) not in self.tree_edge_2_node:
+            # New Node, New edge
+            print(" Add new node :",v)
+            u_tree_number = self.tree_edge_2_node[(u, u)][0].find_root().tree_number
+            u_tree = self.trees[u_tree_number]
+            self.write_to_msgpack(u_tree)
+
+            E = self.add_edge_to_tree(u_tree,present_node=u,node_to_add=v)
+            E.root.tree_number = u_tree_number
+            self.trees[u_tree_number] = E
+
+        else:
+            # Test if Merge else Update
+            u_tree_number = self.tree_edge_2_node[(u,u)][0].find_root().tree_number
+            v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
+            if u_tree_number == v_tree_number:  # They are already in the same tree
+                print(" Insert in tree number :", u_tree_number)
+                if self.is_tree_edge(e):
+                    return  # Nothing to do be do be do
+                # Else insert in non tree edges, same cost as checking if its already a non tree edge
+                self.non_tree_edges_al[e[0]].add(e[1])
+                self.non_tree_edges_al[e[1]].add(e[0])
+            else:  # They are in different trees
+                print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
+                u_tree = self.trees[u_tree_number]
+                v_tree = self.trees[v_tree_number]
+
+                self.write_to_msgpack(u_tree)
+                self.write_to_msgpack(v_tree)
+
+                uv_tree = self.link_euler_tour_trees(u_tree, v_tree, e)
+                uv_tree.root.tree_number = u_tree_number
+                self.trees[u_tree_number] = uv_tree
+                self.trees[v_tree_number] = None
         return
 
     def replace_edge(self, E1, E2):
@@ -282,8 +348,15 @@ class EulerTourForest(object):
         :param e:
         :return:
         '''
+        u,v = e
+        if (u,u) not in self.tree_edge_2_node:
+            raise KeyError(" Trying to remove the link "+str(e)+ " whereas the node "+str(u)+" isn't even present !")
+        if (v,v) not in self.tree_edge_2_node:
+            raise KeyError(" Trying to remove the link "+str(e)+ " whereas the node "+str(v)+" isn't even present !")
         tree_number = self.tree_edge_2_node[(e[0], e[0])][0].find_root().tree_number
         current_tree = self.trees[tree_number]
+        copy_tree = copy.deepcopy(current_tree)
+        print(" Tree Number :",tree_number)
         print(" Remove in tree rooted at : ", current_tree.root.data)
         e = self.is_tree_edge(e)
         if e:
@@ -298,9 +371,9 @@ class EulerTourForest(object):
                 self.trees[tree_number] = E
                 E.root.tree_number = tree_number
             else:
+                self.write_to_msgpack(copy_tree)
                 self.trees[tree_number] = E1
                 E1.root.tree_number = tree_number
-
                 l = len(self.trees)
                 self.trees.append(E2)
                 E2.root.tree_number = l
@@ -358,8 +431,30 @@ class EulerTourForest(object):
         print(E)
         return E
 
-    def reformat(self):
-        #  TODO : Output the connected component
+    def write_to_msgpack(self,T):
+        '''
+        A handler to store a connected component
+        :param storage_file:
+        :return:
+        '''
+        L = T.get_data_in_priority_order()
+        print("Link to store :",L)
+        links = set()
+        # Add tree edges
+        for l in L:
+            u,v = l
+            if l not in links and (v, u) not in links and u != v:
+                links.add(l)
+                # Add Non Tree Edges
+                for n in self.non_tree_edges_al[u]:
+                    if (n,u) not in links and (u,n) not in links:
+                        links.add((n,u))
+                for n in self.non_tree_edges_al[v]:
+                    if (n,v) not in links and (v,n) not in links:
+                        links.add((n,v))
+        if links:
+            storage_file.write(packer.pack(tuple(links)))
+        # compteur id scc
         return
 
 
@@ -379,7 +474,9 @@ def dynamic_connectivity(E, M):
             # plt.show()
         print("ETF :\n", ETF)
     print("ETF after sequence :\n", ETF)
-    G = ETF.reformat()
+    for T in ETF.trees:
+        if T:
+            ETF.write_to_msgpack(T)
     return G
 
 
@@ -391,6 +488,7 @@ if __name__ == '__main__':
 
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
     random.seed(1)
+    __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6), (3, 4), (5, 6), (2, 3),
          (7, 8), (9, 7),
          # (10,11),(11,12),
@@ -398,5 +496,10 @@ if __name__ == '__main__':
          ]  # Initial edge list
     # M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
     # M = [(-1, 4, 5), (-1, 4, 6)]
-    M = [(1, 4, 5), (1, 1, 2), (-1, 1, 2), (-1, 1, 3), (-1, 4, 5), (-1, 4, 6)]
+    M = [(1,101,102),(-1,101,102),(-1,7,11),(1,7,11),(1, 4, 5), (1, 1, 2), (-1, 1, 2), (-1, 1, 3),
+         (-1, 4, 5), (-1, 4, 6),(1,4,11),(1,101,102)]
+    global storage_file
+    storage_file = open(__directory__ + "scc.scf", 'wb')
+    global packer
+    packer = msgpack.Packer(use_bin_type=True)
     dynamic_connectivity(E, M)
