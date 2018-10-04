@@ -90,10 +90,10 @@ class EulerTourTree(object):
     def _get_data_in_priority_order(self, node, L):
         if node:
             L.append(node.data)
-        if node.right:
-            self._get_data_in_priority_order(node.right, L)
-        if node.left:
-            self._get_data_in_priority_order(node.left, L)
+            if node.right:
+                self._get_data_in_priority_order(node.right, L)
+            if node.left:
+                self._get_data_in_priority_order(node.left, L)
 
     def get_internal_structure(self):
         return self._get_internal_structure(self.root)
@@ -307,19 +307,28 @@ class EulerTourTree(object):
             node.suc.pred = node.pred
         if node.pred:
             node.pred.suc = node.suc
-
-        if node.parent.left == node:
+        if node == self.root :
+            # print("Our node is a root")
+            self.root = self._remove(node)
+            if self.root:
+                self.root.parent = None
+        elif node.parent.left == node:
             # print("Our node is a Left child")
+            node.parent.left = self._remove(node)
+            # UPDATE SIZE OF PARENTS
             p = node.parent
-            p.left = self._remove(node)
+            while p:
+                p.update_size()
+                p = p.parent
         else:
             # print("Our node is a right child")
+            node.parent.right = self._remove(node)
+            # UPDATE SIZE OF PARENTS
             p = node.parent
-            p.right = self._remove(node)
-        # UPDATE SIZE OF PARENTS
-        while p:
-            p.update_size()
-            p = p.parent
+            while p:
+                p.update_size()
+                p = p.parent
+
 
 
     def _remove(self,node):
@@ -335,28 +344,34 @@ class EulerTourTree(object):
             return node.left
         else:
             if node.left.priority < node.right.priority:
-                print("Right rotation")
+                # print("Right rotation")
                 node = node.right_rotation()    # Rotation already deals with filiation
                 node.right = self._remove(node.right)
             else:
-                print("Left rotation")
+                # print("Left rotation")
                 node = node.left_rotation()     # Rotation already deals with filiation
                 node.left = self._remove(node.left)
         return node
 
     def split(self, where):
         '''
-        (TODO) YA un truc à optimiser au niveau des pointeurs etc....
-        :param where: The split is effectuated juste after *where*
-        :return:
+        Split the Euler Tour Tree according to the split in its Euler Tour.
+        [first,...,where,after_where,...,last]
+        ->
+        [first,...,where] [after_where,...last]
+
+        Note : The left subtree contains at least the node *where* whereas the right subtree can        be empty.
+        :param where: The split is effectuated just after *where*
+        :return: Left subtree and Right subtree
         '''
-        print(" Split on :", where.data)
+        # print(" Split on :", where.data)
         after_where = where.suc
         first = self.first
         last = self.last
         s = self.insert(where)
         s.priority = 1 * 10 ** -9
         self.balance()
+
         T_left = s.left
         T_right = s.right
         T_left.parent = None
@@ -388,72 +403,86 @@ class EulerTourTree(object):
 
     def cut(self, nodes):
         '''
-        Remove and edge from the Euler Tour Tree
+        Remove and edge from the Euler Tour Tree.
+        [first,...,node_0,after_node_0,....,node_1,after_node_1,...,last]
+        ->
+        [first,...,before_node_0,node_0] [after_node_0,...,node_1,last]
+        ->
+        [first,...,before_node_0] [after_node_0,...,before_node_1] [after_node_1,...,last]
+        ->
+        [first,...,before_node_0,after_node_1,...,last] [after_node_0,before_node_1]
+
         :param e: an edge
         :return:
         '''
-        print("  Nodes :", [i.data for i in nodes])
+        # print("  Nodes :", [i.data for i in nodes])
         # Remove the first occurence of the link :
-        print("\n Remove first occurence : ", nodes[0].data)
         J, K = self.split(nodes[0])
         # print(" J :\n", J)
         # print(" K :\n", K)
-        if J.root != nodes[0]:
-            J.remove(nodes[0])
-            J.plot(" Left after removal of " + repr(nodes[0].data))
-        else:
-            # It means that it only remain nodes[0] in J
-            J = None
-        K.plot(" Right after removal of " + repr(nodes[0].data))
+        # if J.first != nodes[0]:
+        J.remove(nodes[0])
+        # else:
+        #     # It means that it only remain nodes[0] in J
+        #     J = None
+        # print("\n Remove first occurence : ", nodes[0].data)
+        # print(" J :\n", J)
+        # print(" K :\n", K)
 
-        print("\n Remove second occurence : ", nodes[1].data)
+        # J.plot(" Left after removal of " + repr(nodes[0].data))
+        # K.plot(" Right after removal of " + repr(nodes[0].data))
+
         #  Remove the second occurence of the link
         if nodes[1].find_root() == K.root:
+            # nodes[1] is in K
             K, L = K.split(nodes[1])
-            K.remove(nodes[1])
-            K.plot(" Left after removal of " + repr(nodes[1].data))
             # print(" K :\n", K)
             # print(" L :\n", L)
+            # if K.first != nodes[1]:
+            K.remove(nodes[1])
+            # else:
+                # It means that it only remain nodes[1] in K
+                # K =None
+            # print("\n Remove second occurence : ", nodes[1].data)
+            # print(" K :\n", K)
+            # print(" L :\n", L)
+            # K.plot(" Left after removal of " + repr(nodes[1].data))
             E1 = K
-            if L and J:
-                L.plot(" Right after removal of " + repr(nodes[1].data))
-                E2 = union_treap(J, L)
-            elif L:
-                E2 = L
-            else:
-                E2 = J
+            E2 = union_treap(J, L)
         else:
+            # nodes[1] is in J
             J, L = J.split(nodes[1])
-            if J.root != nodes[1]:
-                J.remove(nodes[1])
-                J.plot(" Left after removal of " + repr(nodes[1].data))
-            else:
-                # It means that it only remain nodes[0] in J
-                J = None
             # print(" J :\n", J)
             # print(" L :\n", L)
+            # if J.first != nodes[1]:
+            J.remove(nodes[1])
+                # J.plot(" Left after removal of " + repr(nodes[1].data))
+            # else:
+                # It means that it only remain nodes[1] in J
+                # J = None
+            # print("\n Remove second occurence : ", nodes[1].data)
+            # print(" J :\n", J)
+            # print(" L :\n", L)
+
+            E1 = union_treap(J, K)
             E2 = L
-            if K and J:
-                E1 = union_treap(J, K)
-            elif K:
-                E1 = K
-            else:
-                E1 = J
 
-        print("  E1 after cut : \n", E1)
-        E1.plot("E1 after cut " + repr(nodes[0].data))
-
-        print("  E2 : \n", E2)
-        E2.plot("E2 after cut " + repr(nodes[1].data))
+        # print("  E1 after cut : \n", E1)
+        # E1.plot("E1 after cut " + repr(nodes[0].data))
+        #
+        # print("  E2 : \n", E2)
+        # E2.plot("E2 after cut " + repr(nodes[1].data))
         return E1, E2
 
 
 def union_treap(T1, T2):
+    if not T2 or not T2.root:
+        return T1
+    if not T1 or not T1.root:
+        return T2
+
     first = T1.first
     last = T2.last
-
-    if not T2:
-        return
     T1, T2 = T1.root, T2.root
     # We get the right most leaf of T1
     rl = T1

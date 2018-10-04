@@ -264,10 +264,10 @@ class EulerTourForest(object):
             self.tree_edge_2_node.update(d)
             self.trees.append(E)
             E.root.tree_number = len(self.trees)-1
+            print(" Construct New Tree :",E.root.tree_number," with :",e)
 
         elif (u,u) not in self.tree_edge_2_node:
             # New Node, New edge
-            print(" Add new node :",u)
             v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
             v_tree = self.trees[v_tree_number]
             self.write_to_msgpack(v_tree)
@@ -275,10 +275,10 @@ class EulerTourForest(object):
             E = self.add_edge_to_tree(v_tree,present_node=v,node_to_add=u)
             E.root.tree_number = v_tree_number
             self.trees[v_tree_number] = E
+            print(" Add new node :",u," in tree : ",v_tree_number)
 
         elif (v,v) not in self.tree_edge_2_node:
             # New Node, New edge
-            print(" Add new node :",v)
             u_tree_number = self.tree_edge_2_node[(u, u)][0].find_root().tree_number
             u_tree = self.trees[u_tree_number]
             self.write_to_msgpack(u_tree)
@@ -286,6 +286,8 @@ class EulerTourForest(object):
             E = self.add_edge_to_tree(u_tree,present_node=u,node_to_add=v)
             E.root.tree_number = u_tree_number
             self.trees[u_tree_number] = E
+            print(" Add new node :",v," in tree : ",u_tree_number)
+
 
         else:
             # Test if Merge else Update
@@ -295,7 +297,7 @@ class EulerTourForest(object):
                 print(" Insert in tree number :", u_tree_number)
                 if self.is_tree_edge(e):
                     return  # Nothing to do be do be do
-                # Else insert in non tree edges, same cost as checking if its already a non tree edge
+                # Else insert in non tree edges, same cost as checking if its already a non tree                edge
                 self.non_tree_edges_al[e[0]].add(e[1])
                 self.non_tree_edges_al[e[1]].add(e[0])
             else:  # They are in different trees
@@ -308,6 +310,8 @@ class EulerTourForest(object):
 
                 uv_tree = self.link_euler_tour_trees(u_tree, v_tree, e)
                 uv_tree.root.tree_number = u_tree_number
+                assert uv_tree.root.tree_number == self.tree_edge_2_node[(u,u)][0].find_root().tree_number
+                assert uv_tree.root.tree_number == self.tree_edge_2_node[(v, v)][0].find_root().tree_number
                 self.trees[u_tree_number] = uv_tree
                 self.trees[v_tree_number] = None
         return
@@ -366,7 +370,8 @@ class EulerTourForest(object):
             # to the removal of *e*
             E1, E2 = current_tree.cut(nodes)
             # Try to find a replacement edge among the non tree edges
-            E = self.replace_edge(E1, E2)
+            if E1 and E2:
+                E = self.replace_edge(E1, E2)
             if E:
                 self.trees[tree_number] = E
                 E.root.tree_number = tree_number
@@ -377,10 +382,12 @@ class EulerTourForest(object):
                 l = len(self.trees)
                 self.trees.append(E2)
                 E2.root.tree_number = l
+                print(" Separate current tree into tree ",tree_number," and ",l)
+                # print("E1 :\n",E1)
+                # print("E2 :\n",E2)
             del self.tree_edge_2_node[e]
         else:
-            print(" Remove non tree edge : ", e)
-            u, v = e
+            print(" Remove non tree edge : ", (u,v))
             self.non_tree_edges_al[u].remove(v)
             self.non_tree_edges_al[v].remove(u)
 
@@ -395,40 +402,40 @@ class EulerTourForest(object):
         u, v = e  # We know that u is in E1 and v in E2
         u_node = self.tree_edge_2_node[(u, u)][0]
         v_node = self.tree_edge_2_node[(v, v)][0]
-        print("   u pos :", u_node.data, "  v pos :", v_node.data)
+        # print("   u pos :", u_node.data, "  v pos :", v_node.data)
         # Releaf
         if E1.last != u_node:
             E1 = E1.releaf(where=u_node)
-            print("  After releafing :")
-            print(E1)
-            E1.plot("  E1 after releafing in :" + repr(u_node.data))
+            # print("  After releafing :")
+            # print(E1)
+            # E1.plot("  E1 after releafing in :" + repr(u_node.data))
         # Reroot (so releaf in v_node.pred)
 
         if E2.first != v_node:
             E2 = E2.releaf(where=v_node.pred)
-            print("  After rerooting :")
-            print(E2)
-            E2.plot("  E2 after rerooting in :" + repr(v_node.data))
+            # print("  After rerooting :")
+            # print(E2)
+            # E2.plot("  E2 after rerooting in :" + repr(v_node.data))
 
-        print("###########################################################")
-        print("E1 first :", E1.first.data)
-        print("E1 last :", E1.last.data)
+        # print("###########################################################")
+        # print("E1 first :", E1.first.data)
+        # print("E1 last :", E1.last.data)
         uv_node = E1.insert(data=e, inlast=True)  # (u,u) is in E1
 
-        print("After insertion of :", e, " with data :", uv_node.data)
-        E1.plot("E1 after insertion of :" + repr(e))
-        print(E1)
+        # print("After insertion of :", e, " with data :", uv_node.data)
+        # E1.plot("E1 after insertion of :" + repr(e))
+        # print(E1)
         E = union_treap(E1, E2)
-        print(" After Union :")
-        E.plot("Union of E1 and E2 ")
-        print(E)
+        # print(" After Union :")
+        # E.plot("Union of E1 and E2 ")
+        # print(E)
         vu_node = E.insert(data=(v, u), inlast=True)  # (v,v) is in E2
 
         self.tree_edge_2_node[e] = [uv_node]
         self.tree_edge_2_node[e].append(vu_node)
-        print(" After final insertion of :", (v, u), " with data :", vu_node.data)
-        E.plot(" After Final insertion of : " + repr((v, u)))
-        print(E)
+        # print(" After final insertion of :", (v, u), " with data :", vu_node.data)
+        # E.plot(" After Final insertion of : " + repr((v, u)))
+        # print(E)
         return E
 
     def write_to_msgpack(self,T):
@@ -438,7 +445,6 @@ class EulerTourForest(object):
         :return:
         '''
         L = T.get_data_in_priority_order()
-        print("Link to store :",L)
         links = set()
         # Add tree edges
         for l in L:
@@ -453,6 +459,7 @@ class EulerTourForest(object):
                     if (n,v) not in links and (v,n) not in links:
                         links.add((n,v))
         if links:
+            print("Links to store :", tuple(links))
             storage_file.write(packer.pack(tuple(links)))
         # compteur id scc
         return
@@ -474,10 +481,30 @@ def dynamic_connectivity(E, M):
             # plt.show()
         print("ETF :\n", ETF)
     print("ETF after sequence :\n", ETF)
-    for T in ETF.trees:
-        if T:
-            ETF.write_to_msgpack(T)
-    return G
+    # for T in ETF.trees:
+    #     if T:
+    #         ETF.write_to_msgpack(T)
+    return
+
+
+def scc_etf(input_file):
+    ETF = construct_euler_tour_forest([])
+
+    with open(input_file,'rb') as input_file:
+        unpacker = msgpack.Unpacker(input_file,use_list=False)
+        for l in unpacker:
+            print(l)
+            if l[0] == -1:
+                print("Deletion")
+                ETF.remove_edge((l[-1],l[-2]))
+            if l[0] == 1:
+                print("Insertion")
+                ETF.insert_edge((l[-1],l[-2]))
+            print("ETF :\n",ETF)
+    return
+
+
+
 
 
 if __name__ == '__main__':
@@ -487,7 +514,7 @@ if __name__ == '__main__':
     # Step 3 : Compute the Euler Tour of each spanning tree and store it in an EulerTourTree
 
     # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
-    random.seed(1)
+    # random.seed(1)
     __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
     E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6), (3, 4), (5, 6), (2, 3),
          (7, 8), (9, 7),
@@ -498,8 +525,17 @@ if __name__ == '__main__':
     # M = [(-1, 4, 5), (-1, 4, 6)]
     M = [(1,101,102),(-1,101,102),(-1,7,11),(1,7,11),(1, 4, 5), (1, 1, 2), (-1, 1, 2), (-1, 1, 3),
          (-1, 4, 5), (-1, 4, 6),(1,4,11),(1,101,102)]
+
     global storage_file
     storage_file = open(__directory__ + "scc.scf", 'wb')
     global packer
     packer = msgpack.Packer(use_bin_type=True)
-    dynamic_connectivity(E, M)
+
+
+    # dynamic_connectivity(E, M)
+    # exit()
+
+    input_file = "/home/leo/Dev/Data_Stream/example_ordered_links.sgf"
+    scc_etf(input_file)
+
+

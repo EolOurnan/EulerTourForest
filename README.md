@@ -1,11 +1,11 @@
-Euler Tour Forest
-=================
+# Euler Tour Forest
+
 
 This project implements a simplified version of a fully-dynamic connectivity algorithm see :
 https://dl.acm.org/citation.cfm?id=320215
 
-Algorithm
-=========
+# Algorithm
+
 - Construct a spanning forest of the current graph. (it can be random, start with a DFS at any node)
 - Store links which aren't present in the spanning forest, we call them non tree edges.
 - Compute the Euler Tour of each spanning tree and store it in an Euler Tour Tree, which are built as a custom Treap
