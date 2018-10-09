@@ -531,7 +531,6 @@ if __name__ == '__main__':
     global packer
     packer = msgpack.Packer(use_bin_type=True)
 
-
     # dynamic_connectivity(E, M)
     # exit()
 
