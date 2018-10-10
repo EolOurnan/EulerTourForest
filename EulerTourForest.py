@@ -264,7 +264,7 @@ class EulerTourForest(object):
             self.tree_edge_2_node.update(d)
             self.trees.append(E)
             E.root.tree_number = len(self.trees)-1
-            print(" Construct New Tree :",E.root.tree_number," with :",e)
+            # print(" Construct New Tree :",E.root.tree_number," with :",e)
 
         elif (u,u) not in self.tree_edge_2_node:
             # New Node, New edge
@@ -275,7 +275,7 @@ class EulerTourForest(object):
             E = self.add_edge_to_tree(v_tree,present_node=v,node_to_add=u)
             E.root.tree_number = v_tree_number
             self.trees[v_tree_number] = E
-            print(" Add new node :",u," in tree : ",v_tree_number)
+            # print(" Add new node :",u," in tree : ",v_tree_number)
 
         elif (v,v) not in self.tree_edge_2_node:
             # New Node, New edge
@@ -286,22 +286,21 @@ class EulerTourForest(object):
             E = self.add_edge_to_tree(u_tree,present_node=u,node_to_add=v)
             E.root.tree_number = u_tree_number
             self.trees[u_tree_number] = E
-            print(" Add new node :",v," in tree : ",u_tree_number)
-
+            # print(" Add new node :",v," in tree : ",u_tree_number)
 
         else:
             # Test if Merge else Update
             u_tree_number = self.tree_edge_2_node[(u,u)][0].find_root().tree_number
             v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
             if u_tree_number == v_tree_number:  # They are already in the same tree
-                print(" Insert in tree number :", u_tree_number)
+                # print(" Insert in tree number :", u_tree_number)
                 if self.is_tree_edge(e):
                     return  # Nothing to do be do be do
                 # Else insert in non tree edges, same cost as checking if its already a non tree                edge
                 self.non_tree_edges_al[e[0]].add(e[1])
                 self.non_tree_edges_al[e[1]].add(e[0])
             else:  # They are in different trees
-                print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
+                # print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
                 u_tree = self.trees[u_tree_number]
                 v_tree = self.trees[v_tree_number]
 
@@ -336,14 +335,14 @@ class EulerTourForest(object):
 
         e = replacement_edge(E1, E2)
         if e:
-            print("  Replacement edge :", e)
-            print("  Found Replacement Edge :) hamdoulilah")
+            # print("  Replacement edge :", e)
+            # print("  Found Replacement Edge :) hamdoulilah")
             E = self.link_euler_tour_trees(E1, E2, e)
             self.non_tree_edges_al[e[0]].remove(e[1])
             self.non_tree_edges_al[e[1]].remove(e[0])
             return E
-        else:
-            print("  Did not Find Replacement Edge :( starfullah")
+        # else:
+        #     print("  Did not Find Replacement Edge :( starfullah")
         return False
 
     def remove_edge(self, e):
@@ -359,12 +358,12 @@ class EulerTourForest(object):
             raise KeyError(" Trying to remove the link "+str(e)+ " whereas the node "+str(v)+" isn't even present !")
         tree_number = self.tree_edge_2_node[(e[0], e[0])][0].find_root().tree_number
         current_tree = self.trees[tree_number]
-        copy_tree = copy.deepcopy(current_tree)
-        print(" Tree Number :",tree_number)
-        print(" Remove in tree rooted at : ", current_tree.root.data)
+        copy_tree = copy.copy(current_tree)
+        # print(" Tree Number :",tree_number)
+        # print(" Remove in tree rooted at : ", current_tree.root.data)
         e = self.is_tree_edge(e)
         if e:
-            print(" Remove tree edge : ", e)
+            # print(" Remove tree edge : ", e)
             nodes = self.tree_edge_2_node[e]
             # Cut the euler tour into two distincts euler tour corresponding
             # to the removal of *e*
@@ -382,12 +381,12 @@ class EulerTourForest(object):
                 l = len(self.trees)
                 self.trees.append(E2)
                 E2.root.tree_number = l
-                print(" Separate current tree into tree ",tree_number," and ",l)
+                # print(" Separate current tree into tree ",tree_number," and ",l)
                 # print("E1 :\n",E1)
                 # print("E2 :\n",E2)
             del self.tree_edge_2_node[e]
         else:
-            print(" Remove non tree edge : ", (u,v))
+            # print(" Remove non tree edge : ", (u,v))
             self.non_tree_edges_al[u].remove(v)
             self.non_tree_edges_al[v].remove(u)
 
@@ -459,7 +458,7 @@ class EulerTourForest(object):
                     if (n,v) not in links and (v,n) not in links:
                         links.add((n,v))
         if links:
-            print("Links to store :", tuple(links))
+            # print("Links to store :", tuple(links))
             storage_file.write(packer.pack(tuple(links)))
         # compteur id scc
         return
@@ -493,20 +492,21 @@ def scc_etf(input_file):
     with open(input_file,'rb') as input_file:
         unpacker = msgpack.Unpacker(input_file,use_list=False)
         for l in unpacker:
-            print(l)
+            # print(l)
             if l[0] == -1:
-                print("Deletion")
+                # print("Deletion")
                 ETF.remove_edge((l[-1],l[-2]))
             if l[0] == 1:
-                print("Insertion")
+                # print("Insertion")
                 ETF.insert_edge((l[-1],l[-2]))
-            print("ETF :\n",ETF)
+            # print("ETF :\n",ETF)
     return
 
 
 
 
-
+import time
+from tools import profile_shit
 if __name__ == '__main__':
     # Step 1 : Get a Spanning Forest of the current graph :
     # Step 2 : Store non tree edges according to their spanning tree:
@@ -534,7 +534,11 @@ if __name__ == '__main__':
     # dynamic_connectivity(E, M)
     # exit()
 
-    input_file = "/home/leo/Dev/Data_Stream/example_ordered_links.sgf"
-    scc_etf(input_file)
+    __directory__ = "/home/leo/Dev/Data_Stream/"#+"Socio_Patterns/Workplace/"
+    __file__ ="example"#""Workplace"
+    input_file = __directory__ + __file__+"_ordered_links.sgf"
 
+    t_begin = time.time()
+    profile_shit("scc_etf(input_file)")
+    # print("Elapsed Time :",time.time()-t_begin)
 

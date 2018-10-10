@@ -1,11 +1,11 @@
-import random
+import random,copy
 
 class CTreapNode(object):
     '''
     A node of a Treap (priority is determined at random and used to balance the Treap)
     '''
 
-    def __init__(self, data=None, parent=None, pred=None, suc=None, size=None):
+    def __init__(self, data=None, parent=None, pred=None, suc=None, size=None,left=None,right=None):
         '''
 
         :param value:
@@ -14,12 +14,30 @@ class CTreapNode(object):
         self.data = data
         self.priority = random.random()
         self.parent = parent
-        self.left = None  # Left child
-        self.right = None  # Right child
+        self.left = left  # Left child
+        self.right = right  # Right child
         self.pred = pred  # Predecessor (used in Euler Tour)
         self.suc = suc  # successor   (used in Euler Tour
         self.size = size  # Used to count the number of nodes in the subtree rooted at the current node
         self.__tree_number = None # Used to catch a Tree in a forest, only accessible if the current node is root
+
+    def __copy__(self):
+        '''
+        Only use to write data somewhere, only need data, left and right
+        :return:
+        '''
+        data = copy.copy(self.data)
+        left=right=None
+        if self.left:
+            left = copy.copy(self.left)
+        if self.right:
+            right = copy.copy(self.right)
+        return CTreapNode(data=data,left=left,right=right)
+
+
+    def __iter__(self):
+        print("TODO : A FUCKING ITERATOR ON CTREAP NODE")
+        return
 
     @property
     def tree_number(self):
@@ -30,6 +48,7 @@ class CTreapNode(object):
     def tree_number(self,number):
         if self.parent is None:
             self.__tree_number = number
+
 
     def find_root(self):
         '''

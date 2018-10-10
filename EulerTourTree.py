@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.collections as mcol
 import msgpack
+import copy
 
 from collections import defaultdict
 from Chained_Treap import CTreapNode
@@ -75,6 +76,17 @@ class EulerTourTree(object):
         self.weight = weight  # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
 
 
+    def __iter__(self):
+        print("TODO : A FUCKING ITERATOR ON ETT")
+        return
+
+    def __copy__(self):
+        '''
+        Only use to write data, only need data of root and recursively
+        :return:
+        '''
+        return EulerTourTree(root=copy.copy(self.root))
+
     def __repr__(self):
         rep = "Euler Tour : "+repr(self.get_euler_tour())+"\n"
         rep += "Priority Order :"+str(self.get_data_in_priority_order())+"\n"
@@ -85,7 +97,7 @@ class EulerTourTree(object):
     def get_data_in_priority_order(self):
         L = []
         self._get_data_in_priority_order(self.root, L)
-        return [i for i in L]
+        return L
 
     def _get_data_in_priority_order(self, node, L):
         if node:
@@ -433,7 +445,7 @@ class EulerTourTree(object):
         # K.plot(" Right after removal of " + repr(nodes[0].data))
 
         #  Remove the second occurence of the link
-        if nodes[1].find_root() == K.root:
+        if K and nodes[1].find_root() == K.root:
             # nodes[1] is in K
             K, L = K.split(nodes[1])
             # print(" K :\n", K)
