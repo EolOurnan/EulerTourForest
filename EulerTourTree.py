@@ -62,7 +62,8 @@ class EulerTourTree(object):
     '''
     https://en.wikipedia.org/wiki/Euler_tour_technique
     '''
-    def __init__(self, root=None, first=None, last=None, weight=None):
+    def __init__(self, root=None, first=None, last=None, weight=None,begin_time=None,
+                 end_time = None):
         '''
 
         :param root:
@@ -74,18 +75,23 @@ class EulerTourTree(object):
         self.first = first
         self.last = last
         self.weight = weight  # Sum of non tree edges adjacents to edge in tree # TODO: see self.replace()
+        self.begin_time = begin_time
+        self.end_time = end_time
 
 
     def __iter__(self):
-        print("TODO : A FUCKING ITERATOR ON ETT")
-        return
+        yield self.first
+        current = self.first.suc
+        while current != self.first:
+            yield current
+            current = current.suc
 
     def __copy__(self):
         '''
         Only use to write data, only need data of root and recursively
         :return:
         '''
-        return EulerTourTree(root=copy.copy(self.root))
+        return EulerTourTree(root=copy.copy(self.root),begin_time = self.begin_time,end_time=self.end_time)
 
     def __repr__(self):
         rep = "Euler Tour : "+repr(self.get_euler_tour())+"\n"
@@ -299,7 +305,7 @@ class EulerTourTree(object):
 
     def balance(self):
         '''
-        Balance the Treap to respect the Heap invariant
+        Balance the Treap to respect the Heap invariant, from root to leaves (full browsing)
         :Status: OK
         :return:
         '''
@@ -372,7 +378,7 @@ class EulerTourTree(object):
         ->
         [first,...,where] [after_where,...last]
 
-        Note : The left subtree contains at least the node *where* whereas the right subtree can        be empty.
+        Note : The left subtree contains at least the node *where* whereas the right subtree can be empty.
         :param where: The split is effectuated just after *where*
         :return: Left subtree and Right subtree
         '''

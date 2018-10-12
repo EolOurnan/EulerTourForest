@@ -251,18 +251,20 @@ class EulerTourForest(object):
 
 
 
-    def insert_edge(self, e):
+    def insert_edge(self, l):
         '''
         Insert an edge in the Euler Tour Forest
         :param e:
         :return:
         '''
-        u, v = e
+        t0,t1,u,v = l
+        e = (u,v)
         if (u,u) not in self.tree_edge_2_node and (v,v) not in self.tree_edge_2_node:
             # New Nodes, New edge, New Spanning Tree, New EulerTourTree
             E,d = construct_euler_tour_tree([(u,v)])
             self.tree_edge_2_node.update(d)
             self.trees.append(E)
+            E.begin_time = t0
             E.root.tree_number = len(self.trees)-1
             # print(" Construct New Tree :",E.root.tree_number," with :",e)
 
@@ -270,10 +272,12 @@ class EulerTourForest(object):
             # New Node, New edge
             v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
             v_tree = self.trees[v_tree_number]
+            v_tree.end_time = t0
             self.write_to_msgpack(v_tree)
 
             E = self.add_edge_to_tree(v_tree,present_node=v,node_to_add=u)
             E.root.tree_number = v_tree_number
+            E.begin_time = t0
             self.trees[v_tree_number] = E
             # print(" Add new node :",u," in tree : ",v_tree_number)
 
@@ -281,10 +285,12 @@ class EulerTourForest(object):
             # New Node, New edge
             u_tree_number = self.tree_edge_2_node[(u, u)][0].find_root().tree_number
             u_tree = self.trees[u_tree_number]
+            u_tree.end_time = t0
             self.write_to_msgpack(u_tree)
 
             E = self.add_edge_to_tree(u_tree,present_node=u,node_to_add=v)
             E.root.tree_number = u_tree_number
+            E.begin_time = t0
             self.trees[u_tree_number] = E
             # print(" Add new node :",v," in tree : ",u_tree_number)
 
@@ -303,14 +309,16 @@ class EulerTourForest(object):
                 # print(" Merge Trees ", v_tree_number, " and ", u_tree_number)
                 u_tree = self.trees[u_tree_number]
                 v_tree = self.trees[v_tree_number]
-
+                u_tree.end_time = t0
+                v_tree.end_time = t0
                 self.write_to_msgpack(u_tree)
                 self.write_to_msgpack(v_tree)
 
                 uv_tree = self.link_euler_tour_trees(u_tree, v_tree, e)
+                uv_tree.begin_time = t0
                 uv_tree.root.tree_number = u_tree_number
-                assert uv_tree.root.tree_number == self.tree_edge_2_node[(u,u)][0].find_root().tree_number
-                assert uv_tree.root.tree_number == self.tree_edge_2_node[(v, v)][0].find_root().tree_number
+                # assert uv_tree.root.tree_number == self.tree_edge_2_node[(u,u)][0].find_root().tree_number
+                # assert uv_tree.root.tree_number == self.tree_edge_2_node[(v, v)][0].find_root().tree_number
                 self.trees[u_tree_number] = uv_tree
                 self.trees[v_tree_number] = None
         return
@@ -324,15 +332,20 @@ class EulerTourForest(object):
         '''
         # We assume that E1 is smaller than E2 (TODO : implement a size of the tree (aka len(E1.nt_a_l))?
         def replacement_edge(E1, E2):
-            r1 = E1.root
             r2 = E2.root
-            for u in self.non_tree_edges_al:
-                if self.tree_edge_2_node[(u, u)][0].find_root() == r1:
+            for n in E1:
+                u,v = n.data
+                if u == v:
                     for v in self.non_tree_edges_al[u]:
-                        if self.tree_edge_2_node[(v, v)][0].find_root() == r2:
-                            return (u, v)
-            return False
+                        if self.tree_edge_2_node[(v,v)][0].find_root() == r2:
+                            return (u,v)
 
+            # for u in self.non_tree_edges_al:
+            #     if self.tree_edge_2_node[(u, u)][0].find_root() == r1:
+            #         for v in self.non_tree_edges_al[u]:
+            #             if self.tree_edge_2_node[(v, v)][0].find_root() == r2:
+            #                 return (u, v)
+            return False
         e = replacement_edge(E1, E2)
         if e:
             # print("  Replacement edge :", e)
@@ -345,24 +358,26 @@ class EulerTourForest(object):
         #     print("  Did not Find Replacement Edge :( starfullah")
         return False
 
-    def remove_edge(self, e):
+    def remove_edge(self, l):
         '''
         Remove an edge from the Euler Tour Forest
         :param e:
         :return:
         '''
-        u,v = e
+
+        t1,u,v = l
+        e = (u,v)
         if (u,u) not in self.tree_edge_2_node:
             raise KeyError(" Trying to remove the link "+str(e)+ " whereas the node "+str(u)+" isn't even present !")
         if (v,v) not in self.tree_edge_2_node:
             raise KeyError(" Trying to remove the link "+str(e)+ " whereas the node "+str(v)+" isn't even present !")
-        tree_number = self.tree_edge_2_node[(e[0], e[0])][0].find_root().tree_number
+        tree_number = self.tree_edge_2_node[(u, u)][0].find_root().tree_number
         current_tree = self.trees[tree_number]
-        copy_tree = copy.copy(current_tree)
         # print(" Tree Number :",tree_number)
         # print(" Remove in tree rooted at : ", current_tree.root.data)
         e = self.is_tree_edge(e)
         if e:
+            copy_tree = copy.copy(current_tree)
             # print(" Remove tree edge : ", e)
             nodes = self.tree_edge_2_node[e]
             # Cut the euler tour into two distincts euler tour corresponding
@@ -373,14 +388,18 @@ class EulerTourForest(object):
                 E = self.replace_edge(E1, E2)
             if E:
                 self.trees[tree_number] = E
+                E.begin_time = copy_tree.begin_time
                 E.root.tree_number = tree_number
             else:
+                copy_tree.end_time = t1
                 self.write_to_msgpack(copy_tree)
                 self.trees[tree_number] = E1
                 E1.root.tree_number = tree_number
+                E1.begin_time = t1
                 l = len(self.trees)
                 self.trees.append(E2)
                 E2.root.tree_number = l
+                E2.begin_time = t1
                 # print(" Separate current tree into tree ",tree_number," and ",l)
                 # print("E1 :\n",E1)
                 # print("E2 :\n",E2)
@@ -443,24 +462,26 @@ class EulerTourForest(object):
         :param storage_file:
         :return:
         '''
-        L = T.get_data_in_priority_order()
-        links = set()
-        # Add tree edges
-        for l in L:
-            u,v = l
-            if l not in links and (v, u) not in links and u != v:
-                links.add(l)
-                # Add Non Tree Edges
-                for n in self.non_tree_edges_al[u]:
-                    if (n,u) not in links and (u,n) not in links:
-                        links.add((n,u))
-                for n in self.non_tree_edges_al[v]:
-                    if (n,v) not in links and (v,n) not in links:
-                        links.add((n,v))
-        if links:
-            # print("Links to store :", tuple(links))
-            storage_file.write(packer.pack(tuple(links)))
-        # compteur id scc
+        t0, t1 = T.begin_time, T.end_time
+        if t0 != t1:
+            L = T.get_data_in_priority_order()
+            links = set()
+            # Add tree edges
+            for l in L:
+                u,v = l
+                if l not in links and (v, u) not in links and u != v:
+                    links.add(l)
+                    # Add Non Tree Edges
+                    for n in self.non_tree_edges_al[u]:
+                        if (n,u) not in links and (u,n) not in links:
+                            links.add((n,u))
+                    for n in self.non_tree_edges_al[v]:
+                        if (n,v) not in links and (v,n) not in links:
+                            links.add((n,v))
+            if links:
+                # print("Links to store :", tuple(links))
+                storage_file.write(packer.pack((t0,t1,tuple(links))))
+            # TODO : compteur id scc
         return
 
 
@@ -495,10 +516,10 @@ def scc_etf(input_file):
             # print(l)
             if l[0] == -1:
                 # print("Deletion")
-                ETF.remove_edge((l[-1],l[-2]))
+                ETF.remove_edge(l[1:])
             if l[0] == 1:
                 # print("Insertion")
-                ETF.insert_edge((l[-1],l[-2]))
+                ETF.insert_edge(l[1:])
             # print("ETF :\n",ETF)
     return
 
@@ -534,11 +555,42 @@ if __name__ == '__main__':
     # dynamic_connectivity(E, M)
     # exit()
 
-    __directory__ = "/home/leo/Dev/Data_Stream/"#+"Socio_Patterns/Workplace/"
-    __file__ ="example"#""Workplace"
+    __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/Workplace/"
+    __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/High_School_2013/"
+    # __directory__ = "/home/leo/Dev/Data_Stream/"
+    __file__="High_School_2013"
+    # __file__="workplace"
+    # __file__ = "example"
+    scc_storage_path = __directory__ + __file__ + "_scc_storage/"
+    # __file__ ="example"#""Workplace"
     input_file = __directory__ + __file__+"_ordered_links.sgf"
 
     t_begin = time.time()
     profile_shit("scc_etf(input_file)")
-    # print("Elapsed Time :",time.time()-t_begin)
+    print("Elapsed Time :",time.time()-t_begin)
+    storage_file.close()
+    __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
+    with open(__directory__+"scc.scf",'rb') as iptf2,open(scc_storage_path+"scc.scf",'rb') as iptf1:
+        U1 = msgpack.Unpacker(iptf1,use_list=False)
+        U2 = msgpack.Unpacker(iptf2,use_list=False)
+        S1 = set()
+        S2 = set()
+        for i in U1:
+            S1.add((i[2],i[3],tuple(sorted(set([n for l in i[4] for n in l[-2:]])))))
+        for j in U2:
+            S2.add((j[0],j[1],tuple(sorted(set([n for l in j[2] for n in l])))))
+        print("len intersection :",len(S1.intersection(S2)))
+        print("len ETF :",len(S2))
+        print("len SCC :",len(S1))
+
+        U = S1.difference(S2)
+        print("In SCC but not in ETF :",)
+        for i in U:
+            print(i)
+        print()
+        U = S2.difference(S1)
+        print("In ETF but not in SCC :")
+        for i in U:
+            print(i)
+
 
