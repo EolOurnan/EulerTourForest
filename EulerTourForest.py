@@ -1,6 +1,6 @@
 import random
 import matplotlib.pyplot as plt
-import msgpack
+import msgpack,gc
 from collections import defaultdict
 import copy
 
@@ -508,6 +508,9 @@ def dynamic_connectivity(E, M):
 
 
 def scc_etf(input_file):
+    ##############
+    gc.disable()
+    ##############
     ETF = construct_euler_tour_forest([])
 
     with open(input_file,'rb') as input_file:
@@ -521,6 +524,9 @@ def scc_etf(input_file):
                 # print("Insertion")
                 ETF.insert_edge(l[1:])
             # print("ETF :\n",ETF)
+    #############
+    gc.enable()
+    #############
     return
 
 
@@ -556,19 +562,20 @@ if __name__ == '__main__':
     # exit()
 
     __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/Workplace/"
-    __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/High_School_2013/"
+    # __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/High_School_2013/"
+    __directory__ = "/home/leo/Dev/Data_Stream/"+"2018/04/"
     # __directory__ = "/home/leo/Dev/Data_Stream/"
-    __file__="High_School_2013"
+    __file__ = "20180418"
+    # __file__="High_School_2013"
     # __file__="workplace"
     # __file__ = "example"
-    scc_storage_path = __directory__ + __file__ + "_scc_storage/"
-    # __file__ ="example"#""Workplace"
     input_file = __directory__ + __file__+"_ordered_links.sgf"
 
     t_begin = time.time()
     profile_shit("scc_etf(input_file)")
     print("Elapsed Time :",time.time()-t_begin)
     storage_file.close()
+    scc_storage_path = __directory__ + __file__ + "_scc_storage/"
     __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
     with open(__directory__+"scc.scf",'rb') as iptf2,open(scc_storage_path+"scc.scf",'rb') as iptf1:
         U1 = msgpack.Unpacker(iptf1,use_list=False)

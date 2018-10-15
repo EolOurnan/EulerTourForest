@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.collections as mcol
-import msgpack
+import msgpack,math
 import copy
 
 from collections import defaultdict
@@ -212,7 +212,27 @@ class EulerTourTree(object):
         if title:
             ax.set_title(title)
 
-    def insert(self, where=None, data=None, inlast=False):
+
+    def _balance_down(self, node):
+        if node.left:
+            node.left = self._balance_down(node.left)
+            if node.left.priority < node.priority:
+                node = node.right_rotation()
+        if node.right:
+            node.right = self._balance_down(node.right)
+            if node.right.priority < node.priority:
+                node = node.left_rotation()
+        return node
+
+    def balance_down(self):
+        '''
+        Balance the Treap to respect the Heap invariant, from root to leaves (full browsing)
+        :Status: OK
+        :return:
+        '''
+        self.root = self._balance_down(self.root)
+
+    def insert(self, where=None, data=None, inlast=False,priority = None):
 
         if not self.root:
             node = CTreapNode(data=data, size=1)
@@ -221,28 +241,29 @@ class EulerTourTree(object):
             self.last = node
             return node
         elif inlast:  # It means that this node is the new last
-            node = self._insert(where=self.last, data=data)
+            node = self._insert(where=self.last, data=data,priority=priority)
             self.last.suc = node
             self.last = node
             self.last.suc = self.first
             self.first.pred = node
         else:
-            node = self._insert(where=where, data=data)
-        # UPDATE SIZE OF PARENTS
-        p = node.parent
-        while p:
-            p.update_size()
-            p = p.parent
+            node = self._insert(where=where, data=data,priority=priority)
+        # # UPDATE SIZE OF PARENTS
+        # p = node.parent
+        # while p:
+        #     p.update_size()
+        #     p = p.parent
         return node
 
-    def _insert(self, where, data=None):
+
+    def _insert(self, where, data=None,priority=None):
         '''
         (TODO) different balance : just from the children to the root
-        Insert a node in the Treap after 'where' (a node of the CTreap)
-        Idea : If where doesn't have any right children, given the fact that the current node
-        come after 'where', we can add it directly, it respects the order
-        Otherwise the idea is to put it just before the node that came before 'where'
-        so has left children of the successor of 'where'.
+        Insert a node in the Treap after *where* (a node of the CTreap).
+        Idea : If *where* doesn't have any right children, given the fact that the current node
+        come after *where*, we can add it directly, it respects the order.
+        Otherwise the idea is to put it just before the node that come after *where*
+        so as the left children of the successor of *where*.
         :param key:
         :param data:
         :param priority:
@@ -256,7 +277,9 @@ class EulerTourTree(object):
             if where.suc:
                 where.suc.pred = node
             where.suc = node
-            self.balance()
+            if priority is not None:
+                node.priority=priority
+            self.balance_down()
             return node
         suc = where.suc
         node = CTreapNode(data=data, size=1, parent=suc, pred=where, suc=suc)
@@ -266,7 +289,9 @@ class EulerTourTree(object):
         suc.left = node
         suc.pred = node
         where.suc = node
-        self.balance()
+        if priority is not None:
+            node.priority = priority
+        self.balance_down()
         return node
 
     def find_root(self, node):
@@ -292,24 +317,7 @@ class EulerTourTree(object):
             current = current.right
         return current
 
-    def _balance(self, node):
-        if node.left:
-            node.left = self._balance(node.left)
-            if node.left.priority < node.priority:
-                node = node.right_rotation()
-        if node.right:
-            node.right = self._balance(node.right)
-            if node.right.priority < node.priority:
-                node = node.left_rotation()
-        return node
 
-    def balance(self):
-        '''
-        Balance the Treap to respect the Heap invariant, from root to leaves (full browsing)
-        :Status: OK
-        :return:
-        '''
-        self.root = self._balance(self.root)
 
     def remove(self,node):
         '''
@@ -333,19 +341,19 @@ class EulerTourTree(object):
         elif node.parent.left == node:
             # print("Our node is a Left child")
             node.parent.left = self._remove(node)
-            # UPDATE SIZE OF PARENTS
-            p = node.parent
-            while p:
-                p.update_size()
-                p = p.parent
+            # # UPDATE SIZE OF PARENTS
+            # p = node.parent
+            # while p:
+            #     p.update_size()
+            #     p = p.parent
         else:
             # print("Our node is a right child")
             node.parent.right = self._remove(node)
-            # UPDATE SIZE OF PARENTS
-            p = node.parent
-            while p:
-                p.update_size()
-                p = p.parent
+            # # UPDATE SIZE OF PARENTS
+            # p = node.parent
+            # while p:
+            #     p.update_size()
+            #     p = p.parent
 
 
 
@@ -386,27 +394,22 @@ class EulerTourTree(object):
         after_where = where.suc
         first = self.first
         last = self.last
-        s = self.insert(where)
-        s.priority = 1 * 10 ** -9
-        self.balance()
+
+        s = self.insert(where,priority=0)
 
         T_left = s.left
         T_right = s.right
+
         T_left.parent = None
-
-        if T_right:
-            T_right.parent = None
-
         T_left = EulerTourTree(root=T_left)
-        if T_right:
-            T_right = EulerTourTree(root=T_right)
-
         T_left.first = first
         first.pred = where
         T_left.last = where
         where.suc = first
 
         if T_right:
+            T_right.parent = None
+            T_right = EulerTourTree(root=T_right)
             T_right.first = after_where
             after_where.pred = last
             T_right.last = last
@@ -518,6 +521,7 @@ def union_treap(T1, T2):
     ll.pred = rl
     new_root = _union_treap(T1, T2)
     new_root.parent = None
+
     T = EulerTourTree(root=new_root)
     T.first = first
     T.first.pred = last
@@ -534,12 +538,12 @@ def _union_treap(T1, T2):
     elif T1.priority < T2.priority:
         T1.right = _union_treap(T1.right, T2)
         T1.right.parent = T1
-        T1.update_size()
+        # T1.update_size()
         return T1
     else:
         T2.left = _union_treap(T1, T2.left)
         T2.left.parent = T2
-        T2.update_size()
+        # T2.update_size()
         return T2
 
 

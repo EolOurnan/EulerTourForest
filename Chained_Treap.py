@@ -35,10 +35,6 @@ class CTreapNode(object):
         return CTreapNode(data=data,left=left,right=right)
 
 
-    def __iter__(self):
-        print("TODO : A FUCKING ITERATOR ON CTREAP NODE")
-        return
-
     @property
     def tree_number(self):
         if self.parent is None:
