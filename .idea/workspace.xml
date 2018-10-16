@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a938dd3-54ef-4672-b10f-8939c5e1c480" name="Default" comment="">
+    <list default="true" id="0a938dd3-54ef-4672-b10f-8939c5e1c480" name="Default" comment="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Balance root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Chained_Treap.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chained_Treap.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EulerTourForest.py" beforeDir="false" afterPath="$PROJECT_DIR$/EulerTourForest.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,26 +13,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5873672">
+    <splitter split-orientation="horizontal" split-proportion="0.8142549">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="Chained_Treap.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+          <file leaf-file-name="EulerTourForest.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="459">
-                  <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+                <state relative-caret-position="402">
+                  <caret line="583" column="18" lean-forward="true" selection-start-line="583" selection-start-column="18" selection-end-line="583" selection-end-column="18" />
+                  <folding>
+                    <element signature="e#0#13#0" expanded="true" />
+                    <element signature="e#3040#4894#0" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="EulerTourForest.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
+          <file leaf-file-name="EulerTourTree.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="705">
-                  <caret line="303" column="16" selection-start-line="303" selection-start-column="16" selection-end-line="303" selection-end-column="16" />
+                <state relative-caret-position="1003">
+                  <caret line="525" column="19" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
                   <folding>
-                    <element signature="e#0#13#0" expanded="true" />
-                    <element signature="e#3208#5062#0" />
+                    <element signature="e#0#31#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -42,15 +44,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="EulerTourTree.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
+        <leaf>
+          <file leaf-file-name="Chained_Treap.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="331">
-                  <caret line="287" column="8" selection-start-line="287" selection-start-column="8" selection-end-line="287" selection-end-column="8" />
-                  <folding>
-                    <element signature="e#0#31#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="595">
+                  <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
                 </state>
               </provider>
             </entry>
@@ -86,6 +85,15 @@
       <find>Ctreap</find>
       <find>eulertourtr</find>
       <find>reroot</find>
+      <find>write</find>
+      <find>for n in</find>
+      <find>balance</find>
+      <find>while</find>
+      <find>releaf</find>
+      <find>split</find>
+      <find>update_size</find>
+      <find>priority</find>
+      <find>copy.</find>
     </findStrings>
     <replaceStrings>
       <replace>node_2_tree</replace>
@@ -93,6 +101,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -109,6 +122,7 @@
         <option value="$PROJECT_DIR$/Treaps.py" />
         <option value="$PROJECT_DIR$/EulerTourTrees.py" />
         <option value="$PROJECT_DIR$/EulerTourTrees.py" />
+        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/EulerTourTree.py" />
         <option value="$PROJECT_DIR$/Chained_Treap.py" />
         <option value="$PROJECT_DIR$/EulerTourForest.py" />
@@ -117,10 +131,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="182" />
-    <option name="width" value="1843" />
-    <option name="height" value="879" />
+    <option name="x" value="1987" />
+    <option name="y" value="25" />
+    <option name="width" value="1853" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -128,7 +142,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -140,10 +153,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Rsync_folder/Stream" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SCC_Union_Find" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -152,6 +166,120 @@
       <recent name="$PROJECT_DIR$/.." />
       <recent name="$USER_HOME$/CODE" />
     </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/Chained_Treap.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EulerTourForest.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/EulerTourTree.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/__init__.py</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/tools.py</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -283,6 +411,21 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
     </configuration>
+    <configuration name="docutils task in README.md" type="docs" factoryName="Docutils task" temporary="true">
+      <module name="EulerTourForest" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="docutils_input_file" value="$PROJECT_DIR$/README.md" />
+      <option name="docutils_output_file" value="$PROJECT_DIR$/README.html" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="rst2html" />
+      <option name="docutils_open_in_browser" value="true" />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
       <module name="EulerTourTrees" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -346,14 +489,15 @@
       <item itemvalue="Python.EulerTour" />
       <item itemvalue="Python.Treaps" />
       <item itemvalue="Python.EulerTourForest" />
+      <item itemvalue="Python docs.docutils task in README.md" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.EulerTourForest" />
         <item itemvalue="Python.EulerTour" />
+        <item itemvalue="Python docs.docutils task in README.md" />
         <item itemvalue="Python.Treaps" />
         <item itemvalue="Python.Test" />
-        <item itemvalue="Python.EulerTourForest" />
       </list>
     </recent_temporary>
   </component>
@@ -509,23 +653,66 @@
       <option name="project" value="LOCAL" />
       <updated>1538496818364</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Refactorign Done">
+      <created>1538562872585</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1538562872585</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Refactorign Done">
+      <created>1538585042857</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1538585042857</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Need to adapt output for msgpack, complete doc + readme">
+      <created>1539103263872</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1539103263872</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Banlace root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))">
+      <created>1539359203492</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1539359203492</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Balance root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))">
+      <created>1539621265698</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1539621265698</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Balance root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))">
+      <created>1539695470710</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1539695470710</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1853" height="1175" extended-state="6" />
+    <frame x="1987" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0858068" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.0" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.51106316" side_tool="true" visible="true" weight="0.01596244" />
-      <window_info active="true" anchor="bottom" x="1920" y="148" width="1920" height="1052" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5116028" side_tool="true" weight="0.015567766" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.48839718" weight="0.32692307" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49791667" weight="0.3295688" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info active="true" anchor="bottom" x="1987" y="55" width="1853" height="1025" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49791667" weight="0.41683778" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49791667" weight="0.41683778" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -533,8 +720,27 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.48893687" weight="0.32769954" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" anchor="bottom" x="67" y="30" width="1853" height="1170" id="Run" order="2" type="WINDOWED" visible="true" weight="0.33675563" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.48839718" weight="0.32769954" />
+      <window_info anchor="right" id="Data View" order="3" />
+      <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49791667" weight="0.41683778" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5116028" side_tool="true" visible="true" weight="0.015567766" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49791667" weight="0.3295688" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -555,24 +761,18 @@
     <MESSAGE value="Non tree edge deletion, update adjacency list" />
     <MESSAGE value="Must Change Tree attributes, we get can a node's tree by following the path of its parent and get the root" />
     <MESSAGE value="Refactoring in Progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactoring in Progress" />
+    <MESSAGE value="Refactorign Done" />
+    <MESSAGE value="Need to adapt output for msgpack, complete doc + readme" />
+    <MESSAGE value="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Banlace root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))" />
+    <MESSAGE value="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Balance root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adapt to stream graph : nearly done,&#10;iterator on ETT : done&#10;speed up replacement edge : done&#10;TODO : Balance root to leaves O(n) &gt;&gt;&gt; balance children to root O(log(n))" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="10" />
+      <option name="time" value="13" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1980">
-          <caret line="116" column="27" lean-forward="true" selection-start-line="116" selection-start-column="27" selection-end-line="116" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/OLD/Treaps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2826">
@@ -606,7 +806,7 @@
         <state>
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -651,7 +851,7 @@
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -699,7 +899,7 @@
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -738,7 +938,7 @@
           <caret line="237" column="31" lean-forward="true" selection-start-line="237" selection-start-column="31" selection-end-line="237" selection-end-column="31" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -770,7 +970,7 @@
           <caret line="174" column="21" selection-start-line="174" selection-start-column="21" selection-end-line="174" selection-end-column="21" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -811,7 +1011,7 @@
         <state>
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -850,7 +1050,7 @@
           <caret line="43" column="22" lean-forward="true" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
@@ -887,9 +1087,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="688">
           <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -900,30 +1097,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="255">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourTree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="287" column="8" selection-start-line="287" selection-start-column="8" selection-end-line="287" selection-end-column="8" />
+        <state relative-caret-position="1003">
+          <caret line="525" column="19" selection-start-line="525" selection-start-column="19" selection-end-line="525" selection-end-column="19" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Chained_Treap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/EulerTourForest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="303" column="16" selection-start-line="303" selection-start-column="16" selection-end-line="303" selection-end-column="16" />
+        <state relative-caret-position="402">
+          <caret line="583" column="18" lean-forward="true" selection-start-line="583" selection-start-column="18" selection-end-line="583" selection-end-column="18" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <element signature="e#3208#5062#0" />
+            <element signature="e#3040#4894#0" />
           </folding>
         </state>
       </provider>
