@@ -577,6 +577,7 @@ if __name__ == '__main__':
     print("Elapsed Time :",time.time()-t_begin)
     storage_file.close()
     scc_storage_path = __directory__ + __file__ + "_scc_storage/"
+
     __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
     with open(__directory__+"scc.scf",'rb') as iptf2,open(scc_storage_path+"scc.scf",'rb') as iptf1:
         U1 = msgpack.Unpacker(iptf1,use_list=False)
