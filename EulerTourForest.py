@@ -563,11 +563,12 @@ if __name__ == '__main__':
 
     __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/Workplace/"
     # __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/High_School_2013/"
-    __directory__ = "/home/leo/Dev/Data_Stream/"+"2018/04/"
+    # __directory__ = "/home/leo/Dev/Data_Stream/"+"2018/04/"
     # __directory__ = "/home/leo/Dev/Data_Stream/"
-    __file__ = "20180418"
+    # __file__ = "20180418"
     # __file__="High_School_2013"
-    # __file__="workplace"
+    __file__="workplace"
+    # __file__ = "generated"
     # __file__ = "example"
     input_file = __directory__ + __file__+"_ordered_links.sgf"
 
