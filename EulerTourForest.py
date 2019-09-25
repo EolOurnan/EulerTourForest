@@ -1,9 +1,14 @@
 import random
+import numpy as np
 import matplotlib.pyplot as plt
 import msgpack,gc
 from collections import defaultdict
 import copy
 
+
+import math,time
+from straph import stream as sg
+from straph.generator import SG_Generator as gen
 
 from EulerTourTree import construct_euler_tour_tree, union_treap
 
@@ -148,10 +153,9 @@ class ETF_collections(object):
 
 class EulerTourForest(object):
     '''
-    Custom Data Structure Consisting in a Forest of Euler Tour Tree
-    In the same manner as a Spanning forest if composed of Spanning Tree
+    Custom Data Structure Consisting in a Forest of Euler Tour Trees
+    In the same manner as a Spanning Forest if composed of Spanning Trees
     '''
-
     def __init__(self, trees=[], tree_edge_2_node={}, non_tree_edges_al=defaultdict(set)):
         '''
         :param trees:  List of trees constituting the spanning forest (each Tree an EulerTourTree).
@@ -249,9 +253,7 @@ class EulerTourForest(object):
         return E
 
 
-
-
-    def insert_edge(self, l):
+    def insert_edge(self, l,SCC=None):
         '''
         Insert an edge in the Euler Tour Forest
         :param e:
@@ -273,7 +275,9 @@ class EulerTourForest(object):
             v_tree_number = self.tree_edge_2_node[(v,v)][0].find_root().tree_number
             v_tree = self.trees[v_tree_number]
             v_tree.end_time = t0
-            self.write_to_msgpack(v_tree)
+            # self.write_to_msgpack(v_tree)
+            self.add_to_scc(v_tree,SCC)
+
 
             E = self.add_edge_to_tree(v_tree,present_node=v,node_to_add=u)
             E.root.tree_number = v_tree_number
@@ -286,7 +290,8 @@ class EulerTourForest(object):
             u_tree_number = self.tree_edge_2_node[(u, u)][0].find_root().tree_number
             u_tree = self.trees[u_tree_number]
             u_tree.end_time = t0
-            self.write_to_msgpack(u_tree)
+            # self.write_to_msgpack(u_tree)
+            self.add_to_scc(u_tree,SCC)
 
             E = self.add_edge_to_tree(u_tree,present_node=u,node_to_add=v)
             E.root.tree_number = u_tree_number
@@ -311,8 +316,10 @@ class EulerTourForest(object):
                 v_tree = self.trees[v_tree_number]
                 u_tree.end_time = t0
                 v_tree.end_time = t0
-                self.write_to_msgpack(u_tree)
-                self.write_to_msgpack(v_tree)
+                # self.write_to_msgpack(u_tree)
+                # self.write_to_msgpack(v_tree)
+                self.add_to_scc(u_tree,SCC)
+                self.add_to_scc(v_tree,SCC)
 
                 uv_tree = self.link_euler_tour_trees(u_tree, v_tree, e)
                 uv_tree.begin_time = t0
@@ -358,7 +365,7 @@ class EulerTourForest(object):
         #     print("  Did not Find Replacement Edge :( starfullah")
         return False
 
-    def remove_edge(self, l):
+    def remove_edge(self, l,SCC=None):
         '''
         Remove an edge from the Euler Tour Forest
         :param e:
@@ -392,7 +399,9 @@ class EulerTourForest(object):
                 E.root.tree_number = tree_number
             else:
                 copy_tree.end_time = t1
-                self.write_to_msgpack(copy_tree)
+                # self.write_to_msgpack(copy_tree)
+                self.add_to_scc(copy_tree,SCC)
+
                 self.trees[tree_number] = E1
                 E1.root.tree_number = tree_number
                 E1.begin_time = t1
@@ -455,6 +464,26 @@ class EulerTourForest(object):
         # E.plot(" After Final insertion of : " + repr((v, u)))
         # print(E)
         return E
+
+
+    def add_to_scc(self,T,SCC):
+        '''
+        Add the current tree *T* (aka a connected component) to *SCC*
+        :param T: An Euler Tour Tree
+        :param SCC: list of Strongly Connected Components
+        :return: Updated SCC
+        '''
+        t0, t1 = T.begin_time, T.end_time
+        if t0 != t1:
+            L = T.get_data_in_priority_order()
+            nodes_set = set()
+            for l in L:
+                u,v = l
+                nodes_set.add(u[2])
+                nodes_set.add(v[2])
+            current_comp = [(t0,t1,n) for n in nodes_set]
+            SCC.append(current_comp)
+
 
     def write_to_msgpack(self,T):
         '''
@@ -529,77 +558,88 @@ def scc_etf(input_file):
     #############
     return
 
+def strongly_connected_components_ETF(S):
+    SCC = []
+    ETF = construct_euler_tour_forest([])
+    E = S.augmented_ordered_links()
+    for l in E:
+        if l[0] == 1:
+            ETF.insert_edge(l[1:],SCC)
+        else:
+            ETF.remove_edge(l[1:],SCC)
+
+    # Add isolated nodes:
+    for c in S.get_isolated_nodes():
+        SCC.append([c])
+
+    return SCC
 
 
 
 import time
 from tools import profile_shit
 if __name__ == '__main__':
-    # Step 1 : Get a Spanning Forest of the current graph :
-    # Step 2 : Store non tree edges according to their spanning tree:
 
-    # Step 3 : Compute the Euler Tour of each spanning tree and store it in an EulerTourTree
+    T = [0, 1000]
+    nb_nodes = 200
+    mean_flow_nodes = 6
+    mean_node_presence = 200
+    p_link = 0.8*np.sqrt(nb_nodes) / nb_nodes
+    mean_flow_links = 6
+    mean_link_presence = 50
 
-    # Step 4 : Compute the operations, add(link) and remove(link) on the EulerSpanningForest
-    # random.seed(1)
-    __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
-    E = [(0, 1), (1, 3), (1, 2), (2, 4), (4, 5), (4, 6), (3, 4), (5, 6), (2, 3),
-         (7, 8), (9, 7),
-         # (10,11),(11,12),
-         # (13,14)
-         ]  # Initial edge list
-    # M = [(-1,0,1),(1,8,9),(-1,1,2),(-1,4,5),(1,0,1)] # Edges Insertion And Deletion
-    # M = [(-1, 4, 5), (-1, 4, 6)]
-    M = [(1,101,102),(-1,101,102),(-1,7,11),(1,7,11),(1, 4, 5), (1, 1, 2), (-1, 1, 2), (-1, 1, 3),
-         (-1, 4, 5), (-1, 4, 6),(1,4,11),(1,101,102)]
+    S = gen.generate_stream_graph(T,
+                              nb_nodes,
+                              mean_flow_nodes,
+                              mean_node_presence,
+                              p_link,
+                              mean_flow_links,
+                              mean_link_presence)
 
-    global storage_file
-    storage_file = open(__directory__ + "scc.scf", 'wb')
-    global packer
-    packer = msgpack.Packer(use_bin_type=True)
 
-    # dynamic_connectivity(E, M)
-    # exit()
+    chrono = time.time()
+    scc_classic = S.strongly_connected_components()
+    print("SCC Classic DONE :",time.time()-chrono)
+    #
+    #
+    chrono = time.time()
+    scc_etf = strongly_connected_components_ETF(S)
+    print("SCC ETF DONE in :",time.time()-chrono)
 
-    # __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/Workplace/"
-    __directory__ = "/home/leo/Dev/Data_Stream/"+"Socio_Patterns/High_School_2013/"
-    # __directory__ = "/home/leo/Dev/Data_Stream/"+"2018/04/"
-    # __directory__ = "/home/leo/Dev/Data_Stream/"
-    # __file__ = "20180418"
-    __file__="High_School_2013"
-    # __file__="workplace"
-    # __file__ = "generated"
-    # __file__ = "example"
-    input_file = __directory__ + __file__+"_ordered_links.sgf"
+    # S.plot(clusters=scc_classic,title="SCC Classic")
+    # S.plot(clusters=scc_etf, title="SCC UF")
+    # S.plot()
+    # plt.show()
 
-    t_begin = time.time()
-    profile_shit("scc_etf(input_file)")
-    print("Elapsed Time :",time.time()-t_begin)
-    storage_file.close()
-    scc_storage_path = __directory__ + __file__ + "_scc_storage/"
+    set_etf = set()
+    set_classic = set()
+    for i in scc_etf:
+        set_nodes = set()
+        t0,t1 = None,None
+        for (t0,t1,n) in i:
+            set_nodes.add(n)
+        set_etf.add((t0, t1, tuple(sorted(set_nodes))))
 
-    __directory__ = "/home/leo/Dev/Data_Stream/ETF_test/"
-    with open(__directory__+"scc.scf",'rb') as iptf2,open(scc_storage_path+"scc.scf",'rb') as iptf1:
-        U1 = msgpack.Unpacker(iptf1,use_list=False)
-        U2 = msgpack.Unpacker(iptf2,use_list=False)
-        S1 = set()
-        S2 = set()
-        for i in U1:
-            S1.add((i[2],i[3],tuple(sorted(set([n for l in i[4] for n in l[-2:]])))))
-        for j in U2:
-            S2.add((j[0],j[1],tuple(sorted(set([n for l in j[2] for n in l])))))
-        print("len intersection :",len(S1.intersection(S2)))
-        print("len ETF :",len(S2))
-        print("len SCC :",len(S1))
 
-        U = S1.difference(S2)
-        print("In SCC but not in ETF :",)
-        for i in U:
-            print(i)
-        print()
-        U = S2.difference(S1)
-        print("In ETF but not in SCC :")
-        for i in U:
-            print(i)
+    for i in scc_classic:
+        set_nodes = set()
+        t0,t1 = None,None
+        for (t0,t1,n) in i:
+            set_nodes.add(n)
+        set_classic.add((t0,t1,tuple(sorted(set_nodes))))
+
+    print("N scc etf :", len(set_etf))
+    print("N scc classic:",len(set_classic))
+
+    for i in set_classic:
+        if i not in set_etf:
+            print("classic not etf :",i)
+    for j in set_etf:
+        if j not in set_classic:
+            print("etf not classic :",j)
+
+    assert set_etf == set_classic
+
+
 
 
